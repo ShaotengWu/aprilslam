@@ -10,8 +10,9 @@ find_package(catkin REQUIRED COMPONENTS
     )
 
 find_package(cmake_modules)
-find_package(gtsam)
-find_package(Eigen)
+find_package(GTSAM REQUIRED QUIET)
+find_package(Eigen3 REQUIRED QUIET)
+find_package(yaml-cpp REQUIRED QUIET)
 
 add_message_files(DIRECTORY msg FILES Apriltag.msg Apriltags.msg)
 generate_messages(DEPENDENCIES std_msgs geometry_msgs)
@@ -36,7 +37,8 @@ add_library(${PROJECT_NAME}
     )
 target_link_libraries(${PROJECT_NAME}
     ${catkin_LIBRARIES}
-    ${GTSAM_LIBRARIES}
+    gtsam
+    yaml-cpp
     )
 
 # detector node
@@ -52,6 +54,7 @@ add_executable(mapper_node
     )
 target_link_libraries(mapper_node
     ${PROJECT_NAME}
+    gtsam
     )
 
 # dependencies

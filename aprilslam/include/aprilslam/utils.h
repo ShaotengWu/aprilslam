@@ -4,7 +4,7 @@
 #include <geometry_msgs/Point.h>
 #include <geometry_msgs/Quaternion.h>
 #include <geometry_msgs/Pose.h>
-#include <Eigen/Geometry>
+#include <eigen3/Eigen/Geometry>
 #include <opencv2/core/core.hpp>
 
 namespace aprilslam {

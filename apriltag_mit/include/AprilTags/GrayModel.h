@@ -1,7 +1,7 @@
 #ifndef APRILTAGS_GRAYMODEL_H_
 #define APRILTAGS_GRAYMODEL_H_
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 #include <vector>
 
 namespace AprilTags {

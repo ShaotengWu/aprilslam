@@ -1,7 +1,9 @@
 <launch>
-    <arg name="camera" default="/camera"/>
-
-    <node pkg="aprilslam" type="mapper_node" name="mapper"
-        output="screen" ns="$(arg camera)" respawn="true">
-    </node>
+	<arg name="camera" default="/camera" />
+	<arg name="use_tag_prior_info" default="true" />
+	<arg name="tag_prior_info_path" default="$(find aprilslam)/config/tag_prior_info.yaml" />
+	<node pkg="aprilslam" type="mapper_node" name="mapper" output="screen" ns="$(arg camera)">
+		<param name="use_tag_prior_info" type = "bool" value="$(arg use_tag_prior_info)" />
+		<param name="tag_prior_info_path" type = "string" value="$(arg tag_prior_info_path)" />
+	</node>
 </launch>

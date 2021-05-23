@@ -1,13 +1,13 @@
 cmake_minimum_required(VERSION 2.8.3)
 project(apriltag_mit)
 
-set(CMAKE_CXX_FLAGS "-std=c++11 -Ofast")
+set(CMAKE_CXX_FLAGS "-std=c++11")
 
 find_package(catkin REQUIRED COMPONENTS
 )
 
 find_package(cmake_modules)
-find_package(Eigen REQUIRED)
+find_package(Eigen3 REQUIRED)
 find_package(OpenCV REQUIRED)
 
 catkin_package(

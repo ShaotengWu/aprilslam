@@ -1,7 +1,7 @@
 #ifndef APRILTAGS_TAGDETECTION_H_
 #define APRILTAGS_TAGDETECTION_H_
 
-#include <Eigen/Dense>
+#include <eigen3/Eigen/Dense>
 
 #include "opencv2/opencv.hpp"
 
@@ -41,8 +41,9 @@ struct TagDetection {
 
   /////////////// Fields below are filled in by TagDetector ///////////////
   //! Position (in fractional pixel coordinates) of the detection.
-  /*  The points travel counter-clockwise around the target, always
+  /**  The points travel counter-clockwise around the target, always
    *  starting from the same corner of the tag.
+   *  the start point is the left-bottom corner.
    */
   std::pair<float, float> p[4];
 
