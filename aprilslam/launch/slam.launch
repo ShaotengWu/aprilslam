@@ -1,0 +1,23 @@
+<launch>
+
+    <arg name="use_sim_time" default="true"/>
+    <!--Detector Node-->
+    <include file="$(find aprilslam)/launch/detector.launch">
+        <arg name="camera" value="/usb_cam"/>
+	<arg name="size" value="0.123"/>
+    </include>
+
+    <include file="$(find aprilslam)/launch/mapper.launch">
+        <arg name="camera" value="/usb_cam"/>
+    </include>
+
+    <node name="rviz" pkg="rviz" type="rviz"
+        args="-d $(find aprilslam)/config/apriltag.rviz">
+    </node>
+
+    <!-- <node pkg="rosbag" type="play" name="bag_data" 
+        args="-r 0.1 /home/wushaoteng/project/electroMechanical/catkin_ws/data/20210517_01.bag">
+        
+    </node> -->
+
+</launch>
