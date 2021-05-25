@@ -40,14 +40,15 @@ namespace aprilslam
     {
         ROS_ASSERT_MSG(pose_cnt == 1, "Incorrect initial pose");
         
-        //! ERROR HERE
-        if(tag_prior_poses_.empty())
+        
+        if(tag_prior_poses_.empty() || tag_prior_poses_.find(tag_w.id) == tag_prior_poses_.end())
         {
             AddLandmark(tag_w, Pose3());
         }
-        else
+        else 
         {
-            AddLandmark(tag_w, )
+            geometry_msgs::Pose tag_prior_pose = tag_prior_poses_.find(tag_w.id)->second;
+            AddLandmark(tag_w, FromGeometryPose(tag_prior_pose));
         }
 
         // A very strong prior on first pose
@@ -63,7 +64,7 @@ namespace aprilslam
         initial_estimates_.insert(Symbol('l', tag_c.id), pose);
         all_ids_.insert(tag_c.id);
         all_tags_c_[tag_c.id] = tag_c;
-        //AddLandmarkPrior(tag_c.id);
+        AddLandmarkPrior(tag_c.id);
     }
 
     void Mapper::AddLandmarks(const std::vector<Apriltag> &tags_c)
@@ -73,6 +74,7 @@ namespace aprilslam
             // Only add landmark if it's not already added
             if (all_ids_.find(tag_c.id) == all_ids_.end())
             {
+                // wTt = wTc * cTt
                 const Pose3 &w_T_c = pose_;
                 const Pose3 c_T_t = FromGeometryPose(tag_c.pose);
                 const Pose3 w_T_t = w_T_c.compose(c_T_t);
@@ -163,8 +165,7 @@ namespace aprilslam
         {
             const Pose3 &tag_pose3 = results.at<Pose3>(Symbol('l', tag_id));
             geometry_msgs::Pose tag_pose;
-            SetPosition(&tag_pose.position, tag_pose3.x(), tag_pose3.y(),
-                        tag_pose3.z());
+            SetPosition(&tag_pose.position, tag_pose3.x(), tag_pose3.y(), tag_pose3.z());
             SetOrientation(&tag_pose.orientation, tag_pose3.rotation().toQuaternion());
             // This should not change the size of all_sizes_ because all_sizes_ and
             // all_ids_ should have the same size

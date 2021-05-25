@@ -6,8 +6,15 @@
 namespace aprilslam
 {
 
-    void TagMap::AddOrUpdate(const Apriltag &tag_w,
-                             const geometry_msgs::Pose &pose)
+    TagMap::TagMap(std::string tag_family, double tag_size) : tag_family_(tag_family),
+                                                              tag_size_(tag_size),
+                                                              first_flag_(true),
+                                                              last_cam_pose_valid_(false),
+                                                              velocity_valid_(false)
+    {
+    }
+
+    void TagMap::AddOrUpdate(const Apriltag &tag_w, const geometry_msgs::Pose &pose)
     {
         auto it = FindById(tag_w.id, tags_w_);
         if (it == tags_w().end())
@@ -31,6 +38,7 @@ namespace aprilslam
 
     void TagMap::AddTag(const Apriltag &tag, const geometry_msgs::Pose &pose)
     {
+        // 这里的位姿应该是T_w_tag, 从tag坐标系到世界坐标系的转换矩阵，也是tag在世界坐标系中的位姿
         Apriltag tag_w = tag;
         UpdateTag(&tag_w, pose);
         tags_w_.push_back(tag_w);
@@ -43,17 +51,31 @@ namespace aprilslam
         // Set the first tag to origin
         ROS_INFO("First tag: %d", tag_c.id);
         geometry_msgs::Pose pose;
-        SetPose(&pose);
-        AddTag(tag_c, pose);
+
+        if (tags_prior_info_.find(tag_c.id) != tags_prior_info_.end())
+        {
+            ROS_INFO("\033[1;32m---->There is prior information of first tag: %x \033[0m", tag_c.id);
+            pose = tags_prior_info_.find(tag_c.id)->second;
+            // SetPose(&pose);
+            AddTag(tag_c, pose);
+        }
+        else
+        {
+            ROS_WARN("There is no prior information about first tag: %x", tag_c.id);
+            ROS_WARN("Tag map initialization failed. Try again.");
+        }
     }
 
-    bool TagMap::EstimatePose(const std::vector<Apriltag> &tags_c,
-                              const cv::Matx33d &K, const cv::Mat_<double> &D,
-                              geometry_msgs::Pose *pose) const
+    bool TagMap::EstimatePose(const std::vector<Apriltag> &tags_c, const cv::Matx33d &K, const cv::Mat_<double> &D, geometry_msgs::Pose *pose)
     {
         std::vector<cv::Point2f> img_pts;
         std::vector<cv::Point3f> obj_pts;
 
+        // if(first_flag_debug_)
+        // {
+        //     std::cout<<"first estimate: "<< tags_w().size()<<std::endl;
+        //     first_flag_debug_ = false;
+        // }
         for (const Apriltag &tag_c : tags_c)
         {
             // Find 2D-3D correspondences
@@ -76,6 +98,24 @@ namespace aprilslam
         if (img_pts.empty())
             return false;
 
+        // Publish world points
+        sensor_msgs::PointCloud obj_pointcloud_viz;
+        obj_pointcloud_viz.points.resize(obj_pts.size());
+        obj_pointcloud_viz.channels.resize(1);
+        obj_pointcloud_viz.channels[0].name = "intensity";
+        obj_pointcloud_viz.channels[0].values.resize(obj_pts.size());
+        for (size_t i = 0; i < obj_pts.size(); i++)
+        {
+            obj_pointcloud_viz.points[i].x = obj_pts[i].x;
+            obj_pointcloud_viz.points[i].y = obj_pts[i].y;
+            obj_pointcloud_viz.points[i].z = obj_pts[i].z;
+            obj_pointcloud_viz.channels[0].values[i] = 1.0;
+        }
+        obj_pointcloud_viz_ = obj_pointcloud_viz;
+        // // 怀疑是每个tag的四个点都是中心点
+        // // 确实是四个点，但是距离很近，异常
+        // pnp bug. repaired
+
         // Use all correspondences to solve a PnP
         // Actual pose estimation work here
         cv::Mat c_r_w, c_t_w, c_R_w;
@@ -85,18 +125,50 @@ namespace aprilslam
         cv::Mat w_R_c(c_R_w.t());
         cv::Mat w_T_c = -w_R_c * c_T_w;
 
-        // Check reprojection error
-        std::vector<cv::Point2f> reproj_img_pts;
-        cv::projectPoints(obj_pts, c_r_w, c_t_w, K, D, reproj_img_pts);
-        float reproj_error = 0.0;
-        for(size_t ip = 0; ip < reproj_img_pts.size(); ip++)
+        // Check pnp reprojection error
+        std::vector<cv::Point2f> reproj_img_pts_pnp;
+        cv::projectPoints(obj_pts, c_r_w, c_t_w, K, D, reproj_img_pts_pnp);
+        
+
+        // check motion model reprojection model
+        //! error here!!!!
+        std::vector<cv::Point2f> reproj_img_pts_mm;
+        if (velocity_valid_)
+        {
+            // Tc2c1 * Tc1w
+            Eigen::Isometry3d c_pose_w_cur_mm = cam_velocity_.inverse() * last_cam_pose_;
+            cv::Mat c_R_w_mm = Matrix3dtoCvMat(c_pose_w_cur_mm.rotation());
+            cv::Mat c_t_w_mm = Vector3dtoCvMat(c_pose_w_cur_mm.translation());
+            cv::Mat c_r_w_mm;
+            cv::Rodrigues(c_R_w_mm, c_r_w_mm);
+            cv::projectPoints(obj_pts, c_r_w_mm, c_t_w_mm, K, D, reproj_img_pts_mm);
+        }
+
+        float reproj_error_pnp = 0.0;
+        float reproj_error_mm  = 0.0;
+        for (size_t ip = 0; ip < reproj_img_pts_pnp.size(); ip++)
         {
             cv::Point2f origin_pt = img_pts[ip];
-            cv::Point2f reproj_pt = reproj_img_pts[ip];
-            reproj_error += cv::norm(origin_pt - reproj_pt);
-        }
-        ROS_INFO("Current PnP reprojection error: %f", std::sqrt(reproj_error / reproj_img_pts.size()));
+            cv::Point2f reproj_pt = reproj_img_pts_pnp[ip];
+            reproj_error_pnp += cv::norm(origin_pt - reproj_pt);
 
+            if(velocity_valid_)
+            {
+                cv::Point2f reproj_pt_mm = reproj_img_pts_mm[ip];
+                reproj_error_mm += cv::norm(origin_pt - reproj_pt_mm);
+            }
+        }
+        double rmse_pnp = std::sqrt(reproj_error_pnp / reproj_img_pts_pnp.size());
+        double rmse_mm = DBL_MAX;
+        if(velocity_valid_)
+        {
+            rmse_mm = std::sqrt(reproj_error_mm / reproj_img_pts_mm.size());
+        }
+
+        ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
+        ROS_INFO("Current Motion Model reprojection error: %f", rmse_mm);
+        // if(rmse > 1.5)
+        //     return false;
 
         double *pt = w_T_c.ptr<double>();
         SetPosition(&pose->position, pt[0], pt[1], pt[2]);
@@ -104,6 +176,48 @@ namespace aprilslam
         Eigen::Quaterniond w_Q_c = RodriguesToQuat(c_r_w).inverse();
         SetOrientation(&pose->orientation, w_Q_c);
         return true;
+    }
+
+    void TagMap::UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tags_prior_info)
+    {
+        //tags_w_prior_.resize(tags_prior_info.size());
+        tags_prior_info_ = tags_prior_info;
+        auto iter_begin = tags_prior_info.begin();
+        auto iter_end = tags_prior_info.end();
+
+        for (auto iter_tag = iter_begin; iter_tag != iter_end; iter_tag++)
+        {
+            aprilslam::Apriltag tag_w;
+            tag_w.id = iter_tag->first;
+            tag_w.pose = iter_tag->second;
+            tag_w.family = tag_family_;
+            tag_w.size = tag_size_;
+            // Other parameters are not needed
+            // std::cout<<tag_w.id<<" "<<tag_w.pose.position.x<<std::endl;
+
+            tags_w_prior_.push_back(tag_w);
+        }
+        // std::cout <<"map: "<<tags_prior_info.size()<< "vector: " << tags_w_prior_.size() << std::endl;
+    }
+
+    void TagMap::UpdateCurrentCamPose(const geometry_msgs::Pose &pose)
+    {
+        if (!last_cam_pose_valid_)
+        {
+            last_cam_pose_ = PoseMsgToIsometry3d(pose);
+            last_cam_pose_valid_ = true;
+            return;
+        }
+        // get Twc curr
+        current_cam_pose_ = PoseMsgToIsometry3d(pose);
+
+        // get velocity Tc1c2 = Tc1w * Twc2
+        cam_velocity_ = last_cam_pose_.inverse() * current_cam_pose_;
+        last_cam_pose_ = current_cam_pose_;
+
+        if (!velocity_valid_)
+            velocity_valid_ = true;
+        return;
     }
 
     std::vector<Apriltag>::const_iterator FindById(

@@ -55,8 +55,7 @@ namespace aprilslam
         // Show only the detection if camera is uncalibrated
         if (cinfo_msg->K[0] == 0.0 || cinfo_msg->height == 0)
         {
-            ROS_ERROR_THROTTLE(1, "%s: %s", nh_.getNamespace().c_str(),
-                               "Camera not calibrated!");
+            ROS_ERROR_THROTTLE(1, "%s: %s", nh_.getNamespace().c_str(), "Camera not calibrated!");
             cam_calibrated_ = false;
         }
         // Retrieve camera info and image
@@ -85,7 +84,7 @@ namespace aprilslam
             // Maybe use Ptr?
             Apriltags tags_c_msg;
             tags_c_msg.header = image_msg->header;
-            
+
             // Actual processing
             std::for_each(begin(detections), end(detections),
                           [&](const AprilTags::TagDetection &detection) {
@@ -95,7 +94,6 @@ namespace aprilslam
 
             tag_viz_.PublishApriltagsMarker(tags_c_msg);
             pub_tags_.publish(tags_c_msg);
-            
         }
         pub_detections_.publish(cv_ptr->toImageMsg());
     }
@@ -104,12 +102,12 @@ namespace aprilslam
     {
         Apriltag tag;
         // Gather basic information
-        tag.id               = detection.id;
-        tag.family           = tag_family_;
+        tag.id = detection.id;
+        tag.family = tag_family_;
         tag.hamming_distance = detection.hammingDistance;
-        tag.center.x         = detection.cxy.first;
-        tag.center.y         = detection.cxy.second;
-        tag.size             = tag_size_;
+        tag.center.x = detection.cxy.first;
+        tag.center.y = detection.cxy.second;
+        tag.size = tag_size_;
         std::for_each(begin(detection.p), end(detection.p),
                       [&](const AprilTags::Pointf &corner) {
                           geometry_msgs::Point point;
@@ -124,8 +122,7 @@ namespace aprilslam
         Eigen::Vector3d c_T_b;
 
         /// @todo: Need to decide whether to undistort points here!
-        detection.getRelativeQT(tag_size_, model_.fullIntrinsicMatrix(),
-                                model_.distortionCoeffs(), c_Q_b, c_T_b);
+        detection.getRelativeQT(tag_size_, model_.fullIntrinsicMatrix(), model_.distortionCoeffs(), c_Q_b, c_T_b);
         SetPose(&tag.pose, c_Q_b, c_T_b);
         return tag;
     }

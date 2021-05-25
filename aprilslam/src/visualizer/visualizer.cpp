@@ -11,22 +11,18 @@ namespace aprilslam
     void ApriltagVisualizer::PublishApriltagsMarker(const std::vector<Apriltag> &tags, const std::string &frame_id, const ros::Time &stamp)
     {
         static std::set<int> old_ids;
+        std::set<int> new_ids;
+        std::set<int> del_ids;
 
         // Get new ids
-        std::set<int> new_ids;
-        std::for_each(tags.begin(), tags.end(),
-                      [&](const Apriltag &tag) { new_ids.insert(tag.id); });
+        std::for_each(tags.begin(), tags.end(), [&](const Apriltag &tag) { new_ids.insert(tag.id); });
 
         // Get union of new and old ids
         std::set<int> union_ids;
-        std::set_union(old_ids.begin(), old_ids.end(), new_ids.begin(), new_ids.end(),
-                       std::inserter(union_ids, union_ids.begin()));
+        std::set_union(old_ids.begin(), old_ids.end(), new_ids.begin(), new_ids.end(), std::inserter(union_ids, union_ids.begin()));
 
         // Difference of new and union should be delete
-        std::set<int> del_ids;
-        std::set_difference(union_ids.begin(), union_ids.end(), new_ids.begin(),
-                            new_ids.end(), std::inserter(del_ids, del_ids.begin()));
-
+        std::set_difference(union_ids.begin(), union_ids.end(), new_ids.begin(), new_ids.end(), std::inserter(del_ids, del_ids.begin()));
         // Add and delete markers
         visualization_msgs::MarkerArray marker_array;
         for (const aprilslam::Apriltag &tag : tags)
@@ -57,7 +53,33 @@ namespace aprilslam
         }
 
         pub_markers_.publish(marker_array);
+        // ROS_INFO("Publish tag markers");
         old_ids = new_ids;
+    }
+
+    void ApriltagVisualizer::PublishPriorApriltagsMarker(const std::vector<aprilslam::Apriltag> &tags,
+                                                         const std::string &frame_id,
+                                                         const ros::Time &stamp)
+    {
+        visualization_msgs::MarkerArray marker_array;
+        for (const aprilslam::Apriltag &tag : tags)
+        {
+            visualization_msgs::Marker marker;
+            marker.header.frame_id = frame_id;
+            marker.header.stamp = ros::Time::now();
+            marker.ns = tag.family;
+            marker.id = tag.id;
+            marker.type = visualization_msgs::Marker::CUBE;
+            marker.action = visualization_msgs::Marker::ADD;
+            marker.scale.x = marker.scale.y = tag.size;
+            marker.scale.z = marker.scale.x / 10;
+            marker.color = color_;
+            marker.pose = tag.pose;
+            ros::Duration dur(1.0);
+            marker.lifetime = dur;
+            marker_array.markers.push_back(marker);
+        }
+        pub_markers_prior_.publish(marker_array);
     }
 
 } // namespace aprilslam

@@ -9,6 +9,7 @@ namespace aprilslam
           sub_cinfo_(nh_.subscribe("camera_info", 1, &MapperNode::CinfoCb, this)),
           frame_id_(frame_id),
           mapper_(0.04, 1),
+          map_("36h11", 0.123),
           tag_viz_(nh, "apriltags_map")
     {
 
@@ -27,7 +28,7 @@ namespace aprilslam
                 ROS_ERROR("Do not use prior information of apriltags.");
                 exit(0);
             }
-            else if(tag_prior_info_node_["tags"].IsNull())
+            else if (tag_prior_info_node_["tags"].IsNull())
             {
                 ROS_ERROR("No tags information in yaml file!");
                 ROS_ERROR("Do not use prior information of apriltags. ");
@@ -41,27 +42,27 @@ namespace aprilslam
 
                 // load prior information
                 YAML::const_iterator tag_iter_begin = tag_prior_info_node_["tags"].begin();
-                YAML::const_iterator tag_iter_end   = tag_prior_info_node_["tags"].end();
-                for(YAML::const_iterator tag_iter = tag_iter_begin; tag_iter != tag_iter_end; tag_iter++)
+                YAML::const_iterator tag_iter_end = tag_prior_info_node_["tags"].end();
+                for (YAML::const_iterator tag_iter = tag_iter_begin; tag_iter != tag_iter_end; tag_iter++)
                 {
-                    YAML::Node tag_node             = *tag_iter;
-                    size_t id                       = tag_node["id"].as<size_t>();
+                    YAML::Node tag_node = *tag_iter;
+                    size_t id = tag_node["id"].as<size_t>();
                     std::vector<double> translation = tag_node["translation"].as<std::vector<double>>();
-                    std::vector<double> rotation    = tag_node["rotation"].as<std::vector<double>>();
-                    
+                    std::vector<double> rotation = tag_node["rotation"].as<std::vector<double>>();
+
                     geometry_msgs::Pose tag_prior_pose;
-                    tag_prior_pose.position.x    = translation[0];
-                    tag_prior_pose.position.y    = translation[1];
-                    tag_prior_pose.position.z    = translation[2];
+                    tag_prior_pose.position.x = translation[0];
+                    tag_prior_pose.position.y = translation[1];
+                    tag_prior_pose.position.z = translation[2];
                     tag_prior_pose.orientation.x = rotation[0];
                     tag_prior_pose.orientation.y = rotation[1];
                     tag_prior_pose.orientation.z = rotation[2];
                     tag_prior_pose.orientation.w = rotation[3];
 
                     tag_prior_poses_.insert(std::pair<size_t, geometry_msgs::Pose>(id, tag_prior_pose));
-                    mapper_.UpdateTagsPriorInfo(tag_prior_poses_);
                 }
-
+                mapper_.UpdateTagsPriorInfo(tag_prior_poses_);
+                map_.UpdateTagsPriorInfo(tag_prior_poses_);
             }
         }
         else
@@ -69,12 +70,11 @@ namespace aprilslam
             ROS_INFO(" Do not use prior information of apriltags. ");
         }
 
-        
-
         tag_viz_.SetColor(aprilslam::GREEN);
         tag_viz_.SetAlpha(0.75);
 
         pub_cam_trajectory_ = nh_.advertise<nav_msgs::Path>("cam_trajectory", 1);
+        pub_obj_pointcloud_ = nh_.advertise<sensor_msgs::PointCloud>("object_points", 1);
         cam_trajectory_.header.frame_id = frame_id_;
     }
 
@@ -106,13 +106,18 @@ namespace aprilslam
             ROS_INFO("AprilMap initialized.");
         }
         // Do nothing if no pose can be estimated
+        // 到这里tags的pose都是在相机坐标系下
         geometry_msgs::Pose pose;
-        if (!map_.EstimatePose(tags_c_msg->apriltags, model_.fullIntrinsicMatrix(),
-                               model_.distortionCoeffs(), &pose))
+        if (!map_.EstimatePose(tags_c_msg->apriltags, model_.fullIntrinsicMatrix(), model_.distortionCoeffs(), &pose))
         {
             ROS_WARN_THROTTLE(1, "No 2D-3D correspondence.");
             return;
         }
+        sensor_msgs::PointCloud obj_pointcloud_viz = map_.obj_pointcloud_viz();
+        obj_pointcloud_viz.header.frame_id = frame_id_;
+        obj_pointcloud_viz.header.stamp = ros::Time::now();
+        pub_obj_pointcloud_.publish(obj_pointcloud_viz); 
+
         // Now that with the initial pose calculated, we can do some mapping
         mapper_.AddPose(pose);
         mapper_.AddFactors(tags_c_good);
@@ -121,14 +126,18 @@ namespace aprilslam
             // This will only add new landmarks
             mapper_.AddLandmarks(tags_c_good);
 
-            // mapper_.Optimize();
+            mapper_.Optimize();
             // Get latest estimates from mapper and put into map
-            // mapper_.Update(&map_, &pose);
+            mapper_.Update(&map_, &pose);
+            
             // Prepare for next iteration
-            //mapper_.Clear();
+            mapper_.Clear();
+
+            // update current pose to tag_map
+            map_.UpdateCurrentCamPose(pose);
 
             // mapper_.BatchOptimize();
-            //mapper_.BatchUpdate(&map_, &pose);
+            // mapper_.BatchUpdate(&map_, &pose);
         }
         else
         {
@@ -162,8 +171,15 @@ namespace aprilslam
         pub_cam_trajectory_.publish(cam_trajectory_);
 
         // Publish visualisation markers
-        tag_viz_.PublishApriltagsMarker(map_.tags_w(), frame_id_,
-                                        tags_c_msg->header.stamp);
+        tag_viz_.SetColor(aprilslam::GREEN);
+        tag_viz_.PublishApriltagsMarker(map_.tags_w(), frame_id_, tags_c_msg->header.stamp);
+
+        // Publish prior tag info
+        // ROS_INFO("size of prior tags: %f", map_.tags_w_prior().size());
+        // std::cout<<map_.tags_w_prior().size()<<std::endl; 7
+        std::vector<aprilslam::Apriltag> tags_w_prior = map_.tags_w_prior();
+        tag_viz_.SetColor(aprilslam::YELLOW);
+        tag_viz_.PublishPriorApriltagsMarker(tags_w_prior, frame_id_, tags_c_msg->header.stamp);
     }
 
     void MapperNode::CinfoCb(const sensor_msgs::CameraInfoConstPtr &cinfo_msg)
@@ -177,8 +193,7 @@ namespace aprilslam
         model_.fromCameraInfo(cinfo_msg);
     }
 
-    bool MapperNode::GetGoodTags(const std::vector<Apriltag> tags_c,
-                                 std::vector<Apriltag> *tags_c_good)
+    bool MapperNode::GetGoodTags(const std::vector<Apriltag> tags_c, std::vector<Apriltag> *tags_c_good)
     {
         for (const Apriltag &tag_c : tags_c)
         {

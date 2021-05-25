@@ -26,6 +26,9 @@ void SetOrientation(geometry_msgs::Quaternion* quat, double w = 1, double x = 0,
 void SetCorners(std::vector<geometry_msgs::Point>* corners,
                 const geometry_msgs::Pose& pose, double tag_size);
 Eigen::Quaterniond RodriguesToQuat(const cv::Mat& r);
+Eigen::Isometry3d PoseMsgToIsometry3d(const geometry_msgs::Pose &pose);
+cv::Mat Matrix3dtoCvMat(const Eigen::Matrix3d matrix3d);
+cv::Mat Vector3dtoCvMat(const Eigen::Vector3d vec3d);
 
 }  // namespace aprilslam
 

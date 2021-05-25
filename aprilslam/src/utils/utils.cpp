@@ -8,8 +8,7 @@ namespace aprilslam
         return (x > w / k) && (y > h / k) && (x < (w - w / k)) && (y < (h - h / k));
     }
 
-    void SetPose(geometry_msgs::Pose *pose, const Eigen::Quaterniond &wxyz,
-                 const Eigen::Vector3d &xyz)
+    void SetPose(geometry_msgs::Pose *pose, const Eigen::Quaterniond &wxyz, const Eigen::Vector3d &xyz)
     {
         SetPosition(&pose->position, xyz);
         SetOrientation(&pose->orientation, wxyz);
@@ -47,20 +46,40 @@ namespace aprilslam
     {
         std::vector<geometry_msgs::Point> &w_corners = *corners;
         double a = tag_size / 2;
-        Eigen::Quaterniond w_Q_b(pose.orientation.w, pose.orientation.x,
-                                 pose.orientation.y, pose.orientation.z);
+        Eigen::Quaterniond w_Q_b(pose.orientation.w,
+                                 pose.orientation.x,
+                                 pose.orientation.y,
+                                 pose.orientation.z);
         Eigen::Vector3d w_T_b(pose.position.x, pose.position.y, pose.position.z);
-        const std::vector<Eigen::Vector3d> b_cs = {
-            {-a, -a, 0}, {a, -a, 0}, {a, a, 0}, {-a, a, 0}};
-        std::transform(b_cs.begin(), b_cs.end(), w_corners.begin(),
-                       [&](const Eigen::Vector3d &b_c) {
-                           const auto w_c = w_Q_b.matrix() * b_c + w_T_b;
-                           geometry_msgs::Point w_corner;
-                           w_corner.x = w_c(0);
-                           w_corner.y = w_c(1);
-                           w_corner.z = w_c(2);
-                           return w_corner;
-                       });
+        const std::vector<Eigen::Vector3d> b_cs = {{-a, -a, 0}, {a, -a, 0}, {a, a, 0}, {-a, a, 0}};
+        for (size_t ip = 0; ip < b_cs.size(); ip++)
+        {
+            Eigen::Vector3d w_corner = w_Q_b.matrix() * b_cs[ip] + w_T_b;
+            w_corners[ip].x = w_corner.x();
+            w_corners[ip].y = w_corner.y();
+            w_corners[ip].z = w_corner.z();
+        }
+        //! FUCK C++ 14
+        // std::transform(b_cs.begin(), b_cs.end(), w_corners.begin(),
+        //                [&](const Eigen::Vector3d &b_c) {
+        //                    const auto w_c = w_Q_b.matrix() * b_c + w_T_b;
+        //                    geometry_msgs::Point w_corner;
+        //                    w_corner.x = w_c(0);
+        //                    w_corner.y = w_c(1);
+        //                    w_corner.z = w_c(2);
+        //                    return w_corner;
+        //                });
+        // debug
+        // std::cout << "For tag" << std::endl;
+        // std::cout << b_cs[0] << std::endl;
+        // std::cout << b_cs[1] << std::endl;
+        // std::cout << b_cs[2] << std::endl;
+        // std::cout << b_cs[3] << std::endl;
+        // std::cout << w_Q_b.matrix() << std::endl;
+        // for (size_t i = 0; i < corners->size(); i++)
+        // {
+        //     std::cout << "point " << i << ": " << corners->at(i).x << " " << corners->at(i).y << " " << corners->at(i).z << std::endl;
+        // }
 
         // Sophus version
         /*
@@ -101,6 +120,38 @@ namespace aprilslam
         if (rn > std::numeric_limits<double>::epsilon() * 10)
             rnorm = r / rn;
         return Eigen::Quaterniond(Eigen::AngleAxis<double>(rn, rnorm));
+    }
+    Eigen::Isometry3d PoseMsgToIsometry3d(const geometry_msgs::Pose &pose)
+    {
+        Eigen::Quaterniond q(pose.orientation.w,
+                             pose.orientation.x,
+                             pose.orientation.y,
+                             pose.orientation.z);
+        Eigen::Vector3d t(pose.position.x,
+                          pose.position.y,
+                          pose.position.z);
+        Eigen::Isometry3d T = Eigen::Isometry3d::Identity();
+        T.rotate(q.matrix());
+        T.translate(t);
+        return T;
+    }
+
+    cv::Mat Matrix3dtoCvMat(const Eigen::Matrix3d matrix3d)
+    {
+        cv::Mat cvMat(3, 3, CV_32F);
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 3; j++)
+                cvMat.at<float>(i, j) = matrix3d(i, j);
+
+        return cvMat.clone();
+    }
+    cv::Mat Vector3dtoCvMat(const Eigen::Vector3d vec3d)
+    {
+        cv::Mat cvMat(3, 1, CV_32F);
+        for (int i = 0;i < 3;i++)
+            cvMat.at<float>(i) = vec3d(i);
+
+        return cvMat.clone();
     }
 
 } // namespace aprilslam

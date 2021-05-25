@@ -8,40 +8,51 @@
 #include <aprilslam/Apriltag.h>
 #include <aprilslam/Apriltags.h>
 
-namespace aprilslam {
+namespace aprilslam
+{
 
-const rviz::Color RED = {1, 0, 0};
-const rviz::Color GREEN = {0, 1, 0};
-const rviz::Color BLUE = {0, 0, 1};
-const rviz::Color CYAN = {0, 1, 1};
-const rviz::Color MAGENTA = {1, 0, 1};
-const rviz::Color YELLOW = {1, 1, 0};
+    const rviz::Color RED = {1, 0, 0};
+    const rviz::Color GREEN = {0, 1, 0};
+    const rviz::Color BLUE = {0, 0, 1};
+    const rviz::Color CYAN = {0, 1, 1};
+    const rviz::Color MAGENTA = {1, 0, 1};
+    const rviz::Color YELLOW = {1, 1, 0};
 
-class ApriltagVisualizer {
- public:
-  ApriltagVisualizer(const ros::NodeHandle& nh, const std::string& topic)
-      : nh_(nh),
-        pub_markers_(nh_.advertise<visualization_msgs::MarkerArray>(topic, 1)) {
-  }
+    class ApriltagVisualizer
+    {
+    public:
+        ApriltagVisualizer(const ros::NodeHandle &nh, const std::string &topic)
+            : nh_(nh),
+              pub_markers_(nh_.advertise<visualization_msgs::MarkerArray>(topic, 1))
 
-  void SetColor(const rviz::Color& color) {
-    color_.r = color.r_;
-    color_.g = color.g_;
-    color_.b = color.b_;
-  }
-  void SetAlpha(double alpha) { color_.a = alpha; }
+        {
+            pub_markers_prior_ = nh_.advertise<visualization_msgs::MarkerArray>(topic + "_prior", 10);
+        }
 
-  void PublishApriltagsMarker(const aprilslam::Apriltags& apriltags);
-  void PublishApriltagsMarker(const std::vector<aprilslam::Apriltag>& tags,
-                              const std::string& frame_id,
-                              const ros::Time& stamp);
+        void SetColor(const rviz::Color &color)
+        {
+            color_.r = color.r_;
+            color_.g = color.g_;
+            color_.b = color.b_;
+        }
+        void SetAlpha(double alpha) { color_.a = alpha; }
 
- private:
-  ros::NodeHandle nh_;
-  ros::Publisher pub_markers_;
-  std_msgs::ColorRGBA color_;
-};
+        void PublishApriltagsMarker(const aprilslam::Apriltags &apriltags);
 
-}  // namespace aprilslam
+        void PublishApriltagsMarker(const std::vector<aprilslam::Apriltag> &tags,
+                                    const std::string &frame_id,
+                                    const ros::Time &stamp);
+        void PublishPriorApriltagsMarker(const std::vector<aprilslam::Apriltag> &tags,
+                                         const std::string &frame_id,
+                                         const ros::Time &stamp);
 
-#endif  // APRILSLAM_VISUALIZER_H_
+    private:
+        ros::NodeHandle nh_;
+        ros::Publisher pub_markers_;
+        ros::Publisher pub_markers_prior_;
+        std_msgs::ColorRGBA color_;
+    };
+
+} // namespace aprilslam
+
+#endif // APRILSLAM_VISUALIZER_H_

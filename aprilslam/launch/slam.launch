@@ -15,9 +15,9 @@
         args="-d $(find aprilslam)/config/apriltag.rviz">
     </node>
 
-    <!-- <node pkg="rosbag" type="play" name="bag_data" 
-        args="-r 0.1 /home/wushaoteng/project/electroMechanical/catkin_ws/data/20210517_01.bag">
+    <node pkg="rosbag" type="play" name="bag_data" 
+        args="-r 1 /home/wushaoteng/project/electroMechanical/catkin_ws/data/20210517_01.bag">
         
-    </node> -->
+    </node>
 
 </launch>

@@ -8,6 +8,7 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <geometry_msgs/Vector3.h>
 #include <geometry_msgs/TransformStamped.h>
+#include <sensor_msgs/PointCloud.h>
 #include <nav_msgs/Path.h>
 #include <image_geometry/pinhole_camera_model.h>
 #include "aprilslam/visualizer.h"
@@ -37,6 +38,7 @@ namespace aprilslam
         ros::Subscriber sub_tags_;
         ros::Subscriber sub_cinfo_;
         ros::Publisher pub_cam_trajectory_;
+        ros::Publisher pub_obj_pointcloud_;
         std::string frame_id_;
         aprilslam::TagMap map_;
         aprilslam::Mapper mapper_;
