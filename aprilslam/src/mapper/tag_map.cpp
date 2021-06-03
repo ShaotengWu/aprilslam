@@ -42,6 +42,7 @@ namespace aprilslam
         Apriltag tag_w = tag;
         UpdateTag(&tag_w, pose);
         tags_w_.push_back(tag_w);
+        tags_w_map_.insert(std::pair<int, aprilslam::Apriltag>(tag_w.id, tag_w));
         ROS_INFO("tag %d added to map", tag.id);
     }
 
@@ -84,11 +85,13 @@ namespace aprilslam
             {
                 const Apriltag &tag_w = *it;
                 std::for_each(tag_w.corners.begin(), tag_w.corners.end(),
-                              [&obj_pts](const geometry_msgs::Point &p_w) {
+                              [&obj_pts](const geometry_msgs::Point &p_w)
+                              {
                                   obj_pts.emplace_back(p_w.x, p_w.y, p_w.z);
                               });
                 std::for_each(tag_c.corners.begin(), tag_c.corners.end(),
-                              [&img_pts](const geometry_msgs::Point &p_c) {
+                              [&img_pts](const geometry_msgs::Point &p_c)
+                              {
                                   img_pts.emplace_back(p_c.x, p_c.y);
                               });
             }
@@ -128,7 +131,6 @@ namespace aprilslam
         // Check pnp reprojection error
         std::vector<cv::Point2f> reproj_img_pts_pnp;
         cv::projectPoints(obj_pts, c_r_w, c_t_w, K, D, reproj_img_pts_pnp);
-        
 
         // check motion model reprojection model
         //! error here!!!!
@@ -145,14 +147,14 @@ namespace aprilslam
         }
 
         float reproj_error_pnp = 0.0;
-        float reproj_error_mm  = 0.0;
+        float reproj_error_mm = 0.0;
         for (size_t ip = 0; ip < reproj_img_pts_pnp.size(); ip++)
         {
             cv::Point2f origin_pt = img_pts[ip];
             cv::Point2f reproj_pt = reproj_img_pts_pnp[ip];
             reproj_error_pnp += cv::norm(origin_pt - reproj_pt);
 
-            if(velocity_valid_)
+            if (velocity_valid_)
             {
                 cv::Point2f reproj_pt_mm = reproj_img_pts_mm[ip];
                 reproj_error_mm += cv::norm(origin_pt - reproj_pt_mm);
@@ -160,7 +162,7 @@ namespace aprilslam
         }
         double rmse_pnp = std::sqrt(reproj_error_pnp / reproj_img_pts_pnp.size());
         double rmse_mm = DBL_MAX;
-        if(velocity_valid_)
+        if (velocity_valid_)
         {
             rmse_mm = std::sqrt(reproj_error_mm / reproj_img_pts_mm.size());
         }
@@ -224,13 +226,15 @@ namespace aprilslam
         int id, const std::vector<Apriltag> &tags)
     {
         return std::find_if(tags.cbegin(), tags.cend(),
-                            [&id](const Apriltag &tag) { return id == tag.id; });
+                            [&id](const Apriltag &tag)
+                            { return id == tag.id; });
     }
 
     std::vector<Apriltag>::iterator FindById(int id, std::vector<Apriltag> &tags)
     {
         return std::find_if(tags.begin(), tags.end(),
-                            [&id](const Apriltag &tag) { return id == tag.id; });
+                            [&id](const Apriltag &tag)
+                            { return id == tag.id; });
     }
 
 } // namespace aprilslam

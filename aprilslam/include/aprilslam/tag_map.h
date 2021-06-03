@@ -36,6 +36,7 @@ namespace aprilslam
 
         std::vector<aprilslam::Apriltag> tags_w_;
         std::vector<aprilslam::Apriltag> tags_w_prior_;
+        std::map<int, aprilslam::Apriltag> tags_w_map_;
         std::map<size_t, geometry_msgs::Pose> tags_prior_info_;
 
         std::string tag_family_;

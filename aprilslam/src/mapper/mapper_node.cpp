@@ -92,6 +92,8 @@ namespace aprilslam
             ROS_WARN_THROTTLE(1, "No camera info received");
             return;
         }
+        mapper_.InitCameraParams(model_.fullIntrinsicMatrix(), model_.distortionCoeffs());
+
         // Do nothing if there are no good tags close to the center of the image
         std::vector<Apriltag> tags_c_good;
         if (!GetGoodTags(tags_c_msg->apriltags, &tags_c_good))
@@ -126,21 +128,24 @@ namespace aprilslam
             // This will only add new landmarks
             mapper_.AddLandmarks(tags_c_good);
 
-            mapper_.Optimize();
-            // Get latest estimates from mapper and put into map
-            mapper_.Update(&map_, &pose);
+            // mapper_.Optimize();
+            // // Get latest estimates from mapper and put into map
+            // mapper_.Update(&map_, &pose);
             
             // Prepare for next iteration
-            mapper_.Clear();
+            // mapper_.Clear();
 
             // update current pose to tag_map
             map_.UpdateCurrentCamPose(pose);
 
-            // mapper_.BatchOptimize();
-            // mapper_.BatchUpdate(&map_, &pose);
+            mapper_.BatchOptimize();
+            mapper_.BatchUpdate(&map_, &pose);
         }
         else
         {
+            // No projectionFactor will be added before initialization. Due to no tags in tags_w_all_
+            mapper_.InitCameraParams(model_.fullIntrinsicMatrix(), model_.distortionCoeffs());
+            
             // This will add first landmark at origin and fix scale for first pose and
             // first landmark
             mapper_.Initialize(map_.first_tag());

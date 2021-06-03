@@ -1,6 +1,7 @@
 #include "aprilslam/mapper.h"
 #include "aprilslam/utils.h"
 #include <gtsam/slam/PriorFactor.h>
+#include <opencv2/core/eigen.hpp>
 #include <fstream>
 #include <ros/ros.h>
 
@@ -18,8 +19,25 @@ namespace aprilslam
           tag_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.20, 0.20, 0.20, 0.10, 0.10, 0.10).finished())),
           small_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.02, 0.02, 0.02, 0.05, 0.05, 0.05).finished()))
     {
+        measurement_noise_ = noiseModel::Isotropic::Sigma(2, 1.0);
+
+        tag_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.345), tag_noise_);
+        small_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.345), small_noise_);
+        measurement_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.345), measurement_noise_);
+
         lm_params_.setMaxIterations(10);
         // lm_params_.setVerbosity("ERROR");
+    }
+
+    void Mapper::InitCameraParams(const cv::Matx33d &intrinsic, const cv::Mat &distCoeff)
+    {
+        Eigen::Matrix3d intrinsic_eigen;
+        cv::cv2eigen(intrinsic, intrinsic_eigen);
+        double fx = intrinsic_eigen(0, 0);
+        double fy = intrinsic_eigen(1, 1);
+        double cx = intrinsic_eigen(0, 2);
+        double cy = intrinsic_eigen(1, 2);
+        K_ = Cal3_S2::shared_ptr(new Cal3_S2(fx, fy, 0, cx, cy));
     }
 
     void Mapper::UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tag_prior_poses)
@@ -39,22 +57,21 @@ namespace aprilslam
     void Mapper::Initialize(const Apriltag &tag_w)
     {
         ROS_ASSERT_MSG(pose_cnt == 1, "Incorrect initial pose");
-        
-        
-        if(tag_prior_poses_.empty() || tag_prior_poses_.find(tag_w.id) == tag_prior_poses_.end())
+
+        if (tag_prior_poses_.empty() || tag_prior_poses_.find(tag_w.id) == tag_prior_poses_.end())
         {
             AddLandmark(tag_w, Pose3());
         }
-        else 
+        else
         {
             geometry_msgs::Pose tag_prior_pose = tag_prior_poses_.find(tag_w.id)->second;
             AddLandmark(tag_w, FromGeometryPose(tag_prior_pose));
+            // ! Check ok. corners of first tag is correct
         }
 
         // A very strong prior on first pose
         ROS_INFO("Add pose prior on: %d", pose_cnt);
-        graph_.push_back(PriorFactor<Pose3>(Symbol('x', pose_cnt), pose_, small_noise_));
-
+        graph_.push_back(PriorFactor<Pose3>(Symbol('x', pose_cnt), pose_, small_noise_huber_));
 
         init_ = true;
     }
@@ -94,7 +111,7 @@ namespace aprilslam
         {
             ROS_INFO("Add landmark prior on: %d", tag_id);
             gtsam::Pose3 tag_prior_pose = FromGeometryPose(tag_prior_poses_.find(tag_id)->second);
-            graph_.push_back(PriorFactor<Pose3>(Symbol('l', tag_id), tag_prior_pose, small_noise_));
+            graph_.push_back(PriorFactor<Pose3>(Symbol('l', tag_id), tag_prior_pose, small_noise_huber_));
             return;
         }
     }
@@ -104,13 +121,27 @@ namespace aprilslam
         Symbol x_i('x', pose_cnt);
         for (const Apriltag &tag_c : tags_c)
         {
-            graph_.push_back(BetweenFactor<Pose3>(
-                x_i, Symbol('l', tag_c.id), FromGeometryPose(tag_c.pose), tag_noise_));
+            graph_.push_back(BetweenFactor<Pose3>(x_i, Symbol('l', tag_c.id), FromGeometryPose(tag_c.pose), tag_noise_huber_));
+            if (all_tags_w_.find(tag_c.id) != all_tags_w_.end())
+            {
+                Apriltag tag_w = all_tags_w_.find(tag_c.id)->second;
+                // Add bearingRange factor here
+                for (size_t ip = 0; ip < tag_c.corners.size(); ip++)
+                {
+                    Point2 corner_measurment(tag_c.corners[ip].x, tag_c.corners[ip].y);
+                    int corner_id = ip + (tag_c.id - 1) * 4;
+                    Symbol p_i('p', corner_id);
+                    if (initial_estimates_.exists(p_i))
+                        graph_.push_back(GenericProjectionFactor<Pose3, Point3, Cal3_S2>(corner_measurment, measurement_noise_huber_, x_i, p_i, K_));
+                }
+            }
         }
     }
 
     void Mapper::Optimize(int num_iterations)
     {
+        std::ofstream graph_ofs("/home/wushaoteng/project/electroMechanical/catkin_ws/data/aprilslam.dot");
+        graph_.saveGraph(graph_ofs, batch_results_);
         isam2_.update(graph_, initial_estimates_);
         if (num_iterations > 1)
         {
@@ -129,7 +160,7 @@ namespace aprilslam
         graph_.saveGraph(graph_ofs, batch_results_);
     }
 
-    void Mapper::BatchUpdate(TagMap *map, geometry_msgs::Pose *pose) const
+    void Mapper::BatchUpdate(TagMap *map, geometry_msgs::Pose *pose)
     {
         ROS_ASSERT_MSG(all_ids_.size() == all_tags_c_.size(), "id and size mismatch");
         Values results = batch_results_;
@@ -142,17 +173,39 @@ namespace aprilslam
         {
             const Pose3 &tag_pose3 = results.at<Pose3>(Symbol('l', tag_id));
             geometry_msgs::Pose tag_pose;
-            SetPosition(&tag_pose.position, tag_pose3.x(), tag_pose3.y(),
-                        tag_pose3.z());
+            SetPosition(&tag_pose.position, tag_pose3.x(), tag_pose3.y(), tag_pose3.z());
             SetOrientation(&tag_pose.orientation, tag_pose3.rotation().toQuaternion());
             // This should not change the size of all_sizes_ because all_sizes_ and
             // all_ids_ should have the same size
             auto it = all_tags_c_.find(tag_id);
             map->AddOrUpdate(it->second, tag_pose);
+            //应该在这里同步mapper中的tagw
+            //上面的addorupdate操作不会改变迭代器中second的值
+
+            if (all_tags_w_.find(it->second.id) == all_tags_w_.end())
+            {
+                Apriltag tag_w = it->second;
+                tag_w.pose = tag_pose;
+                tag_w.center = tag_w.pose.position;
+
+                //! Check OK
+                SetCorners(&tag_w.corners, tag_w.pose, tag_w.size);
+                all_tags_w_.insert(std::make_pair(tag_w.id, tag_w));
+                ROS_INFO("tag %d added to mapper", tag_w.id);
+
+                for (size_t ip = 0; ip < tag_w.corners.size(); ip++)
+                {
+                    Point3 corner_initial_estimate(tag_w.corners[ip].x, tag_w.corners[ip].y, tag_w.corners[ip].z);
+                    std::cout << corner_initial_estimate << std::endl;
+                    int corner_id = ip + (tag_w.id - 1) * 4;
+                    Symbol p_i('p', corner_id);
+                    initial_estimates_.insert(p_i, corner_initial_estimate);
+                }
+            }
         }
     }
 
-    void Mapper::Update(TagMap *map, geometry_msgs::Pose *pose) const
+    void Mapper::Update(TagMap *map, geometry_msgs::Pose *pose)
     {
         ROS_ASSERT_MSG(all_ids_.size() == all_tags_c_.size(), "id and size mismatch");
         Values results = isam2_.calculateEstimate();
@@ -171,6 +224,29 @@ namespace aprilslam
             // all_ids_ should have the same size
             auto it = all_tags_c_.find(tag_id);
             map->AddOrUpdate(it->second, tag_pose);
+            //应该在这里同步mapper中的tagw
+            //上面的addorupdate操作不会改变迭代器中second的值
+
+            if (all_tags_w_.find(it->second.id) == all_tags_w_.end())
+            {
+                Apriltag tag_w = it->second;
+                tag_w.pose = tag_pose;
+                tag_w.center = tag_w.pose.position;
+
+                //! Check OK
+                SetCorners(&tag_w.corners, tag_w.pose, tag_w.size);
+                all_tags_w_.insert(std::make_pair(tag_w.id, tag_w));
+                ROS_INFO("tag %d added to mapper", tag_w.id);
+
+                for (size_t ip = 0; ip < tag_w.corners.size(); ip++)
+                {
+                    Point3 corner_initial_estimate(tag_w.corners[ip].x, tag_w.corners[ip].y, tag_w.corners[ip].z);
+                    std::cout << corner_initial_estimate << std::endl;
+                    int corner_id = ip + (tag_w.id - 1) * 4;
+                    Symbol p_i('p', corner_id);
+                    initial_estimates_.insert(p_i, corner_initial_estimate);
+                }
+            }
         }
     }
 

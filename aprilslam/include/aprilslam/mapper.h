@@ -3,11 +3,14 @@
 
 #include <gtsam/inference/Symbol.h>
 #include <gtsam/geometry/Pose3.h>
+#include <gtsam/geometry/Cal3_S2.h>
+#include <gtsam/geometry/Point2.h>
 #include <gtsam/nonlinear/ISAM2.h>
 #include <gtsam/nonlinear/Values.h>
 #include <gtsam/nonlinear/LevenbergMarquardtOptimizer.h>
 #include <gtsam/nonlinear/LevenbergMarquardtParams.h>
 #include <gtsam/slam/BetweenFactor.h>
+#include <gtsam/slam/ProjectionFactor.h>
 
 #include <geometry_msgs/Pose.h>
 #include <aprilslam/Apriltags.h>
@@ -25,18 +28,21 @@ namespace aprilslam
         Mapper(double relinearize_thresh, int relinearize_skip);
 
         bool init() const { return init_; }
+        void InitCameraParams(const cv::Matx33d &intrinsic, const cv::Mat &distCoeff);
         void Optimize(int num_iterations = 1);
-        void Update(aprilslam::TagMap *map, geometry_msgs::Pose *pose) const;
+        void Update(aprilslam::TagMap *map, geometry_msgs::Pose *pose);
         void AddPose(const geometry_msgs::Pose &pose);
         void AddFactors(const std::vector<aprilslam::Apriltag> &tags_c);
         void AddLandmarks(const std::vector<aprilslam::Apriltag> &tags_c);
         void AddLandmarkPrior(const size_t tag_id);
+        void AddTagw(const aprilslam::Apriltag tag_w);
         void Initialize(const Apriltag &tag_w);
         void Clear();
         void UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tag_prior_poses);
+        void UpdateTagsW(const std::vector<Apriltag> tags_w);
 
         void BatchOptimize();
-        void BatchUpdate(aprilslam::TagMap *map, geometry_msgs::Pose *pose) const;
+        void BatchUpdate(aprilslam::TagMap *map, geometry_msgs::Pose *pose);
 
     private:
         void AddLandmark(const aprilslam::Apriltag &tag_w,
@@ -48,12 +54,18 @@ namespace aprilslam
         gtsam::NonlinearFactorGraph graph_;
         gtsam::Values initial_estimates_;
         gtsam::Pose3 pose_;
+        gtsam::Cal3_S2::shared_ptr K_;
         gtsam::noiseModel::Diagonal::shared_ptr tag_noise_;
         gtsam::noiseModel::Diagonal::shared_ptr small_noise_;
+        gtsam::noiseModel::Isotropic::shared_ptr measurement_noise_;
+        gtsam::noiseModel::Base::shared_ptr tag_noise_huber_;
+        gtsam::noiseModel::Base::shared_ptr small_noise_huber_;
+        gtsam::noiseModel::Base::shared_ptr measurement_noise_huber_;
         std::set<int> all_ids_;
         std::map<int, aprilslam::Apriltag> all_tags_c_;
+        std::map<int, aprilslam::Apriltag> all_tags_w_;
         std::map<size_t, geometry_msgs::Pose> tag_prior_poses_;
-
+    
         gtsam::LevenbergMarquardtParams lm_params_;
         gtsam::Values batch_results_;
     };
