@@ -118,7 +118,7 @@ namespace aprilslam
         sensor_msgs::PointCloud obj_pointcloud_viz = map_.obj_pointcloud_viz();
         obj_pointcloud_viz.header.frame_id = frame_id_;
         obj_pointcloud_viz.header.stamp = ros::Time::now();
-        pub_obj_pointcloud_.publish(obj_pointcloud_viz); 
+        pub_obj_pointcloud_.publish(obj_pointcloud_viz);
 
         // Now that with the initial pose calculated, we can do some mapping
         mapper_.AddPose(pose);
@@ -131,21 +131,28 @@ namespace aprilslam
             // mapper_.Optimize();
             // // Get latest estimates from mapper and put into map
             // mapper_.Update(&map_, &pose);
-            
+
             // Prepare for next iteration
             // mapper_.Clear();
 
             // update current pose to tag_map
-            map_.UpdateCurrentCamPose(pose);
 
             mapper_.BatchOptimize();
             mapper_.BatchUpdate(&map_, &pose);
+            map_.UpdateCurrentCamPose(pose);
+
+            geometry_msgs::PoseStamped cam_pose_stamped;
+            cam_pose_stamped.header.stamp = tags_c_msg->header.stamp;
+            cam_pose_stamped.header.frame_id = frame_id_;
+            cam_pose_stamped.pose = pose;
+            cam_trajectory_.poses.push_back(cam_pose_stamped);
+            pub_cam_trajectory_.publish(cam_trajectory_);
         }
         else
         {
             // No projectionFactor will be added before initialization. Due to no tags in tags_w_all_
             mapper_.InitCameraParams(model_.fullIntrinsicMatrix(), model_.distortionCoeffs());
-            
+
             // This will add first landmark at origin and fix scale for first pose and
             // first landmark
             mapper_.Initialize(map_.first_tag());
@@ -168,12 +175,6 @@ namespace aprilslam
         transform_stamped.transform.rotation = pose.orientation;
 
         tf_broadcaster_.sendTransform(transform_stamped);
-
-        geometry_msgs::PoseStamped cam_pose_stamped;
-        cam_pose_stamped.header = transform_stamped.header;
-        cam_pose_stamped.pose = pose;
-        cam_trajectory_.poses.push_back(cam_pose_stamped);
-        pub_cam_trajectory_.publish(cam_trajectory_);
 
         // Publish visualisation markers
         tag_viz_.SetColor(aprilslam::GREEN);

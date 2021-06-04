@@ -21,9 +21,9 @@ namespace aprilslam
     {
         measurement_noise_ = noiseModel::Isotropic::Sigma(2, 1.0);
 
-        tag_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.345), tag_noise_);
-        small_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.345), small_noise_);
-        measurement_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.345), measurement_noise_);
+        tag_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.8), tag_noise_);
+        small_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.8), small_noise_);
+        measurement_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.8), measurement_noise_);
 
         lm_params_.setMaxIterations(10);
         // lm_params_.setVerbosity("ERROR");

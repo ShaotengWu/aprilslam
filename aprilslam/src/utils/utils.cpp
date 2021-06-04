@@ -132,26 +132,8 @@ namespace aprilslam
                           pose.position.z);
         Eigen::Isometry3d T = Eigen::Isometry3d::Identity();
         T.rotate(q.matrix());
-        T.translate(t);
+        T.pretranslate(t);
         return T;
-    }
-
-    cv::Mat Matrix3dtoCvMat(const Eigen::Matrix3d matrix3d)
-    {
-        cv::Mat cvMat(3, 3, CV_32F);
-        for (int i = 0; i < 3; i++)
-            for (int j = 0; j < 3; j++)
-                cvMat.at<float>(i, j) = matrix3d(i, j);
-
-        return cvMat.clone();
-    }
-    cv::Mat Vector3dtoCvMat(const Eigen::Vector3d vec3d)
-    {
-        cv::Mat cvMat(3, 1, CV_32F);
-        for (int i = 0;i < 3;i++)
-            cvMat.at<float>(i) = vec3d(i);
-
-        return cvMat.clone();
     }
 
 } // namespace aprilslam

@@ -3,6 +3,7 @@
 
 #include <ros/ros.h>
 #include <opencv2/calib3d/calib3d.hpp>
+#include <opencv2/core/eigen.hpp>
 namespace aprilslam
 {
 
@@ -135,13 +136,28 @@ namespace aprilslam
         // check motion model reprojection model
         //! error here!!!!
         std::vector<cv::Point2f> reproj_img_pts_mm;
+        cv::Mat w_t_c_mm;
+        Eigen::Quaterniond w_Q_c_mm;
         if (velocity_valid_)
         {
-            // Tc2c1 * Tc1w
-            Eigen::Isometry3d c_pose_w_cur_mm = cam_velocity_.inverse() * last_cam_pose_;
-            cv::Mat c_R_w_mm = Matrix3dtoCvMat(c_pose_w_cur_mm.rotation());
-            cv::Mat c_t_w_mm = Vector3dtoCvMat(c_pose_w_cur_mm.translation());
-            cv::Mat c_r_w_mm;
+            // Twc1 * Tc1c2
+            Eigen::Isometry3d w_pose_c_cur_mm = last_cam_pose_ * cam_velocity_;
+            Eigen::Vector3d w_t_c_mm_eigen(w_pose_c_cur_mm.translation().matrix());
+            cv::eigen2cv(w_t_c_mm_eigen, w_t_c_mm);
+            w_Q_c_mm = Eigen::Quaterniond(w_pose_c_cur_mm.rotation());
+
+            // inv()
+            Eigen::Matrix3d c_pose_w_cur_mm_rot = w_pose_c_cur_mm.rotation().transpose();
+            Eigen::Vector3d c_pose_w_cur_mm_t = -c_pose_w_cur_mm_rot * w_pose_c_cur_mm.translation().matrix();
+            Eigen::Isometry3d c_pose_w_cur_mm = Eigen::Isometry3d::Identity();
+            c_pose_w_cur_mm.rotate(c_pose_w_cur_mm_rot);
+            c_pose_w_cur_mm.pretranslate(c_pose_w_cur_mm_t);
+
+            cv::Mat c_R_w_mm, c_r_w_mm, c_t_w_mm;
+            Eigen::Matrix3d c_R_w_mm_eigen = c_pose_w_cur_mm.rotation();
+            Eigen::Vector3d c_t_w_mm_eigen(c_pose_w_cur_mm.translation().matrix());
+            cv::eigen2cv(c_R_w_mm_eigen, c_R_w_mm);
+            cv::eigen2cv(c_t_w_mm_eigen, c_t_w_mm);
             cv::Rodrigues(c_R_w_mm, c_r_w_mm);
             cv::projectPoints(obj_pts, c_r_w_mm, c_t_w_mm, K, D, reproj_img_pts_mm);
         }
@@ -169,14 +185,24 @@ namespace aprilslam
 
         ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
         ROS_INFO("Current Motion Model reprojection error: %f", rmse_mm);
+
+        if (rmse_pnp <= rmse_mm)
+        {
+            double *pt = w_T_c.ptr<double>();
+            SetPosition(&pose->position, pt[0], pt[1], pt[2]);
+
+            Eigen::Quaterniond w_Q_c = RodriguesToQuat(c_r_w).inverse();
+            SetOrientation(&pose->orientation, w_Q_c);
+        }
+        else
+        {
+            double *pt = w_t_c_mm.ptr<double>();
+            SetPosition(&pose->position, pt[0], pt[1], pt[2]);
+            SetOrientation(&pose->orientation, w_Q_c_mm);
+        }
         // if(rmse > 1.5)
         //     return false;
 
-        double *pt = w_T_c.ptr<double>();
-        SetPosition(&pose->position, pt[0], pt[1], pt[2]);
-
-        Eigen::Quaterniond w_Q_c = RodriguesToQuat(c_r_w).inverse();
-        SetOrientation(&pose->orientation, w_Q_c);
         return true;
     }
 
@@ -214,7 +240,13 @@ namespace aprilslam
         current_cam_pose_ = PoseMsgToIsometry3d(pose);
 
         // get velocity Tc1c2 = Tc1w * Twc2
-        cam_velocity_ = last_cam_pose_.inverse() * current_cam_pose_;
+        Eigen::Matrix3d last_cam_pose_inv_rot = last_cam_pose_.rotation().transpose();
+        Eigen::Vector3d last_cam_pose_inv_t = -last_cam_pose_inv_rot * last_cam_pose_.translation().matrix();
+        Eigen::Isometry3d last_cam_pose_inv = Eigen::Isometry3d::Identity();
+        last_cam_pose_inv.rotate(last_cam_pose_inv_rot);
+        last_cam_pose_inv.pretranslate(last_cam_pose_inv_t);
+        cam_velocity_ = last_cam_pose_inv * current_cam_pose_;
+
         last_cam_pose_ = current_cam_pose_;
 
         if (!velocity_valid_)
