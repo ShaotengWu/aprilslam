@@ -26,15 +26,19 @@ namespace aprilslam
         void ConnectCb();
         void CameraCb(const sensor_msgs::ImageConstPtr &image_msg,
                       const sensor_msgs::CameraInfoConstPtr &cinfo_msg);
-        aprilslam::Apriltag DetectionToApriltagMsg(
-            const AprilTags::TagDetection &detection);
+        aprilslam::Apriltag DetectionToApriltagMsg(const AprilTags::TagDetection &detection);
+
+        // void Zed2ImagaCb(const sensor_msgs::ImageConstPtr &image_msg);
 
         ros::NodeHandle nh_;
         std::string tag_family_;
         double tag_size_;
         bool cam_calibrated_;
+        bool use_zed2_;
         image_transport::ImageTransport it_;
         image_transport::CameraSubscriber sub_camera_;
+        // ros::Subscriber sub_zed2_image_;
+    
         ros::Publisher pub_tags_;
         ros::Publisher pub_detections_;
         std::mutex connect_mutex_;

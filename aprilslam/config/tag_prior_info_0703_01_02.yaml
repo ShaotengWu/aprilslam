@@ -1,0 +1,51 @@
+tags:
+  - 
+    id : 0
+    translation: [0, 0, 0]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 1
+    translation: [0, 1.39, 0]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 2
+    translation: [2.8, 0, 0]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 3
+    translation: [2.8, 1.39, 0]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 4
+    translation: [0, 0, -4]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 5
+    translation: [0, 1.39, -4]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 6
+    translation: [2.8, 0, -4]
+    rotation: [0, 0, 0, 1]
+  -
+    id : 7
+    translation: [2.8, 1.39, -4]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 8
+    translation: [0, 0, -8]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 9
+    translation: [0, 1.39, -8]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 10
+    translation: [2.8, 0, -8]
+    rotation: [0, 0, 0, 1]
+  - 
+    id : 11
+    translation: [2.8, 1.39, -8]
+    rotation: [0, 0, 0, 1]
+    
+  

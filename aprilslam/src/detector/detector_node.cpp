@@ -19,9 +19,11 @@ namespace aprilslam
         : nh_(nh),
           tag_family_("36h11"),
           cam_calibrated_(true),
+          use_zed2_(true),
           it_(nh),
           //sub_camera_(it_.subscribeCamera("image_rect", 1, &DetectorNode::CameraCb, this)),
           sub_camera_(it_.subscribeCamera("image_raw", 1, &DetectorNode::CameraCb, this)),
+          //   sub_zed2_image_(nh_.subscribe("/zed2_data", 1, &DetectorNode::Zed2ImagaCb, this)),
           pub_tags_(nh_.advertise<aprilslam::Apriltags>("apriltags", 1)),
           pub_detections_(nh_.advertise<sensor_msgs::Image>("detections", 1)),
           tag_detector_(AprilTags::tagCodes36h11),
@@ -73,10 +75,13 @@ namespace aprilslam
         }
         cv::Mat image;
         cv::cvtColor(cv_ptr->image, image, CV_BGR2GRAY);
-
+        
+        // cv::imshow("detection", image);
         // Detect tags
-        std::vector<AprilTags::TagDetection> detections =
-            tag_detector_.extractTags(image);
+        // ROS_INFO("BEFORE DETECTION");
+        std::vector<AprilTags::TagDetection> detections = tag_detector_.extractTags(image);
+        // ROS_INFO("AFTER DETECTION");
+        std::cout<<"size: "<<detections.size()<<std::endl;
 
         // Process detection
         if (!detections.empty())
@@ -87,15 +92,24 @@ namespace aprilslam
 
             // Actual processing
             std::for_each(begin(detections), end(detections),
-                          [&](const AprilTags::TagDetection &detection) {
+                          [&](const AprilTags::TagDetection &detection)
+                          {
                               tags_c_msg.apriltags.push_back(DetectionToApriltagMsg(detection));
-                              detection.draw(cv_ptr->image);
+                              // detection.draw(cv_ptr->image);
+                              detection.draw(image);
                           });
-
+            
             tag_viz_.PublishApriltagsMarker(tags_c_msg);
             pub_tags_.publish(tags_c_msg);
         }
-        pub_detections_.publish(cv_ptr->toImageMsg());
+
+        // cv::imshow("detection", image);
+        cv_bridge::CvImage detection_img_msg;
+        detection_img_msg.header = cv_ptr->header;
+        detection_img_msg.encoding = sensor_msgs::image_encodings::RGB8;
+        detection_img_msg.image = image;
+        // std::cout<<cv_ptr->image.rows<<" "<<cv_ptr->image.cols<<std::endl;
+        // pub_detections_.publish(detection_img_msg);
     }
 
     Apriltag DetectorNode::DetectionToApriltagMsg(const AprilTags::TagDetection &detection)
@@ -109,7 +123,8 @@ namespace aprilslam
         tag.center.y = detection.cxy.second;
         tag.size = tag_size_;
         std::for_each(begin(detection.p), end(detection.p),
-                      [&](const AprilTags::Pointf &corner) {
+                      [&](const AprilTags::Pointf &corner)
+                      {
                           geometry_msgs::Point point;
                           point.x = corner.first;
                           point.y = corner.second;

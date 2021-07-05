@@ -44,7 +44,7 @@ namespace aprilslam
         UpdateTag(&tag_w, pose);
         tags_w_.push_back(tag_w);
         tags_w_map_.insert(std::pair<int, aprilslam::Apriltag>(tag_w.id, tag_w));
-        ROS_INFO("tag %d added to map", tag.id);
+        // ROS_INFO("tag %d added to map", tag.id);
     }
 
     void TagMap::AddFirstTag(const Apriltag &tag_c)
@@ -183,10 +183,10 @@ namespace aprilslam
             rmse_mm = std::sqrt(reproj_error_mm / reproj_img_pts_mm.size());
         }
 
-        ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
-        ROS_INFO("Current Motion Model reprojection error: %f", rmse_mm);
+        // ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
+        // ROS_INFO("Current Motion Model reprojection error: %f", rmse_mm);
 
-        if (rmse_pnp <= rmse_mm)
+        if (rmse_pnp <= rmse_mm * 0.75)
         {
             double *pt = w_T_c.ptr<double>();
             SetPosition(&pose->position, pt[0], pt[1], pt[2]);
@@ -199,6 +199,7 @@ namespace aprilslam
             double *pt = w_t_c_mm.ptr<double>();
             SetPosition(&pose->position, pt[0], pt[1], pt[2]);
             SetOrientation(&pose->orientation, w_Q_c_mm);
+            // ROS_INFO("Use motion model");
         }
         // if(rmse > 1.5)
         //     return false;

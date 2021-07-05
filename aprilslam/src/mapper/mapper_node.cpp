@@ -5,12 +5,15 @@ namespace aprilslam
 {
     MapperNode::MapperNode(const ros::NodeHandle &nh, const std::string &frame_id)
         : nh_(nh),
-          sub_tags_(nh_.subscribe("apriltags", 1, &MapperNode::TagsCb, this)),
+          sub_tags_(nh_.subscribe("/aprilslam_apriltags", 1, &MapperNode::TagsCb, this)),
           sub_cinfo_(nh_.subscribe("camera_info", 1, &MapperNode::CinfoCb, this)),
           frame_id_(frame_id),
           mapper_(0.04, 1),
-          map_("36h11", 0.123),
-          tag_viz_(nh, "apriltags_map")
+          map_("36h11", 0.2),
+          tag_viz_(nh, "apriltags_map"),
+          pose_cnt_(0),
+          key_frame_interval_(3)
+
     {
 
         nh_.getParam(nh_.getNamespace() + "/mapper/use_tag_prior_info", use_tag_prior_info_);
@@ -81,6 +84,29 @@ namespace aprilslam
     void MapperNode::TagsCb(const aprilslam::ApriltagsConstPtr &tags_c_msg)
     {
         // Do nothing if no detection, this prevents checking in the following steps
+        // std::cout << "newly detected tags: ";
+        // for (int it = 0; it < tags_c_msg->apriltags.size(); it++)
+        // {
+        //     std::cout << tags_c_msg->apriltags[it].id << std::endl;
+        //     std::cout << tags_c_msg->apriltags[it].corners[0]
+        //               << tags_c_msg->apriltags[it].corners[1]
+        //               << tags_c_msg->apriltags[it].corners[2]
+        //               << tags_c_msg->apriltags[it].corners[3]
+        //               << std::endl;
+        // }
+        // std::cout << std::endl;
+        // if(pose_cnt_++ % key_frame_interval_ != 0)
+        // {
+        //     ROS_INFO("keyframe jump");
+        //     return;
+        // }
+        // if (tags_c_msg->apriltags.size() <= 2 || pose_cnt_++ % key_frame_interval_ != 0)
+        // {
+        //     ROS_INFO("keyframe jump");
+        //     return;
+        // }
+        // pose_cnt_++;
+
         if (tags_c_msg->apriltags.empty())
         {
             ROS_WARN_THROTTLE(1, "No tags detected.");
@@ -101,6 +127,12 @@ namespace aprilslam
             ROS_WARN_THROTTLE(1, "No good tags detected.");
             return;
         }
+        // std::cout << "good detected tags: ";
+        // for (int it = 0; it < tags_c_good.size(); it++)
+        // {
+        //     std::cout << tags_c_good[it].id << " ";
+        // }
+        // std::cout << std::endl;
         // Initialize map by adding the first tag that is not on the edge of the image
         if (!map_.init())
         {
@@ -110,7 +142,7 @@ namespace aprilslam
         // Do nothing if no pose can be estimated
         // 到这里tags的pose都是在相机坐标系下
         geometry_msgs::Pose pose;
-        if (!map_.EstimatePose(tags_c_msg->apriltags, model_.fullIntrinsicMatrix(), model_.distortionCoeffs(), &pose))
+        if (!map_.EstimatePose(tags_c_good, model_.fullIntrinsicMatrix(), model_.distortionCoeffs(), &pose))
         {
             ROS_WARN_THROTTLE(1, "No 2D-3D correspondence.");
             return;
@@ -123,22 +155,24 @@ namespace aprilslam
         // Now that with the initial pose calculated, we can do some mapping
         mapper_.AddPose(pose);
         mapper_.AddFactors(tags_c_good);
+        // This will only add new landmarks
+        mapper_.AddLandmarks(tags_c_good);
         if (mapper_.init())
         {
-            // This will only add new landmarks
-            mapper_.AddLandmarks(tags_c_good);
 
-            // mapper_.Optimize();
+            mapper_.Optimize(40);
             // // Get latest estimates from mapper and put into map
-            // mapper_.Update(&map_, &pose);
+            mapper_.Update(&map_, &pose);
 
+            // ! Move clear() into update()
             // Prepare for next iteration
             // mapper_.Clear();
 
+
             // update current pose to tag_map
 
-            mapper_.BatchOptimize();
-            mapper_.BatchUpdate(&map_, &pose);
+            // mapper_.BatchOptimize();
+            // mapper_.BatchUpdate(&map_, &pose);
             map_.UpdateCurrentCamPose(pose);
 
             geometry_msgs::PoseStamped cam_pose_stamped;
@@ -168,9 +202,14 @@ namespace aprilslam
         translation.y = pose.position.y;
         translation.z = pose.position.z;
 
+        std::cout.precision(4);
+        std::cout.width(6);
+        std::cout.setf(std::ios::left);
+        // std::cout<<translation.x <<"\t"<<translation.y <<"\t"<<translation.z <<std::endl;
+
         geometry_msgs::TransformStamped transform_stamped;
         transform_stamped.header = header;
-        transform_stamped.child_frame_id = tags_c_msg->header.frame_id;
+        transform_stamped.child_frame_id = "camera";
         transform_stamped.transform.translation = translation;
         transform_stamped.transform.rotation = pose.orientation;
 
@@ -205,7 +244,7 @@ namespace aprilslam
         {
             if (IsInsideImageCenter(tag_c.center.x, tag_c.center.y,
                                     model_.cameraInfo().width,
-                                    model_.cameraInfo().height, 5))
+                                    model_.cameraInfo().height, 5) && tag_c.id != 6)
             {
                 tags_c_good->push_back(tag_c);
             }

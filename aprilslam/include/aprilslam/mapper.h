@@ -11,7 +11,11 @@
 #include <gtsam/nonlinear/LevenbergMarquardtParams.h>
 #include <gtsam/slam/BetweenFactor.h>
 #include <gtsam/slam/ProjectionFactor.h>
-
+#include <gtsam/slam/PriorFactor.h>
+#include <gtsam/slam/BearingRangeFactor.h>
+#include <gtsam/slam/RangeFactor.h>
+#include <opencv2/core/eigen.hpp>
+#include <math.h>
 #include <geometry_msgs/Pose.h>
 #include <aprilslam/Apriltags.h>
 #include "aprilslam/tag_map.h"
@@ -49,6 +53,12 @@ namespace aprilslam
                          const gtsam::Pose3 &pose);
 
         bool init_;
+        bool init_opt_;
+        
+        int min_pose_count_; // 批量优化前min_pose_count_帧
+        int inc_pose_count_; // 队列计数；
+        int inc_pose_thr_;   // 隔thr个更新一次
+
         gtsam::ISAM2Params params_;
         gtsam::ISAM2 isam2_;
         gtsam::NonlinearFactorGraph graph_;
@@ -57,17 +67,22 @@ namespace aprilslam
         gtsam::Cal3_S2::shared_ptr K_;
         gtsam::noiseModel::Diagonal::shared_ptr tag_noise_;
         gtsam::noiseModel::Diagonal::shared_ptr small_noise_;
+        gtsam::noiseModel::Diagonal::shared_ptr tag_size_noise_;
         gtsam::noiseModel::Isotropic::shared_ptr measurement_noise_;
         gtsam::noiseModel::Base::shared_ptr tag_noise_huber_;
         gtsam::noiseModel::Base::shared_ptr small_noise_huber_;
+        gtsam::noiseModel::Base::shared_ptr tag_size_noise_huber_;
         gtsam::noiseModel::Base::shared_ptr measurement_noise_huber_;
         std::set<int> all_ids_;
         std::map<int, aprilslam::Apriltag> all_tags_c_;
         std::map<int, aprilslam::Apriltag> all_tags_w_;
         std::map<size_t, geometry_msgs::Pose> tag_prior_poses_;
-    
+
         gtsam::LevenbergMarquardtParams lm_params_;
         gtsam::Values batch_results_;
+        gtsam::Values results_;
+
+        typedef gtsam::BearingRangeFactor<gtsam::Pose3, gtsam::Point3> BearingRange3D;
     };
 
     gtsam::Pose3 FromGeometryPose(const geometry_msgs::Pose &pose);

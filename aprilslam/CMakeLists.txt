@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -Ofast -Wall")
 
 find_package(catkin REQUIRED COMPONENTS
     roscpp image_transport cv_bridge image_geometry
-    apriltag_mit std_msgs tf2_ros
+    apriltag_mit std_msgs tf2_ros rosbag
     )
 
 find_package(cmake_modules)
@@ -56,6 +56,20 @@ target_link_libraries(mapper_node
     ${PROJECT_NAME}
     gtsam
     )
+
+add_executable(zed_camera_info_pub 
+src/utils/zed_camera_info_pub.cpp
+)
+
+target_link_libraries(zed_camera_info_pub
+${PROJECT_NAME})
+
+add_executable(bagtime_converter 
+src/utils/bagtime_converter.cpp
+)
+
+target_link_libraries(bagtime_converter
+${PROJECT_NAME})
 
 # dependencies
 add_dependencies(${PROJECT_NAME}
