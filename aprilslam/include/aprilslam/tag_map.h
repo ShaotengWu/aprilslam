@@ -19,7 +19,7 @@ namespace aprilslam
         void UpdateTag(Apriltag *tag_w, const geometry_msgs::Pose &pose);
         void UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tags_prior_info);
         void AddFirstTag(const Apriltag &tag_c);
-        bool EstimatePose(const std::vector<Apriltag> &tags_c, const cv::Matx33d &K, const cv::Mat_<double> &D, geometry_msgs::Pose *pose) ;
+        bool EstimatePose(const std::vector<Apriltag> &tags_c, const cv::Matx33d &K, const cv::Mat_<double> &D, geometry_msgs::Pose *pose);
         void UpdateCurrentCamPose(const geometry_msgs::Pose &pose);
         bool init() const { return !tags_w().empty(); }
         const aprilslam::Apriltag &first_tag() const { return tags_w().front(); }
@@ -30,6 +30,7 @@ namespace aprilslam
             return tags_w_prior_;
         }
         const sensor_msgs::PointCloud &obj_pointcloud_viz() { return obj_pointcloud_viz_; }
+        const geometry_msgs::Pose &getVelocity() const {return cam_velocity_msg_;}
 
     private:
         void AddTag(const Apriltag &tag, const geometry_msgs::Pose &pose);
@@ -48,6 +49,9 @@ namespace aprilslam
         Eigen::Isometry3d current_cam_pose_;
         Eigen::Isometry3d last_cam_pose_;
         Eigen::Isometry3d cam_velocity_;
+        geometry_msgs::Pose cam_velocity_msg_;
+
+        // geometry_msgs::Pose motion_model_
 
         sensor_msgs::PointCloud obj_pointcloud_viz_;
     };

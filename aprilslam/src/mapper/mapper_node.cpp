@@ -153,14 +153,14 @@ namespace aprilslam
         pub_obj_pointcloud_.publish(obj_pointcloud_viz);
 
         // Now that with the initial pose calculated, we can do some mapping
-        mapper_.AddPose(pose);
+        mapper_.AddPose(pose, cam_velocity_);
         mapper_.AddFactors(tags_c_good);
         // This will only add new landmarks
         mapper_.AddLandmarks(tags_c_good);
         if (mapper_.init())
         {
 
-            mapper_.Optimize(40);
+            mapper_.Optimize(10);
             // // Get latest estimates from mapper and put into map
             mapper_.Update(&map_, &pose);
 
@@ -168,12 +168,14 @@ namespace aprilslam
             // Prepare for next iteration
             // mapper_.Clear();
 
-
             // update current pose to tag_map
 
             // mapper_.BatchOptimize();
             // mapper_.BatchUpdate(&map_, &pose);
+
+            cam_velocity_ = map_.getVelocity(); //! return planar relative velocity
             map_.UpdateCurrentCamPose(pose);
+            // CALL kalman filter here
 
             geometry_msgs::PoseStamped cam_pose_stamped;
             cam_pose_stamped.header.stamp = tags_c_msg->header.stamp;
@@ -205,7 +207,7 @@ namespace aprilslam
         std::cout.precision(4);
         std::cout.width(6);
         std::cout.setf(std::ios::left);
-        // std::cout<<translation.x <<"\t"<<translation.y <<"\t"<<translation.z <<std::endl;
+        std::cout << translation.x << "\t" << translation.y << "\t" << translation.z << std::endl;
 
         geometry_msgs::TransformStamped transform_stamped;
         transform_stamped.header = header;
@@ -244,7 +246,7 @@ namespace aprilslam
         {
             if (IsInsideImageCenter(tag_c.center.x, tag_c.center.y,
                                     model_.cameraInfo().width,
-                                    model_.cameraInfo().height, 5) && tag_c.id != 6)
+                                    model_.cameraInfo().height, 5))
             {
                 tags_c_good->push_back(tag_c);
             }

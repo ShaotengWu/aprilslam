@@ -186,21 +186,25 @@ namespace aprilslam
         // ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
         // ROS_INFO("Current Motion Model reprojection error: %f", rmse_mm);
 
-        if (rmse_pnp <= rmse_mm * 0.75)
-        {
-            double *pt = w_T_c.ptr<double>();
-            SetPosition(&pose->position, pt[0], pt[1], pt[2]);
+        double *pt = w_T_c.ptr<double>();
+        SetPosition(&pose->position, pt[0], pt[1], pt[2]);
 
-            Eigen::Quaterniond w_Q_c = RodriguesToQuat(c_r_w).inverse();
-            SetOrientation(&pose->orientation, w_Q_c);
-        }
-        else
+        Eigen::Quaterniond w_Q_c = RodriguesToQuat(c_r_w).inverse();
+        SetOrientation(&pose->orientation, w_Q_c);
+
+        if (rmse_pnp >= rmse_mm * 0.75)
         {
-            double *pt = w_t_c_mm.ptr<double>();
-            SetPosition(&pose->position, pt[0], pt[1], pt[2]);
-            SetOrientation(&pose->orientation, w_Q_c_mm);
-            // ROS_INFO("Use motion model");
+            cam_velocity_msg_ = Isometry3dToPoseMsg(cam_velocity_);
+            ROS_INFO("Update Velocity");
         }
+        // else
+        // {
+        // double *pt = w_t_c_mm.ptr<double>();
+        // SetPosition(&pose->position, pt[0], pt[1], pt[2]);
+        // SetOrientation(&pose->orientation, w_Q_c_mm);
+        // ROS_INFO("Use motion model");
+
+        // }
         // if(rmse > 1.5)
         //     return false;
 
@@ -235,7 +239,7 @@ namespace aprilslam
         {
             last_cam_pose_ = PoseMsgToIsometry3d(pose);
             last_cam_pose_valid_ = true;
-            return;
+            // return Eigen::Isometry3d::Identity();
         }
         // get Twc curr
         current_cam_pose_ = PoseMsgToIsometry3d(pose);
@@ -251,8 +255,14 @@ namespace aprilslam
         last_cam_pose_ = current_cam_pose_;
 
         if (!velocity_valid_)
+        {
             velocity_valid_ = true;
-        return;
+            // return cam_velocity_;
+        }
+        // else
+        // {
+        //     return Eigen::Isometry3d::Identity();
+        // }
     }
 
     std::vector<Apriltag>::const_iterator FindById(

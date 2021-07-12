@@ -51,10 +51,10 @@ namespace aprilslam
         std::string tag_prior_info_path_;
         YAML::Node tag_prior_info_node_;
         std::map<size_t, geometry_msgs::Pose> tag_prior_poses_;
-        
+
         int pose_cnt_;
         int key_frame_interval_;
-
+        geometry_msgs::Pose cam_velocity_;
         nav_msgs::Path cam_trajectory_;
     };
 

@@ -27,6 +27,7 @@ void SetCorners(std::vector<geometry_msgs::Point>* corners,
                 const geometry_msgs::Pose& pose, double tag_size);
 Eigen::Quaterniond RodriguesToQuat(const cv::Mat& r);
 Eigen::Isometry3d PoseMsgToIsometry3d(const geometry_msgs::Pose &pose);
+geometry_msgs::Pose Isometry3dToPoseMsg(const Eigen::Isometry3d &pose3d);
 
 
 }  // namespace aprilslam

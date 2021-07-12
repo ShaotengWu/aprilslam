@@ -36,6 +36,7 @@ namespace aprilslam
         void Optimize(int num_iterations = 1);
         void Update(aprilslam::TagMap *map, geometry_msgs::Pose *pose);
         void AddPose(const geometry_msgs::Pose &pose);
+        void AddPose(const geometry_msgs::Pose &pose, const geometry_msgs::Pose &vel); // overload 
         void AddFactors(const std::vector<aprilslam::Apriltag> &tags_c);
         void AddLandmarks(const std::vector<aprilslam::Apriltag> &tags_c);
         void AddLandmarkPrior(const size_t tag_id);
@@ -58,6 +59,7 @@ namespace aprilslam
         int min_pose_count_; // 批量优化前min_pose_count_帧
         int inc_pose_count_; // 队列计数；
         int inc_pose_thr_;   // 隔thr个更新一次
+        int obsv_thr_;
 
         gtsam::ISAM2Params params_;
         gtsam::ISAM2 isam2_;
@@ -68,6 +70,7 @@ namespace aprilslam
         gtsam::noiseModel::Diagonal::shared_ptr tag_noise_;
         gtsam::noiseModel::Diagonal::shared_ptr small_noise_;
         gtsam::noiseModel::Diagonal::shared_ptr tag_size_noise_;
+        gtsam::noiseModel::Diagonal::shared_ptr motion_model_noise_;
         gtsam::noiseModel::Isotropic::shared_ptr measurement_noise_;
         gtsam::noiseModel::Base::shared_ptr tag_noise_huber_;
         gtsam::noiseModel::Base::shared_ptr small_noise_huber_;
@@ -76,6 +79,8 @@ namespace aprilslam
         std::set<int> all_ids_;
         std::map<int, aprilslam::Apriltag> all_tags_c_;
         std::map<int, aprilslam::Apriltag> all_tags_w_;
+        std::map<int, std::vector<int>> tags_obsv_;
+        std::map<int, bool> tags_in_isam_;
         std::map<size_t, geometry_msgs::Pose> tag_prior_poses_;
 
         gtsam::LevenbergMarquardtParams lm_params_;

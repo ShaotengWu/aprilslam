@@ -137,4 +137,21 @@ namespace aprilslam
         return T;
     }
 
+    geometry_msgs::Pose Isometry3dToPoseMsg(const Eigen::Isometry3d &pose3d)
+    {
+        Eigen::Quaterniond q(pose3d.rotation());
+        Eigen::Vector3d t(pose3d.translation());
+
+        geometry_msgs::Pose pose;
+        pose.orientation.x = q.x();
+        pose.orientation.y = q.y();
+        pose.orientation.z = q.z();
+        pose.orientation.w = q.w();
+        pose.position.x = t.x();
+        pose.position.y = t.y();
+        pose.position.z = t.z();
+
+        return pose;
+    }
+
 } // namespace aprilslam
