@@ -13,14 +13,14 @@ namespace aprilslam
     Mapper::Mapper(double relinearize_thresh, int relinearize_skip)
         : init_(false),
           init_opt_(false),
-          min_pose_count_(15),
+          min_pose_count_(30),
           inc_pose_count_(0),
           inc_pose_thr_(3),
           obsv_thr_(4),
           params_(ISAM2GaussNewtonParams(), relinearize_thresh, relinearize_skip),
           isam2_(params_),
-          tag_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.10, 0.10, 0.10, 0.10, 0.10, 0.10).finished())),
-          small_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.05, 0.03, 0.01, 0.05, 0.05, 0.05).finished())),
+          tag_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.10, 0.10, 0.10, 0.10, 0.20, 0.20).finished())),
+          small_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.05, 0.05, 0.05, 0.05, 0.10, 0.10).finished())),
           tag_size_noise_(noiseModel::Isotropic::Sigma(1, 0.01)),
           motion_model_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.15, 0.01, 0.15, 0.01, 0.05, 0.01).finished()))
     {
@@ -70,7 +70,7 @@ namespace aprilslam
         pose_ = FromGeometryPose(pose);
         initial_estimates_.insert(Symbol('x', pose_cnt), pose_);
 
-        if(pose_cnt > min_pose_count_)
+        if (pose_cnt > min_pose_count_ * 2)
         {
             gtsam::Pose3 velocity = FromGeometryPose(vel);
             graph_.push_back(BetweenFactor<Pose3>(Symbol('x', pose_cnt - 1), Symbol('x', pose_cnt), velocity, motion_model_noise_));
@@ -199,7 +199,7 @@ namespace aprilslam
                                     Point3 corner_initial_estimate(tag_w.corners[ip].x, tag_w.corners[ip].y, tag_w.corners[ip].z);
                                     initial_estimates_.insert(p_i, corner_initial_estimate);
                                     //  ROS_INFO("Initial estimate: p%d", p_i);
-                                    std::cout << "Initial estimate: p" << corner_id << std::endl;
+                                    // std::cout << "Initial estimate: p" << corner_id << std::endl;
 
                                     Unit3 bearing_ip_li(corners_on_board[ip]);
                                     double range_ip_li = std::sqrt(2) * a;
@@ -261,27 +261,33 @@ namespace aprilslam
 
         inc_pose_count_++;
         // ROS_INFO("Begin Optimize!");
-        if ((pose_cnt > min_pose_count_) )
+        if ((pose_cnt > min_pose_count_))
         {
             // ROS_INFO("Optimize!");
             if (!init_opt_)
             { // Do a full optimize for first minK ranges
                 init_opt_ = true;
-                LevenbergMarquardtOptimizer batchOptimizer(graph_, initial_estimates_);
+                LevenbergMarquardtParams params;
+                params.setMaxIterations(100);
+                params.setVerbosity("ERROR");
+                LevenbergMarquardtOptimizer batchOptimizer(graph_, initial_estimates_, params);
                 initial_estimates_ = batchOptimizer.optimize();
                 ROS_INFO("Batch Optimize for first %d frames", min_pose_count_);
-                
             }
-            
+
             isam2_.update(graph_, initial_estimates_);
             if (num_iterations > 1)
             {
                 for (int i = 1; i < num_iterations; ++i)
                 {
                     isam2_.update();
+                    ROS_INFO("Isam update %d times", 1);
+                    printf("\033[1A");
+                    printf("\033[K");
                 }
                 inc_pose_count_ = 0;
             }
+
             results_ = isam2_.calculateEstimate();
             this->Clear();
         }
@@ -345,7 +351,7 @@ namespace aprilslam
                     Symbol p_i('p', corner_id);
                     initial_estimates_.insert(p_i, corner_initial_estimate);
                     // ROS_INFO("Initial estimate: p%d", p_i);
-                    std::cout << "Initial estimate: " << p_i << std::endl;
+                    // std::cout << "Initial estimate: " << p_i << std::endl;
                     // Unit3 bearing_ip_li(corners_on_board[ip]);
                     // double range_ip_li = std::sqrt(2) * a;
                     //graph_.push_back(BearingRange3D(l_i, p_i, bearing_ip_li, range_ip_li, tag_size_noise_));

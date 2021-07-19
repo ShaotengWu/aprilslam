@@ -183,7 +183,7 @@ namespace aprilslam
             rmse_mm = std::sqrt(reproj_error_mm / reproj_img_pts_mm.size());
         }
 
-        // ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
+        ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
         // ROS_INFO("Current Motion Model reprojection error: %f", rmse_mm);
 
         double *pt = w_T_c.ptr<double>();

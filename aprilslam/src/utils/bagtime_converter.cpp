@@ -11,9 +11,10 @@
 #include <cv_bridge/cv_bridge.h>
 #include <opencv2/core.hpp>
 #include <opencv2/imgcodecs.hpp>
+#include <opencv2/opencv.hpp>
 
-std::string in_bag_path = "/home/wushaoteng/project/electroMechanical/catkin_ws/data/0703wst03_2021-07-03-09-23-18.bag";
-std::string out_bag_path = "/home/wushaoteng/project/electroMechanical/catkin_ws/data/0703-03.bag";
+std::string in_bag_path = "/home/wushaoteng/project/electroMechanical/catkin_ws/data/0719-02-origin.bag";
+std::string out_bag_path = "/home/wushaoteng/project/electroMechanical/catkin_ws/data/0719-02-histEqualized.bag";
 
 sensor_msgs::CameraInfo getCameraInfo(void)
 { // extract cameraInfo.
@@ -78,7 +79,24 @@ int main(int argc, char **argv)
         cv::Rect rect_left(0, 0, 1280, 720);
         cv::Mat image_left = image_raw(rect_left);
 
-        cv_bridge::CvImage image_bridge(new_header, sensor_msgs::image_encodings::RGB8, image_left);
+        cv::Mat image_gray, image_equalized;
+        // std::cout<<image_left.channels()<<std::endl;
+        cv::cvtColor(image_left, image_gray, cv::COLOR_BGR2GRAY);
+        // std::cout<<image_gray.channels()<<std::endl;
+        
+        // cv::namedWindow("Gray", cv::WINDOW_AUTOSIZE);
+        // cv::imshow("Gray", image_equalized);
+        // cv::waitKey(0);
+        // std::cout<<"Debug here"<<std::endl;
+        cv::equalizeHist(image_gray, image_equalized);
+        
+        // cv::namedWindow("Equalized", cv::WINDOW_AUTOSIZE);
+        // cv::imshow("Equalized", image_equalized);
+        // cv::waitKey(0);
+        // std::cout<<"Debug here"<<std::endl;
+        cv_bridge::CvImage image_bridge(new_header, sensor_msgs::image_encodings::MONO8, image_equalized);
+        // std::cout<<image_bridge.encoding<<std::endl;
+        
         sensor_msgs::Image image_msg;
         image_bridge.toImageMsg(image_msg);
 

@@ -9,7 +9,7 @@ namespace aprilslam
           sub_cinfo_(nh_.subscribe("camera_info", 1, &MapperNode::CinfoCb, this)),
           frame_id_(frame_id),
           mapper_(0.04, 1),
-          map_("36h11", 0.2),
+          map_("36h11", 0.4),
           tag_viz_(nh, "apriltags_map"),
           pose_cnt_(0),
           key_frame_interval_(3)
@@ -122,6 +122,7 @@ namespace aprilslam
 
         // Do nothing if there are no good tags close to the center of the image
         std::vector<Apriltag> tags_c_good;
+        tags_c_good.clear();
         if (!GetGoodTags(tags_c_msg->apriltags, &tags_c_good))
         {
             ROS_WARN_THROTTLE(1, "No good tags detected.");
@@ -153,7 +154,12 @@ namespace aprilslam
         pub_obj_pointcloud_.publish(obj_pointcloud_viz);
 
         // Now that with the initial pose calculated, we can do some mapping
+        /* -------------------------------------------------------------------------- */
+        /*          toggle to add/remove const velocity motion model factors          */
+        /* -------------------------------------------------------------------------- */
         mapper_.AddPose(pose, cam_velocity_);
+        // mapper_.AddPose(pose);
+
         mapper_.AddFactors(tags_c_good);
         // This will only add new landmarks
         mapper_.AddLandmarks(tags_c_good);
@@ -242,13 +248,21 @@ namespace aprilslam
 
     bool MapperNode::GetGoodTags(const std::vector<Apriltag> tags_c, std::vector<Apriltag> *tags_c_good)
     {
-        for (const Apriltag &tag_c : tags_c)
+        std::vector<Apriltag> tags_c_tmp = tags_c;
+
+        std::sort(tags_c_tmp.begin(), tags_c_tmp.end(), [](Apriltag tag1, Apriltag tag2)
+                  { return tag1.id < tag2.id; });
+        for (const Apriltag &tag_c : tags_c_tmp)
         {
+            std::cout << tag_c.id << " ";
+            if (tags_c_good->size() >= 6)
+                break;
+            tags_c_good->push_back(tag_c);
             if (IsInsideImageCenter(tag_c.center.x, tag_c.center.y,
                                     model_.cameraInfo().width,
                                     model_.cameraInfo().height, 5))
             {
-                tags_c_good->push_back(tag_c);
+                // tags_c_good->push_back(tag_c);
             }
         }
         return !tags_c_good->empty();
