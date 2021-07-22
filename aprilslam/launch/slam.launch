@@ -19,7 +19,7 @@
 	</node>
 	
 	<group if="$(arg use_zed)">
-		<node pkg="rosbag" type="play" name="bag_data" args="-l --clock  /home/wushaoteng/project/electroMechanical/catkin_ws/data/0719-02-histEqualized.bag" />
+		<node pkg="rosbag" type="play" name="bag_data" args="--clock  /home/wushaoteng/project/electroMechanical/catkin_ws/data/0719-01.bag" />
 		
 		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find aprilslam)/config/apriltag_zed2.rviz"/>
         <!-- <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/zed2/image_raw raw out:=/zed2/image_raw" /> -->
