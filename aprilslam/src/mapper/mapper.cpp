@@ -17,13 +17,22 @@ namespace aprilslam
           inc_pose_count_(0),
           inc_pose_thr_(3),
           obsv_thr_(4),
-          params_(ISAM2GaussNewtonParams(), relinearize_thresh, relinearize_skip),
-          isam2_(params_),
+        //   params_(ISAM2GaussNewtonParams(), relinearize_thresh, relinearize_skip),
+        //   isam2_(params_),
           tag_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.10, 0.10, 0.10, 0.10, 0.20, 0.20).finished())),
           small_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.05, 0.05, 0.05, 0.05, 0.10, 0.10).finished())),
           tag_size_noise_(noiseModel::Isotropic::Sigma(1, 0.01)),
           motion_model_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.15, 0.01, 0.15, 0.01, 0.05, 0.01).finished()))
     {
+        gtsam::ISAM2DoglegParams dogleg_params;
+        // dogleg_params.setVerbose(true);
+
+        // gtsam::ISAM2GaussNewtonParams iSAM2GaussNewtonParams;
+        // iSAM2GaussNewtonParams.setVerbose(true);
+        params_.setOptimizationParams(dogleg_params);
+        isam2_ = gtsam::ISAM2(params_);
+
+
         measurement_noise_ = noiseModel::Isotropic::Sigma(2, 1.0);
 
         tag_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.0), tag_noise_);
@@ -281,9 +290,9 @@ namespace aprilslam
                 for (int i = 1; i < num_iterations; ++i)
                 {
                     isam2_.update();
-                    ROS_INFO("Isam update %d times", 1);
-                    printf("\033[1A");
-                    printf("\033[K");
+                    // ROS_INFO("Isam update %d times", 1);
+                    // printf("\033[1A");
+                    // printf("\033[K");
                 }
                 inc_pose_count_ = 0;
             }

@@ -7,7 +7,7 @@ int main(int argc, char **argv)
 
     try
     {
-        aprilslam::MapperNode mapper_node(nh, "world");
+        aprilslam::MapperNode mapper_node(nh, "tag");
         ros::spin();
     }
     catch (const std::exception &e)

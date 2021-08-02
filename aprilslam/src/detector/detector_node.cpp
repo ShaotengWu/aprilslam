@@ -81,7 +81,7 @@ namespace aprilslam
         // ROS_INFO("BEFORE DETECTION");
         std::vector<AprilTags::TagDetection> detections = tag_detector_.extractTags(image);
         // ROS_INFO("AFTER DETECTION");
-        std::cout<<"size: "<<detections.size()<<std::endl;
+        // std::cout<<"size: "<<detections.size()<<std::endl;
 
         // Process detection
         if (!detections.empty())

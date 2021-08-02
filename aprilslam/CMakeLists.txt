@@ -7,6 +7,8 @@ set(CMAKE_CXX_FLAGS "-std=c++11 -Ofast -Wall")
 find_package(catkin REQUIRED COMPONENTS
     roscpp image_transport cv_bridge image_geometry
     apriltag_mit std_msgs tf2_ros rosbag
+    pcl_conversions
+    pcl_ros
     )
 
 find_package(cmake_modules)
@@ -69,6 +71,27 @@ src/utils/bagtime_converter.cpp
 )
 
 target_link_libraries(bagtime_converter
+${PROJECT_NAME})
+
+add_executable(zed_image_splitter 
+src/utils/zed_image_splitter.cpp
+)
+
+target_link_libraries(zed_image_splitter
+${PROJECT_NAME})
+
+add_executable(pcd_rviz_viewer 
+src/utils/pcd_rviz_viewer.cpp
+)
+
+target_link_libraries(pcd_rviz_viewer
+${PROJECT_NAME})
+
+add_executable(tf_publisher 
+src/utils/tf_publisher.cpp
+)
+
+target_link_libraries(tf_publisher
 ${PROJECT_NAME})
 
 # dependencies

@@ -184,6 +184,8 @@ namespace aprilslam
         }
 
         ROS_INFO("Current PnP reprojection error: %f", rmse_pnp);
+        printf("\033[1A");
+        printf("\033[K");
         // ROS_INFO("Current Motion Model reprojection error: %f", rmse_mm);
 
         double *pt = w_T_c.ptr<double>();
@@ -195,7 +197,7 @@ namespace aprilslam
         if (rmse_pnp >= rmse_mm * 0.75)
         {
             cam_velocity_msg_ = Isometry3dToPoseMsg(cam_velocity_);
-            ROS_INFO("Update Velocity");
+            // ROS_INFO("Update Velocity");
         }
         // else
         // {

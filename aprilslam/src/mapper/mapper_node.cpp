@@ -184,7 +184,7 @@ namespace aprilslam
             // CALL kalman filter here
 
             geometry_msgs::PoseStamped cam_pose_stamped;
-            cam_pose_stamped.header.stamp = tags_c_msg->header.stamp;
+            cam_pose_stamped.header.stamp =  ros::Time::now();
             cam_pose_stamped.header.frame_id = frame_id_;
             cam_pose_stamped.pose = pose;
             cam_trajectory_.poses.push_back(cam_pose_stamped);
@@ -202,7 +202,7 @@ namespace aprilslam
 
         // Publish camera to world transform
         std_msgs::Header header;
-        header.stamp = tags_c_msg->header.stamp;
+        header.stamp =  ros::Time::now();
         header.frame_id = frame_id_;
 
         geometry_msgs::Vector3 translation;
@@ -213,10 +213,11 @@ namespace aprilslam
         std::cout.precision(4);
         std::cout.width(6);
         std::cout.setf(std::ios::left);
-        std::cout << translation.x << "\t" << translation.y << "\t" << translation.z << std::endl;
+        // std::cout << translation.x << "\t" << translation.y << "\t" << translation.z << std::endl;
 
         geometry_msgs::TransformStamped transform_stamped;
         transform_stamped.header = header;
+        transform_stamped.header.stamp = ros::Time::now();
         transform_stamped.child_frame_id = "camera";
         transform_stamped.transform.translation = translation;
         transform_stamped.transform.rotation = pose.orientation;
@@ -254,7 +255,7 @@ namespace aprilslam
                   { return tag1.id < tag2.id; });
         for (const Apriltag &tag_c : tags_c_tmp)
         {
-            std::cout << tag_c.id << " ";
+            // std::cout << tag_c.id << " ";
             if (tags_c_good->size() >= 6)
                 break;
             tags_c_good->push_back(tag_c);

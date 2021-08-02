@@ -1,0 +1,18 @@
+<launch>
+    <arg name="x" default="8.1" />
+	<arg name="y" default="-8.65" />
+	<arg name="z" default="0.25" />
+	<arg name="yaw" default="-3.12" />
+	<arg name="pitch" default="0.0" />
+	<arg name="roll" default="1.57" />
+	<arg name="frame_id" default="map" />
+	<arg name="child_frame_id" default="tag" />
+	<arg name="period_in_ms" default="10" />
+	<node pkg="tf" type="static_transform_publisher" name="tag_to_map" args="$(arg x) $(arg y) $(arg z) $(arg yaw) $(arg pitch) $(arg roll) $(arg frame_id) $(arg child_frame_id) $(arg period_in_ms)" />
+	<node pkg="aprilslam" type="tf_publisher" name="tf_publisher"/>
+    <node pkg="aprilslam" type="pcd_rviz_viewer" name="pcd_rviz_viewer"/>
+        
+
+        
+ 
+</launch>
