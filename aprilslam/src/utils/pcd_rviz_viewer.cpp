@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     ros::init(argc, argv, "my_pcl_tutorial");
     ros::NodeHandle nh;
     ros::Publisher pub = nh.advertise<PointCloud>("points2", 1);
-    pcl::io::loadPCDFile<pcl::PointXYZ>("/home/wushaoteng/project/electroMechanical/catkin_ws/data/map/obs_points.pcd", *cloud);
+    pcl::io::loadPCDFile<pcl::PointXYZ>("/home/wushaoteng/project/electroMechanical/catkin_ws/src/aprilslam/aprilslam/map/obs_points.pcd", *cloud);
 
     PointCloud::Ptr msg(new PointCloud);
     msg->header.frame_id = "map";
