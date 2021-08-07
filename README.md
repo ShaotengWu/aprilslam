@@ -47,7 +47,7 @@ $ sudo apt-get install ros-melodic-apriltag
 
 ## 3. Get Started
 
-## 3.1 Build
+### 3.1 Build
 
 ```
 #!bash
@@ -57,18 +57,36 @@ $ cd ..
 $ catkin build
 ```
 
-## 3.2 Get test data
+### 3.2 Get test data
 
 You can get example data on Baidu Netdisk with following link and password.
 
 Link:     https://pan.baidu.com/s/1kbAQ4fmSu9N7nlXAXFHemw
 Password: sbs4
 
+### 3.3 Modify Parameters
+
+In `aprilslam/aprilslam/launch/slam.launch`, set proper value of following parameters according to your settings.
+**Attention:** The prior information yaml should be consistent with bag data for better localization performance.
+```xml
+<arg name="camera" default="/zed2_left" />
+<arg name="use_tag_prior_info" default="true" />
+<arg name="tag_prior_info_path" default="$(find aprilslam)/config/YOUR_CONFIG.yaml" />
+...
+<node pkg="rosbag" type="play" name="bag_data" args="--clock  PATH_TO_YOUR_BAG_DATA.bag" />
+```
+
+### 3.4 Launch
+```bash
+$ catkin build
+$ source devel/setup.bash
+# if you use zsh:
+# $ source devel/setup.zsh
+$ roslaunch aprilslam slam.launch
+```
 
 
-
-
-## 5.References
+## 4.References
 
 Please cite the appropriate papers when using this package or parts of it in an academic publication.
 
