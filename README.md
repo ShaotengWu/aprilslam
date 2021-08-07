@@ -12,7 +12,7 @@ We use the awesome AprilTag implementation of M. Kaess for tag extraction [1,2].
 
 The default AprilTag family used is 36h11 with a black border of 1. A PDF of the tag family is available here : http://www.dotproduct3d.com/assets/pdf/apriltags.pdf
 
-Package originally developed by Chao Qu and Gareth Cross from Kumar Robotics (www.kumarrobotics.org) and M.H.Kabir.
+Package originally developed by Chao Qu and Gareth Cross from Kumar Robotics (www.kumarrobotics.org) and M.H.Kabirm. The repository is forked from the original Apriltag SLAM and is developed and maintained by Shaoteng Wu from SJTU. (Contact me: wushaoteng@sjtu.edu.cn)
 
 ![ex1](./aprilslam/pics/ex1.jpg)
 
@@ -52,7 +52,7 @@ $ sudo apt-get install ros-melodic-apriltag
 ```
 #!bash
 $ cd YOUR_WORK_SPACE/src
-$ git clone --recurse-submodules https://github.com/ShaotengWu/aprilslam.git 
+$ git clone https://github.com/ShaotengWu/aprilslam.git 
 $ cd ..
 $ catkin build
 ```
@@ -60,9 +60,10 @@ $ catkin build
 ## 3.2 Get test data
 
 You can get example data on Baidu Netdisk with following link and password.
-```
 
-```
+Link:     https://pan.baidu.com/s/1kbAQ4fmSu9N7nlXAXFHemw
+Password: sbs4
+
 
 
 
