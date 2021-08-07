@@ -51,7 +51,6 @@ namespace aprilslam
                                  pose.orientation.y,
                                  pose.orientation.z);
         Eigen::Vector3d w_T_b(pose.position.x, pose.position.y, pose.position.z);
-        // std::cout<<"Set Corners - Tag "<<""<<"position: "<<w_T_b.transpose()<<std::endl;
         const std::vector<Eigen::Vector3d> b_cs = {{-a, -a, 0}, {a, -a, 0}, {a, a, 0}, {-a, a, 0}};
         for (size_t ip = 0; ip < b_cs.size(); ip++)
         {

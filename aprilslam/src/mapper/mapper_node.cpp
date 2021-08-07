@@ -83,30 +83,6 @@ namespace aprilslam
 
     void MapperNode::TagsCb(const aprilslam::ApriltagsConstPtr &tags_c_msg)
     {
-        // Do nothing if no detection, this prevents checking in the following steps
-        // std::cout << "newly detected tags: ";
-        // for (int it = 0; it < tags_c_msg->apriltags.size(); it++)
-        // {
-        //     std::cout << tags_c_msg->apriltags[it].id << std::endl;
-        //     std::cout << tags_c_msg->apriltags[it].corners[0]
-        //               << tags_c_msg->apriltags[it].corners[1]
-        //               << tags_c_msg->apriltags[it].corners[2]
-        //               << tags_c_msg->apriltags[it].corners[3]
-        //               << std::endl;
-        // }
-        // std::cout << std::endl;
-        // if(pose_cnt_++ % key_frame_interval_ != 0)
-        // {
-        //     ROS_INFO("keyframe jump");
-        //     return;
-        // }
-        // if (tags_c_msg->apriltags.size() <= 2 || pose_cnt_++ % key_frame_interval_ != 0)
-        // {
-        //     ROS_INFO("keyframe jump");
-        //     return;
-        // }
-        // pose_cnt_++;
-
         if (tags_c_msg->apriltags.empty())
         {
             ROS_WARN_THROTTLE(1, "No tags detected.");
@@ -128,12 +104,7 @@ namespace aprilslam
             ROS_WARN_THROTTLE(1, "No good tags detected.");
             return;
         }
-        // std::cout << "good detected tags: ";
-        // for (int it = 0; it < tags_c_good.size(); it++)
-        // {
-        //     std::cout << tags_c_good[it].id << " ";
-        // }
-        // std::cout << std::endl;
+        
         // Initialize map by adding the first tag that is not on the edge of the image
         if (!map_.init())
         {
@@ -167,21 +138,11 @@ namespace aprilslam
         {
 
             mapper_.Optimize(10);
-            // // Get latest estimates from mapper and put into map
+            // Get latest estimates from mapper and put into map
             mapper_.Update(&map_, &pose);
-
-            // ! Move clear() into update()
-            // Prepare for next iteration
-            // mapper_.Clear();
-
-            // update current pose to tag_map
-
-            // mapper_.BatchOptimize();
-            // mapper_.BatchUpdate(&map_, &pose);
-
-            cam_velocity_ = map_.getVelocity(); //! return planar relative velocity
+            
+            cam_velocity_ = map_.getVelocity();
             map_.UpdateCurrentCamPose(pose);
-            // CALL kalman filter here
 
             geometry_msgs::PoseStamped cam_pose_stamped;
             cam_pose_stamped.header.stamp =  ros::Time::now();
@@ -210,11 +171,6 @@ namespace aprilslam
         translation.y = pose.position.y;
         translation.z = pose.position.z;
 
-        std::cout.precision(4);
-        std::cout.width(6);
-        std::cout.setf(std::ios::left);
-        // std::cout << translation.x << "\t" << translation.y << "\t" << translation.z << std::endl;
-
         geometry_msgs::TransformStamped transform_stamped;
         transform_stamped.header = header;
         transform_stamped.header.stamp = ros::Time::now();
@@ -229,8 +185,6 @@ namespace aprilslam
         tag_viz_.PublishApriltagsMarker(map_.tags_w(), frame_id_, tags_c_msg->header.stamp);
 
         // Publish prior tag info
-        // ROS_INFO("size of prior tags: %f", map_.tags_w_prior().size());
-        // std::cout<<map_.tags_w_prior().size()<<std::endl; 7
         std::vector<aprilslam::Apriltag> tags_w_prior = map_.tags_w_prior();
         tag_viz_.SetColor(aprilslam::YELLOW);
         tag_viz_.PublishPriorApriltagsMarker(tags_w_prior, frame_id_, tags_c_msg->header.stamp);
@@ -263,7 +217,7 @@ namespace aprilslam
                                     model_.cameraInfo().width,
                                     model_.cameraInfo().height, 5))
             {
-                // tags_c_good->push_back(tag_c);
+                
             }
         }
         return !tags_c_good->empty();

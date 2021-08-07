@@ -39,7 +39,7 @@ $ sudo make install
 You can install OpenCV 4.4.0 refer to this [link](https://gist.github.com/raulqf/f42c718a658cddc16f9df07ecc627be7). CUDA is not necessarily needed and you can customize your own compilation settings. Aprilslam only need some basic data structures and algorithms.
 
 ### 2.3 Apriltag ROS
-```
+```bash
 #!bash
 $ sudo apt-get install ros-melodic-apriltag
 ```
@@ -49,7 +49,7 @@ $ sudo apt-get install ros-melodic-apriltag
 
 ### 3.1 Build
 
-```
+```bash
 #!bash
 $ cd YOUR_WORK_SPACE/src
 $ git clone https://github.com/ShaotengWu/aprilslam.git 

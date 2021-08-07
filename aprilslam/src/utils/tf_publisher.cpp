@@ -3,7 +3,7 @@
 #include <tf/transform_broadcaster.h>
 #include <tf/transform_listener.h>
 
-// typedef pcl::PointCloud<pcl::PointXYZ> PointCloud;
+
 
 
 int main(int argc, char **argv)

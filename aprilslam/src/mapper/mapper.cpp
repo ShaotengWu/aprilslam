@@ -67,8 +67,6 @@ namespace aprilslam
         // Transform geometey_msgs::pose to gtsam::Pose3
         pose_ = FromGeometryPose(pose);
         initial_estimates_.insert(Symbol('x', pose_cnt), pose_);
-        //  ROS_INFO("Initial estimate: x%d", pose_cnt);
-        // std::cout << "Initial estimate: x" << pose_cnt << std::endl;
     }
 
     void Mapper::AddPose(const geometry_msgs::Pose &pose, const geometry_msgs::Pose &vel)
@@ -84,8 +82,6 @@ namespace aprilslam
             gtsam::Pose3 velocity = FromGeometryPose(vel);
             graph_.push_back(BetweenFactor<Pose3>(Symbol('x', pose_cnt - 1), Symbol('x', pose_cnt), velocity, motion_model_noise_));
         }
-        //  ROS_INFO("Initial estimate: x%d", pose_cnt);
-        // std::cout << "Initial estimate: x" << pose_cnt << std::endl;
     }
 
     void Mapper::Initialize(const Apriltag &tag_w)
@@ -107,7 +103,7 @@ namespace aprilslam
             {
                 AddLandmark(tag_w, FromGeometryPose(tag_prior_pose));
                 ROS_INFO("INIT: Add l%x to initial estimate", tag_w.id);
-            } // ! Check ok. corners of first tag is correct
+            }
         }
 
         // A very strong prior on first pose
@@ -120,8 +116,6 @@ namespace aprilslam
     void Mapper::AddLandmark(const Apriltag &tag_c, const Pose3 &pose)
     {
         initial_estimates_.insert(Symbol('l', tag_c.id), pose);
-        //  ROS_INFO("Initial estimate: l%d", tag_c.id);
-        // std::cout << "Initial estimate: l" << tag_c.id << std::endl;
         all_ids_.insert(tag_c.id);
         all_tags_c_[tag_c.id] = tag_c;
         AddLandmarkPrior(tag_c.id);
@@ -197,8 +191,7 @@ namespace aprilslam
                                 int corner_id = ip + tag_c.id * 4;
                                 Symbol p_i('p', corner_id);
                                 graph_.push_back(GenericProjectionFactor<Pose3, Point3, Cal3_S2>(corner_measurment, measurement_noise_, x_i, p_i, K_));
-                                // std::cout << "Add factor between x" << iter_obsv->second[i_obsv] << " and p" << corner_id << std::endl;
-
+                                
                                 if (!initial_estimates_.exists(p_i))
                                 {
                                     double a = tag_w.size / 2;
@@ -207,12 +200,8 @@ namespace aprilslam
 
                                     Point3 corner_initial_estimate(tag_w.corners[ip].x, tag_w.corners[ip].y, tag_w.corners[ip].z);
                                     initial_estimates_.insert(p_i, corner_initial_estimate);
-                                    //  ROS_INFO("Initial estimate: p%d", p_i);
-                                    // std::cout << "Initial estimate: p" << corner_id << std::endl;
-
                                     Unit3 bearing_ip_li(corners_on_board[ip]);
                                     double range_ip_li = std::sqrt(2) * a;
-                                    // graph_.push_back(BearingRange3D(l_i, p_i, bearing_ip_li, range_ip_li, tag_size_noise_));
                                     graph_.push_back(RangeFactor<Pose3, Point3>(l_i, p_i, range_ip_li, tag_size_noise_));
                                 }
                             }
@@ -238,30 +227,11 @@ namespace aprilslam
                         int corner_id = ip + tag_c.id * 4;
                         Symbol p_i('p', corner_id);
                         graph_.push_back(GenericProjectionFactor<Pose3, Point3, Cal3_S2>(corner_measurment, measurement_noise_, x_i, p_i, K_));
-                        // std::cout << "Add factor between x" << pose_cnt << " and p" << corner_id << std::endl;
-                    }
+                        }
                 }
             }
         }
     }
-
-    // // Add bearingRange factors here
-    // Symbol l_i('l', tag_w.id);
-
-    // for (size_t ip = 0; ip < tag_w.corners.size(); ip++)
-    // {
-    //     Point3 corner_initial_estimate(tag_w.corners[ip].x, tag_w.corners[ip].y, tag_w.corners[ip].z);
-    //     // std::cout << corner_initial_estimate << std::endl;
-    //     int corner_id = ip + tag_w.id * 4;
-    //     Symbol p_i('p', corner_id);
-    //     initial_estimates_.insert(p_i, corner_initial_estimate);
-    //     // ROS_INFO("Initial estimate: p%d", p_i);
-    //     std::cout << "Initial estimate: " << p_i << std::endl;
-    //     // Unit3 bearing_ip_li(corners_on_board[ip]);
-    //     // double range_ip_li = std::sqrt(2) * a;
-    //     //graph_.push_back(BearingRange3D(l_i, p_i, bearing_ip_li, range_ip_li, tag_size_noise_));
-    //     //graph_.push_back(RangeFactor<Pose3, Point3>(l_i, p_i, range_ip_li, tag_size_noise_));
-    // }
 
     void Mapper::Optimize(int num_iterations)
     {
@@ -269,10 +239,9 @@ namespace aprilslam
         graph_.saveGraph(graph_ofs, batch_results_);
 
         inc_pose_count_++;
-        // ROS_INFO("Begin Optimize!");
         if ((pose_cnt > min_pose_count_))
         {
-            // ROS_INFO("Optimize!");
+            
             if (!init_opt_)
             { // Do a full optimize for first minK ranges
                 init_opt_ = true;
@@ -359,12 +328,6 @@ namespace aprilslam
                     int corner_id = ip + tag_w.id * 4;
                     Symbol p_i('p', corner_id);
                     initial_estimates_.insert(p_i, corner_initial_estimate);
-                    // ROS_INFO("Initial estimate: p%d", p_i);
-                    // std::cout << "Initial estimate: " << p_i << std::endl;
-                    // Unit3 bearing_ip_li(corners_on_board[ip]);
-                    // double range_ip_li = std::sqrt(2) * a;
-                    //graph_.push_back(BearingRange3D(l_i, p_i, bearing_ip_li, range_ip_li, tag_size_noise_));
-                    //graph_.push_back(RangeFactor<Pose3, Point3>(l_i, p_i, range_ip_li, tag_size_noise_));
                 }
             }
         }
@@ -372,13 +335,7 @@ namespace aprilslam
 
     void Mapper::Update(TagMap *map, geometry_msgs::Pose *pose)
     {
-        // if(!init_opt_)
-        // {
-        //     // pose = geometry_msgs::Pose();
-        //     return;
-        // }
         ROS_ASSERT_MSG(all_ids_.size() == all_tags_c_.size(), "id and size mismatch");
-        // results_ = isam2_.calculateEstimate();
         // Update the current pose
         const Pose3 &cam_pose = results_.at<Pose3>(Symbol('x', pose_cnt));
         SetPosition(&pose->position, cam_pose.x(), cam_pose.y(), cam_pose.z());
@@ -407,25 +364,13 @@ namespace aprilslam
                 SetCorners(&tag_w.corners, tag_w.pose, tag_w.size);
                 all_tags_w_.insert(std::make_pair(tag_w.id, tag_w));
                 ROS_INFO("tag %d added to mapper", tag_w.id);
-
-                // for (size_t ip = 0; ip < tag_w.corners.size(); ip++)
-                // {
-                //     Point3 corner_initial_estimate(tag_w.corners[ip].x, tag_w.corners[ip].y, tag_w.corners[ip].z);
-                //     // std::cout << corner_initial_estimate << std::endl;
-                //     int corner_id = ip + tag_w.id * 4;
-                //     Symbol p_i('p', corner_id);
-                //     initial_estimates_.insert(p_i, corner_initial_estimate);
-                //     //  ROS_INFO("Initial estimate: p%d", p_i);
-                //     std::cout << "Initial estimate: " << p_i << std::endl;
-                // }
             }
         }
-        // ROS_INFO("Update finished");
     }
 
     void Mapper::Clear()
     {
-        // ROS_WARN("Optimizer Clear");
+        
         graph_.resize(0);
         initial_estimates_.clear();
     }

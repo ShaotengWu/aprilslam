@@ -44,7 +44,7 @@ namespace aprilslam
         UpdateTag(&tag_w, pose);
         tags_w_.push_back(tag_w);
         tags_w_map_.insert(std::pair<int, aprilslam::Apriltag>(tag_w.id, tag_w));
-        // ROS_INFO("tag %d added to map", tag.id);
+        
     }
 
     void TagMap::AddFirstTag(const Apriltag &tag_c)
@@ -73,11 +73,6 @@ namespace aprilslam
         std::vector<cv::Point2f> img_pts;
         std::vector<cv::Point3f> obj_pts;
 
-        // if(first_flag_debug_)
-        // {
-        //     std::cout<<"first estimate: "<< tags_w().size()<<std::endl;
-        //     first_flag_debug_ = false;
-        // }
         for (const Apriltag &tag_c : tags_c)
         {
             // Find 2D-3D correspondences
@@ -116,9 +111,7 @@ namespace aprilslam
             obj_pointcloud_viz.channels[0].values[i] = 1.0;
         }
         obj_pointcloud_viz_ = obj_pointcloud_viz;
-        // // 怀疑是每个tag的四个点都是中心点
-        // // 确实是四个点，但是距离很近，异常
-        // pnp bug. repaired
+
 
         // Use all correspondences to solve a PnP
         // Actual pose estimation work here
@@ -197,18 +190,9 @@ namespace aprilslam
         if (rmse_pnp >= rmse_mm * 0.75)
         {
             cam_velocity_msg_ = Isometry3dToPoseMsg(cam_velocity_);
-            // ROS_INFO("Update Velocity");
+            
         }
-        // else
-        // {
-        // double *pt = w_t_c_mm.ptr<double>();
-        // SetPosition(&pose->position, pt[0], pt[1], pt[2]);
-        // SetOrientation(&pose->orientation, w_Q_c_mm);
-        // ROS_INFO("Use motion model");
-
-        // }
-        // if(rmse > 1.5)
-        //     return false;
+        
 
         return true;
     }
@@ -259,16 +243,12 @@ namespace aprilslam
         if (!velocity_valid_)
         {
             velocity_valid_ = true;
-            // return cam_velocity_;
+            
         }
-        // else
-        // {
-        //     return Eigen::Isometry3d::Identity();
-        // }
+       
     }
 
-    std::vector<Apriltag>::const_iterator FindById(
-        int id, const std::vector<Apriltag> &tags)
+    std::vector<Apriltag>::const_iterator FindById(int id, const std::vector<Apriltag> &tags)
     {
         return std::find_if(tags.cbegin(), tags.cend(),
                             [&id](const Apriltag &tag)

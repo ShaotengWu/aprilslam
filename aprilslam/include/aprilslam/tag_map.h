@@ -26,7 +26,6 @@ namespace aprilslam
         const std::vector<aprilslam::Apriltag> &tags_w() const { return tags_w_; }
         const std::vector<aprilslam::Apriltag> &tags_w_prior() const
         {
-            // std::cout << "size: " << tags_w_prior_.size() << std::endl;
             return tags_w_prior_;
         }
         const sensor_msgs::PointCloud &obj_pointcloud_viz() { return obj_pointcloud_viz_; }
@@ -50,8 +49,6 @@ namespace aprilslam
         Eigen::Isometry3d last_cam_pose_;
         Eigen::Isometry3d cam_velocity_;
         geometry_msgs::Pose cam_velocity_msg_;
-
-        // geometry_msgs::Pose motion_model_
 
         sensor_msgs::PointCloud obj_pointcloud_viz_;
     };

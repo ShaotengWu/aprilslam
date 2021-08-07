@@ -40,7 +40,7 @@ int main(int argc, char **argv)
 
     while (nh.ok())
     {
-        //msg->header.stamp = ros::Time::now().toNSec();
+        
         pub.publish(msg);
         ros::spinOnce();
         loop_rate.sleep();

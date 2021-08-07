@@ -100,7 +100,6 @@ int main(int argc, char **argv)
             continue;
         }
         valid = false;
-        // cv::Mat image_raw = cv::Mat(image_raw);
         std::cout<<image_raw.cols<<" "<<image_raw.rows<<std::endl;
         cv::Rect rect_left(0, 0, 1279, 719);
         cv::Mat image_left = image_raw(rect_left);
@@ -108,7 +107,6 @@ int main(int argc, char **argv)
         cv::Mat image_gray, image_equalized;
         cv::cvtColor(image_left, image_gray, cv::COLOR_BGR2GRAY);
         cv::equalizeHist(image_gray, image_equalized);
-        // std::cout<<"debug"<<std::endl;
         cv_bridge::CvImage image_bridge(header, sensor_msgs::image_encodings::MONO8, image_equalized);
 
         sensor_msgs::Image image_msg;
