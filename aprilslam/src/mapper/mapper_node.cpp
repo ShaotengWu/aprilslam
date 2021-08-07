@@ -256,7 +256,7 @@ namespace aprilslam
         for (const Apriltag &tag_c : tags_c_tmp)
         {
             // std::cout << tag_c.id << " ";
-            if (tags_c_good->size() >= 6)
+            if (tags_c_good->size() >= 5)
                 break;
             tags_c_good->push_back(tag_c);
             if (IsInsideImageCenter(tag_c.center.x, tag_c.center.y,

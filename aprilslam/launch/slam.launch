@@ -2,35 +2,32 @@
 	<arg name="use_sim_time" default="false" />
 	<arg name="use_zed" default="true" />
 	<arg name="use_bag" default="false" />
-	<!-- Detector Node -->
-	<!--
-	<include file="$(find aprilslam)/launch/detector.launch">
-	<arg name="camera" value="/zed2" />
-	<arg name="size" value="0.2" />
-	</include>
-	-->
+	<!-- Apriltag ros detection -->
 	<include file="$(find apriltag_ros)/launch/continuous_detection.launch" />
+	<!-- Publish transform between tag frame and pointcloud map frame -->
 	<include file="$(find aprilslam)/launch/tf_publisher.launch" />
 	<!-- Mapper -->
 	<arg name="camera" default="/zed2_left" />
 	<arg name="use_tag_prior_info" default="true" />
 	<arg name="tag_prior_info_path" default="$(find aprilslam)/config/tag_prior_info_0719_01_02.yaml" />
-	<node pkg="aprilslam" type="mapper_node" name="mapper" output="screen" ns="$(arg camera)" respawn = "true">
+	<node pkg="aprilslam" type="mapper_node" name="mapper" output="screen" ns="$(arg camera)" respawn="true">
 		<param name="use_tag_prior_info" type="bool" value="$(arg use_tag_prior_info)" />
 		<param name="tag_prior_info_path" type="string" value="$(arg tag_prior_info_path)" />
 	</node>
+
+    <!-- If use zed2 -->
 	<group if="$(arg use_zed)">
-		<node pkg="rosbag" type="play" name="bag_data" args="--clock  /home/wushaoteng/project/electroMechanical/catkin_ws/data/0719-01.bag" />
-		<group if="$(arg use_bag)">
+		<!-- If use bag  -->
+        <group if="$(arg use_bag)">
+			<node pkg="rosbag" type="play" name="bag_data" args="--clock  /home/wushaoteng/project/electroMechanical/catkin_ws/data/0719-01.bag" />
 		</group>
-		<group unless="$(arg use_bag)">
+        
+		<!-- If use original zed2 image and the image is spliced -->
+        <group unless="$(arg use_bag)">
 			<node pkg="aprilslam" type="zed_image_splitter" name="zed_image_splitter" />
 		</group>
-		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find aprilslam)/config/apriltag_zed2.rviz" />
-		<!-- <node name="republish" type="republish" pkg="image_transport" output="screen" args="compressed in:=/zed2/image_raw raw out:=/zed2/image_raw" /> -->
-	</group>
-	<group unless="$(arg use_zed)">
-		<node pkg="rosbag" type="play" name="bag_data" args="-r 1 /home/wushaoteng/project/electroMechanical/catkin_ws/data/0719-01.bag" />
-		<node name="rviz" pkg="rviz" type="rviz" args="-d $(find aprilslam)/config/apriltag_usb_cam.rviz" />
+		
+        <!-- rviz -->
+        <node name="rviz" pkg="rviz" type="rviz" args="-d $(find aprilslam)/config/apriltag_zed2.rviz" />
 	</group>
 </launch>

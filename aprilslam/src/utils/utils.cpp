@@ -60,56 +60,6 @@ namespace aprilslam
             w_corners[ip].y = w_corner.y();
             w_corners[ip].z = w_corner.z();
         }
-        //! FUCK C++ 14
-        // std::transform(b_cs.begin(), b_cs.end(), w_corners.begin(),
-        //                [&](const Eigen::Vector3d &b_c) {
-        //                    const auto w_c = w_Q_b.matrix() * b_c + w_T_b;
-        //                    geometry_msgs::Point w_corner;
-        //                    w_corner.x = w_c(0);
-        //                    w_corner.y = w_c(1);
-        //                    w_corner.z = w_c(2);
-        //                    return w_corner;
-        //                });
-        // debug
-        // std::cout << "For tag" << std::endl;
-        // std::cout << b_cs[0] << std::endl;
-        // std::cout << b_cs[1] << std::endl;
-        // std::cout << b_cs[2] << std::endl;
-        // std::cout << b_cs[3] << std::endl;
-        // std::cout << w_Q_b.matrix() << std::endl;
-        // for (size_t i = 0; i < corners->size(); i++)
-        // {
-        //     std::cout << "point " << i << ": " << corners->at(i).x << " " << corners->at(i).y << " " << corners->at(i).z << std::endl;
-        // }
-
-        // Sophus version
-        /*
-  Sophus::SE3d w_H_b(
-      Sophus::Quaterniond(pose.orientation.w, pose.orientation.x,
-                          pose.orientation.y, pose.orientation.z),
-      Sophus::SE3d::Point(pose.position.x, pose.position.y, pose.position.z));
-  const std::vector<Sophus::SE3d::Point> b_cs = {
-      {-a, -a, 0}, {a, -a, 0}, {a, a, 0}, {-a, a, 0}};
-  // Transform corners in body frame to world frame
-  std::transform(b_cs.begin(), b_cs.end(), w_corners.begin(),
-                 [&](const Sophus::SE3d::Point& b_c) {
-    const Sophus::SE3d::Point w_c = w_H_b * b_c;
-    geometry_msgs::Point w_corner;
-    w_corner.x = w_c(0);
-    w_corner.y = w_c(1);
-    w_corner.z = w_c(2);
-    return w_corner;
-  });
-  */
-        // Nuke this raw loop version
-        /*
-  for (size_t i = 0; i < w_corners.size(); ++i) {
-    const Sophus::SE3d::Point w_c = w_H_b * b_cs[i];
-    w_corners[i].x = w_c(0);
-    w_corners[i].y = w_c(1);
-    w_corners[i].z = w_c(2);
-  }
-  */
     }
 
     Eigen::Quaterniond RodriguesToQuat(const cv::Mat &rvec)
