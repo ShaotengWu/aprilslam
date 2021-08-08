@@ -4,7 +4,7 @@
 
 Some basic code in this repository is forked from https://github.com/ProjectArtemis/aprilslam . Thanks [*@mhkabir*](https://github.com/mhkabir) for opening the awesome code.
 
-Your can refer to [doxygen documentation](./html/index.html) created by [*@ShaotengWu*](https://github.com/ShaotengWu) for details.
+Your can open this [doxygen documentation](./html/index.html#http://) created by [*@ShaotengWu*](https://github.com/ShaotengWu) in your browser for detailed documentation.
 
 AprilSLAM is a package designed for fast camera pose estimation from a single or multiple AprilTags(link) in an unstructured environment. AprilSLAM needs prior information of Apriltags for better localization performance. The system can map multiple tags in the camera's view as long as there is atleast another tag in view to estimate relative tag pose the first time. The system has been run with a forward looking ZED2 stereo camera on an AGV with a X86-based computing solutions for precise estimation of the vehicle pose. The localization FPS is nearly 30Hz. The system is implemented under ROS (Robot Operating System) for ease of integration, but should be easy to run without it as well.
 
@@ -16,7 +16,7 @@ The default AprilTag family used is 36h11 with a black border of 1. A PDF of the
 
 Package originally developed by Chao Qu and Gareth Cross from Kumar Robotics (www.kumarrobotics.org) and M.H.Kabirm. The repository is forked from the original Apriltag SLAM and is developed and maintained by Shaoteng Wu from SJTU. (Contact me: wushaoteng@sjtu.edu.cn)
 
-![ex1](./aprilslam/pics/ex1.jpg)
+![ex1](./aprilslam/pics/ex1.png)
 
 ## 2. Dependencies
 

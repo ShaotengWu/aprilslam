@@ -14,25 +14,14 @@ namespace aprilslam
         : init_(false),
           init_opt_(false),
           min_pose_count_(30),
-          inc_pose_count_(0),
-          inc_pose_thr_(3),
           obsv_thr_(4),
-        //   params_(ISAM2GaussNewtonParams(), relinearize_thresh, relinearize_skip),
-        //   isam2_(params_),
+          params_(ISAM2DoglegParams(), relinearize_thresh, relinearize_skip),
+          isam2_(params_),
           tag_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.10, 0.10, 0.10, 0.10, 0.20, 0.20).finished())),
           small_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.05, 0.05, 0.05, 0.05, 0.10, 0.10).finished())),
           tag_size_noise_(noiseModel::Isotropic::Sigma(1, 0.01)),
           motion_model_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.15, 0.01, 0.15, 0.01, 0.05, 0.01).finished()))
     {
-        gtsam::ISAM2DoglegParams dogleg_params;
-        // dogleg_params.setVerbose(true);
-
-        // gtsam::ISAM2GaussNewtonParams iSAM2GaussNewtonParams;
-        // iSAM2GaussNewtonParams.setVerbose(true);
-        params_.setOptimizationParams(dogleg_params);
-        isam2_ = gtsam::ISAM2(params_);
-
-
         measurement_noise_ = noiseModel::Isotropic::Sigma(2, 1.0);
 
         tag_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.0), tag_noise_);
@@ -235,10 +224,10 @@ namespace aprilslam
 
     void Mapper::Optimize(int num_iterations)
     {
-        std::ofstream graph_ofs("/home/wushaoteng/project/electroMechanical/catkin_ws/data/aprilslam.dot");
+        std::ofstream graph_ofs("./aprilslam.dot");
         graph_.saveGraph(graph_ofs, batch_results_);
 
-        inc_pose_count_++;
+        
         if ((pose_cnt > min_pose_count_))
         {
             
@@ -263,7 +252,7 @@ namespace aprilslam
                     // printf("\033[1A");
                     // printf("\033[K");
                 }
-                inc_pose_count_ = 0;
+                
             }
 
             results_ = isam2_.calculateEstimate();
@@ -272,64 +261,6 @@ namespace aprilslam
         else
         {
             results_ = initial_estimates_;
-        }
-    }
-
-    void Mapper::BatchOptimize()
-    {
-        gtsam::LevenbergMarquardtOptimizer lm_optimizer(graph_, initial_estimates_, lm_params_);
-        batch_results_ = lm_optimizer.optimize();
-        std::ofstream graph_ofs("/home/wushaoteng/project/electroMechanical/catkin_ws/data/aprilslam.dot");
-        graph_.saveGraph(graph_ofs, batch_results_);
-    }
-
-    void Mapper::BatchUpdate(TagMap *map, geometry_msgs::Pose *pose)
-    {
-        ROS_ASSERT_MSG(all_ids_.size() == all_tags_c_.size(), "id and size mismatch");
-        results_ = batch_results_;
-        // Update the current pose
-        const Pose3 &cam_pose = results_.at<Pose3>(Symbol('x', pose_cnt));
-        SetPosition(&pose->position, cam_pose.x(), cam_pose.y(), cam_pose.z());
-        SetOrientation(&pose->orientation, cam_pose.rotation().toQuaternion());
-        // Update the current map
-        for (const int tag_id : all_ids_)
-        {
-            const Pose3 &tag_pose3 = results_.at<Pose3>(Symbol('l', tag_id));
-            geometry_msgs::Pose tag_pose;
-            SetPosition(&tag_pose.position, tag_pose3.x(), tag_pose3.y(), tag_pose3.z());
-            SetOrientation(&tag_pose.orientation, tag_pose3.rotation().toQuaternion());
-            // This should not change the size of all_sizes_ because all_sizes_ and
-            // all_ids_ should have the same size
-            auto it = all_tags_c_.find(tag_id);
-            map->AddOrUpdate(it->second, tag_pose);
-            //应该在这里同步mapper中的tagw
-            //上面的addorupdate操作不会改变迭代器中second的值
-
-            if (all_tags_w_.find(it->second.id) == all_tags_w_.end())
-            {
-                Apriltag tag_w = it->second;
-                tag_w.pose = tag_pose;
-                tag_w.center = tag_w.pose.position;
-
-                //! Check OK
-                SetCorners(&tag_w.corners, tag_w.pose, tag_w.size);
-                all_tags_w_.insert(std::make_pair(tag_w.id, tag_w));
-                // ROS_INFO("tag %d added to mapper", tag_w.id);
-
-                // Add bearingRange factors here
-                Symbol l_i('l', tag_w.id);
-                double a = tag_w.size / 2;
-                const std::vector<Point3> corners_on_board = {{-a, -a, 0}, {a, -a, 0}, {a, a, 0}, {-a, a, 0}};
-
-                for (size_t ip = 0; ip < tag_w.corners.size(); ip++)
-                {
-                    Point3 corner_initial_estimate(tag_w.corners[ip].x, tag_w.corners[ip].y, tag_w.corners[ip].z);
-                    // std::cout << corner_initial_estimate << std::endl;
-                    int corner_id = ip + tag_w.id * 4;
-                    Symbol p_i('p', corner_id);
-                    initial_estimates_.insert(p_i, corner_initial_estimate);
-                }
-            }
         }
     }
 

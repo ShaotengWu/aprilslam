@@ -22,45 +22,145 @@
 
 namespace aprilslam
 {
+    /**
+     * @brief Backend optimization class.
+     * 
+     */
     class Mapper
     {
     public:
+        ///@brief Pose number counter .
         static int pose_cnt;
 
+        /**
+         * @brief Construct a new Mapper object
+         * 
+         * @param relinearize_thresh iSAM2 parameter
+         * @param relinearize_skip iSAM2 parameter
+         */
         Mapper(double relinearize_thresh, int relinearize_skip);
 
+        /**
+         * @brief Return whether init yet.
+         */
         bool init() const { return init_; }
-        void InitCameraParams(const cv::Matx33d &intrinsic, const cv::Mat &distCoeff);
-        void Optimize(int num_iterations = 1);
-        void Update(aprilslam::TagMap *map, geometry_msgs::Pose *pose);
-        void AddPose(const geometry_msgs::Pose &pose);
-        void AddPose(const geometry_msgs::Pose &pose, const geometry_msgs::Pose &vel); // overload 
-        void AddFactors(const std::vector<aprilslam::Apriltag> &tags_c);
-        void AddLandmarks(const std::vector<aprilslam::Apriltag> &tags_c);
-        void AddLandmarkPrior(const size_t tag_id);
-        void AddTagw(const aprilslam::Apriltag tag_w);
-        void Initialize(const Apriltag &tag_w);
-        void Clear();
-        void UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tag_prior_poses);
-        void UpdateTagsW(const std::vector<Apriltag> tags_w);
 
+        /**
+         * @brief Initialize camera model.
+         * 
+         * @param intrinsic Camera intrinsics. 
+         * @param distCoeff Camera distortion coefficients.
+         */
+        void InitCameraParams(const cv::Matx33d &intrinsic, const cv::Mat &distCoeff);
+
+        /**
+         * @brief iSAM 2 Optimization
+         * 
+         * @param num_iterations optimization iterations.
+         */
+        void Optimize(int num_iterations = 1);
+
+        /**
+         * @brief Update newest optimization results to tag_map and current pose.
+         * 
+         * @param map tag_map in mapper_node
+         * @param pose current_pose in mapper_node
+         */
+        void Update(aprilslam::TagMap *map, geometry_msgs::Pose *pose);
+
+        /**
+         * @brief Add pose factor
+         * 
+         * @param pose current camera pose.
+         */
+        void AddPose(const geometry_msgs::Pose &pose);
+
+        /**
+         * @brief Add pose factor and const velocity motion model constraint
+         * 
+         * @param pose current camera pose.
+         * @param vel newest velocity.
+         */
+        void AddPose(const geometry_msgs::Pose &pose, const geometry_msgs::Pose &vel); // overload
+
+        /**
+         * @brief Add factors.
+         * @details Add factors. Including:
+         * @details  BetweenFactor -- Camera and Apriltags.
+         * @details  GenericProjectionFactor --  Visual projection of corners
+         * @details  RangeFactor -- Apriltag size constraint between its corner and center
+         * 
+         * @param tags_c filtered detections.
+         */
+        void AddFactors(const std::vector<aprilslam::Apriltag> &tags_c);
+
+        /**
+         * @brief Only add init esitimate and prior factor of new landmarks
+         * 
+         * @param tags_c Current detections including old and new landmarks. 
+         */
+        void AddLandmarks(const std::vector<aprilslam::Apriltag> &tags_c);
+
+        /**
+         * @brief Add landmark prior factor
+         * 
+         * @param tag_id Landmark id to query prior info
+         */
+        void AddLandmarkPrior(const size_t tag_id);
+        /**
+         * @brief Initialization. If there is any valid landmark estimation, set init_ true.
+         * 
+         * @param tag_w First tag. The pose of the tag is in fixed world(tag) frame.
+         */
+        void Initialize(const Apriltag &tag_w);
+
+        /**
+         * @brief Clear factor graph and initial estimation
+         * @note Important step while using iSAM 2.
+         * 
+         */
+        void Clear();
+
+        /**
+         * @brief Load prior info
+         * 
+         * @param tag_prior_poses Apriltags prior info extracted from yaml. 
+         */
+        void UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tag_prior_poses);
+
+        // Use batch optimization to check data association. No use right now.
         void BatchOptimize() = delete;
-        void BatchUpdate(aprilslam::TagMap *map, geometry_msgs::Pose *pose) =delete;
+        void BatchUpdate(aprilslam::TagMap *map, geometry_msgs::Pose *pose) = delete;
 
     private:
+        /**
+         * @brief Add init esitimate and prior factor of tag_w
+         * 
+         * @param tag_w Landmark to be added.
+         * @param pose Initial estimate of the landmark.
+         */
         void AddLandmark(const aprilslam::Apriltag &tag_w,
                          const gtsam::Pose3 &pose);
 
+        /// @brief initial flag. If there is any valid landmark estimation, set init_ true.
         bool init_;
+
+        /// @brief For stable initialization. Batch optimize the first min_pose_count_ frames. After initial optimization, init_opt_ is true.
         bool init_opt_;
-        
-        int min_pose_count_; // 批量优化前min_pose_count_帧
-        int inc_pose_count_; // 队列计数；
-        int inc_pose_thr_;   // 隔thr个更新一次
+
+        /// @brief For stable initialization. Batch optimize the first min_pose_count_ frames. After initial optimization, init_opt_ is true.
+        int min_pose_count_;
+
+        /// @brief For stable optimization, new landmark should be observed more than obsv_thr_ times before being added into factor graph.
         int obsv_thr_;
 
+        /// @brief iSAM 2 parameters
         gtsam::ISAM2Params params_;
+
+        /// @brief iSAM 2 data structure
         gtsam::ISAM2 isam2_;
+
+        /// @brief Factor graph. For more details, refer to gtsam offcial documentation(https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://).
         gtsam::NonlinearFactorGraph graph_;
         gtsam::Values initial_estimates_;
         gtsam::Pose3 pose_;

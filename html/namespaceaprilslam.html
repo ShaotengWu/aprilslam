@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -42,6 +49,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('namespaceaprilslam.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -56,7 +78,6 @@ $(function() {
 </iframe>
 </div>
 
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#nested-classes">Classes</a> &#124;
@@ -72,6 +93,7 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1ApriltagVisualizer.html">ApriltagVisualizer</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html">Mapper</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Backend optimization class.  <a href="classaprilslam_1_1Mapper.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1MapperNode.html">MapperNode</a></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The majority of beckend for data collection and factor graph optimization.  <a href="classaprilslam_1_1MapperNode.html#details">More...</a><br /></td></tr>
@@ -158,12 +180,11 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph.png" border="0" usemap="#namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph" id="namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="188,71,325,112"/>
-<area shape="rect" id="node7" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="561,129,699,171"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a03933d12c6e324e745824ffaab3fea99" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="373,5,507,47"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="aprilslam::Mapper::\lUpdate" alt="" coords="373,71,507,112"/>
-<area shape="rect" id="node4" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="aprilslam::Mapper::init" alt="" coords="555,27,705,54"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="753,71,909,112"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="188,37,325,78"/>
+<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="373,99,511,141"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="375,34,509,75"/>
+<area shape="rect" id="node4" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="559,5,709,32"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="757,49,913,90"/>
 </map>
 </div>
 
@@ -273,20 +294,20 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00378">378</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00309">309</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_aafa9903c2cfbe78c279a3698bffe42df_icgraph.png" border="0" usemap="#namespaceaprilslam_aafa9903c2cfbe78c279a3698bffe42df_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_aafa9903c2cfbe78c279a3698bffe42df_icgraph" id="namespaceaprilslam_aafa9903c2cfbe78c279a3698bffe42df_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#adfe0c2b62c0e786fb9cdca757bd41473" title="aprilslam::Mapper::\lAddPose" alt="" coords="615,5,748,47"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1Mapper.html#af82f8cdacbe2b18acb11f1405217b8af" title="aprilslam::Mapper::\lInitialize" alt="" coords="615,71,748,112"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1Mapper.html#a95fe539994b9c809e61d6b4e587822f9" title="aprilslam::Mapper::\lAddLandmarks" alt="" coords="615,239,748,280"/>
-<area shape="rect" id="node7" href="classaprilslam_1_1Mapper.html#a3cd57807f2daa52a33f3638d0d3449f8" title="aprilslam::Mapper::\lAddLandmarkPrior" alt="" coords="252,147,385,188"/>
-<area shape="rect" id="node9" href="classaprilslam_1_1Mapper.html#abde10f8e59553c5f2c40ecfcea9f8b30" title="aprilslam::Mapper::\lAddFactors" alt="" coords="615,304,748,345"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="aprilslam::Mapper::init" alt="" coords="796,177,947,203"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#adfe0c2b62c0e786fb9cdca757bd41473" title="Add pose factor. " alt="" coords="615,5,748,47"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1Mapper.html#af82f8cdacbe2b18acb11f1405217b8af" title="Initialization. If there is any valid landmark estimation, set init_ true. " alt="" coords="615,71,748,112"/>
+<area shape="rect" id="node6" href="classaprilslam_1_1Mapper.html#a95fe539994b9c809e61d6b4e587822f9" title="Only add init esitimate and prior factor of new landmarks. " alt="" coords="615,239,748,280"/>
+<area shape="rect" id="node7" href="classaprilslam_1_1Mapper.html#a3cd57807f2daa52a33f3638d0d3449f8" title="Add landmark prior factor. " alt="" coords="252,147,385,188"/>
+<area shape="rect" id="node9" href="classaprilslam_1_1Mapper.html#abde10f8e59553c5f2c40ecfcea9f8b30" title="Add factors. " alt="" coords="615,304,748,345"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="796,177,947,203"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="995,169,1151,211"/>
-<area shape="rect" id="node8" href="classaprilslam_1_1Mapper.html#aef3b0f21bb896cb9a1dbdb6522274f2a" title="aprilslam::Mapper::\lAddLandmark" alt="" coords="433,121,567,163"/>
+<area shape="rect" id="node8" href="classaprilslam_1_1Mapper.html#aef3b0f21bb896cb9a1dbdb6522274f2a" title="Add init esitimate and prior factor of tag_w. " alt="" coords="433,121,567,163"/>
 </map>
 </div>
 
@@ -482,15 +503,14 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph.png" border="0" usemap="#namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph" id="namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a03933d12c6e324e745824ffaab3fea99" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="757,8,891,49"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="aprilslam::Mapper::\lUpdate" alt="" coords="757,73,891,115"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#afd1fa0d8fb5d772465ef8f157974d119" title="aprilslam::TagMap::\lUpdateTag" alt="" coords="201,73,339,115"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="aprilslam::Mapper::init" alt="" coords="939,45,1089,71"/>
-<area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="1137,113,1293,155"/>
-<area shape="rect" id="node7" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="572,73,709,115"/>
-<area shape="rect" id="node8" href="classaprilslam_1_1TagMap.html#a969b7154ff6bed3b4d99f48c9f6a7a24" title="aprilslam::TagMap::\lAddTag" alt="" coords="387,135,524,176"/>
-<area shape="rect" id="node9" href="classaprilslam_1_1TagMap.html#a7cd3d36c74c64c4fd28544e943923c21" title="aprilslam::TagMap::\lgetVelocity" alt="" coords="945,197,1083,239"/>
-<area shape="rect" id="node10" href="classaprilslam_1_1TagMap.html#a554df2b051876cedb14c9600fad1c8db" title="aprilslam::TagMap::\lAddFirstTag" alt="" coords="572,139,709,180"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="759,17,893,58"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#afd1fa0d8fb5d772465ef8f157974d119" title="aprilslam::TagMap::\lUpdateTag" alt="" coords="201,45,339,86"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="943,5,1093,32"/>
+<area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="1141,74,1297,115"/>
+<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="572,45,709,86"/>
+<area shape="rect" id="node7" href="classaprilslam_1_1TagMap.html#a969b7154ff6bed3b4d99f48c9f6a7a24" title="aprilslam::TagMap::\lAddTag" alt="" coords="387,103,524,145"/>
+<area shape="rect" id="node8" href="classaprilslam_1_1TagMap.html#a7cd3d36c74c64c4fd28544e943923c21" title="aprilslam::TagMap::\lgetVelocity" alt="" coords="757,99,895,141"/>
+<area shape="rect" id="node9" href="classaprilslam_1_1TagMap.html#a554df2b051876cedb14c9600fad1c8db" title="aprilslam::TagMap::\lAddFirstTag" alt="" coords="949,158,1087,199"/>
 </map>
 </div>
 
@@ -528,12 +548,11 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph.png" border="0" usemap="#namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph" id="namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a03933d12c6e324e745824ffaab3fea99" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="219,5,352,47"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="aprilslam::Mapper::\lUpdate" alt="" coords="219,71,352,112"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="407,129,544,171"/>
-<area shape="rect" id="node7" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="aprilslam::SetPose" alt="" coords="219,187,351,214"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="aprilslam::Mapper::init" alt="" coords="400,27,551,54"/>
-<area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="599,71,755,112"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="219,49,352,90"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="407,107,544,149"/>
+<area shape="rect" id="node6" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="aprilslam::SetPose" alt="" coords="219,165,351,192"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="400,5,551,32"/>
+<area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="599,49,755,90"/>
 </map>
 </div>
 
@@ -664,12 +683,11 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph.png" border="0" usemap="#namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph" id="namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a03933d12c6e324e745824ffaab3fea99" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="203,5,336,47"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="aprilslam::Mapper::\lUpdate" alt="" coords="203,71,336,112"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="391,129,528,171"/>
-<area shape="rect" id="node7" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="aprilslam::SetPose" alt="" coords="203,187,335,214"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="aprilslam::Mapper::init" alt="" coords="384,27,535,54"/>
-<area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="583,71,739,112"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="203,49,336,90"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="391,107,528,149"/>
+<area shape="rect" id="node6" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="aprilslam::SetPose" alt="" coords="203,165,335,192"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="384,5,535,32"/>
+<area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="583,49,739,90"/>
 </map>
 </div>
 
@@ -815,11 +833,15 @@ Here is the caller graph for this function:</div>
 </div>
 </div>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceaprilslam.html">aprilslam</a></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>

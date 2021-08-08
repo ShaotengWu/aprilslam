@@ -95,6 +95,7 @@ namespace aprilslam
             ROS_WARN_THROTTLE(1, "No tags detected.");
             return;
         }
+
         // Do nothing if camera info not received
         if (!model_.initialized())
         {
@@ -119,13 +120,15 @@ namespace aprilslam
             ROS_INFO("AprilMap initialized.");
         }
         // Do nothing if no pose can be estimated
-        // 到这里tags的pose都是在相机坐标系下
+        // The poses of apriltag in tags_c_good are in camera frame rather than world(tag) frame
         geometry_msgs::Pose pose;
         if (!map_.EstimatePose(tags_c_good, model_.fullIntrinsicMatrix(), model_.distortionCoeffs(), &pose))
         {
             ROS_WARN_THROTTLE(1, "No 2D-3D correspondence.");
             return;
         }
+
+        // Visualization of Apriltags corner points 
         sensor_msgs::PointCloud obj_pointcloud_viz = map_.obj_pointcloud_viz();
         obj_pointcloud_viz.header.frame_id = frame_id_;
         obj_pointcloud_viz.header.stamp = ros::Time::now();
@@ -138,19 +141,28 @@ namespace aprilslam
         mapper_.AddPose(pose, cam_velocity_);
         // mapper_.AddPose(pose);
 
+        // Add factors. Including:
+        // BetweenFactor -- Camera and Apriltags.
+        // GenericProjectionFactor --  Visual projection of corners
+        // RangeFactor -- Apriltag size constraint between its corner and center
         mapper_.AddFactors(tags_c_good);
-        // This will only add new landmarks
+
+        // This will only add init esitimate and prior factor of new landmarks
         mapper_.AddLandmarks(tags_c_good);
+        
         if (mapper_.init())
         {
-
+            // Update by iSAM2 
             mapper_.Optimize(10);
+            
             // Get latest estimates from mapper and put into map
             mapper_.Update(&map_, &pose);
             
+            // Calculate velocity
             cam_velocity_ = map_.getVelocity();
             map_.UpdateCurrentCamPose(pose);
 
+            // Continuous localization result. Published by pub_cam_trajectory_.
             geometry_msgs::PoseStamped cam_pose_stamped;
             cam_pose_stamped.header.stamp =  ros::Time::now();
             cam_pose_stamped.header.frame_id = frame_id_;
@@ -216,13 +228,12 @@ namespace aprilslam
                   { return tag1.id < tag2.id; });
         for (const Apriltag &tag_c : tags_c_tmp)
         {
-            // std::cout << tag_c.id << " ";
+            //Only use the five smallest id tags because tag with smaller id is closer
+            // TODO: Custom your own filter condition here!
             if (tags_c_good->size() >= 5)
                 break;
             tags_c_good->push_back(tag_c);
-            if (IsInsideImageCenter(tag_c.center.x, tag_c.center.y,
-                                    model_.cameraInfo().width,
-                                    model_.cameraInfo().height, 5))
+            if (IsInsideImageCenter(tag_c.center.x, tag_c.center.y, model_.cameraInfo().width, model_.cameraInfo().height, 5))
             {
                 
             }

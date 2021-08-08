@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -42,6 +49,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classaprilslam_1_1Mapper.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -56,11 +78,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceaprilslam.html">aprilslam</a></li><li class="navelem"><a class="el" href="classaprilslam_1_1Mapper.html">Mapper</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="headertitle">
 <div class="title">aprilslam::Mapper Member List</div>  </div>
@@ -75,56 +92,55 @@ $(function() {
   <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a95fe539994b9c809e61d6b4e587822f9">AddLandmarks</a>(const std::vector&lt; aprilslam::Apriltag &gt; &amp;tags_c)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
   <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#adfe0c2b62c0e786fb9cdca757bd41473">AddPose</a>(const geometry_msgs::Pose &amp;pose)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
   <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a17526ceae2007b08ce21c6ef1bf0b8a7">AddPose</a>(const geometry_msgs::Pose &amp;pose, const geometry_msgs::Pose &amp;vel)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a9029e9caa100e1bbda70687b93533bd6">AddTagw</a>(const aprilslam::Apriltag tag_w)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a1791dae53b2da3c0aec99e14c632e36d">all_ids_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a448032719acafe40d38a4c1e83914d23">all_tags_c_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a92a08f6806c3a5e2e5693305af86b7a3">all_tags_w_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ab8d438df818351d7210d8b95b1a02186">batch_results_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a4bef32335d47998cdfa364a911f077b7">BatchOptimize</a>()</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a03933d12c6e324e745824ffaab3fea99">BatchUpdate</a>(aprilslam::TagMap *map, geometry_msgs::Pose *pose)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a443e9587dd881b210b6aab2318f37eb6">BearingRange3D</a> typedef</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ace81fcaa42deb3ea018c83ac12f2b645">Clear</a>()</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a8cef670ef17bbbc0aec83517499cf7e0">graph_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ae6cee97e43ff250a9bfc589417e1daef">inc_pose_count_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a6883a6404f738ce169769e630cb5ff72">inc_pose_thr_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577">init</a>() const</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a6783f9938d9e15aea2a230c33b10013e">init_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#add8c1ccc9de3f26485f542e01a5a3b4d">init_opt_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a081157e0e56bb59569a7882e01e901e0">InitCameraParams</a>(const cv::Matx33d &amp;intrinsic, const cv::Mat &amp;distCoeff)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a9a24bb3b838ce8f9fc599edd6a40dfa2">initial_estimates_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#af82f8cdacbe2b18acb11f1405217b8af">Initialize</a>(const Apriltag &amp;tag_w)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a28f7f8be865ff77826a6cf80d9f8134e">isam2_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#aab1deb5163f84f90788159641a5d7c72">K_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a6c81c0f82c268f2b427338d0061c299f">lm_params_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ab539e37b157d52f4f3fea226c45fa346">Mapper</a>(double relinearize_thresh, int relinearize_skip)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a121d770fc8c655ba2417516470fec339">measurement_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a2f50961cf7b6afbcde50c27d21005697">measurement_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a047e1f47e8eb34925800573c4c4fbd4f">min_pose_count_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ab637a53b07cda0f119e233832af1ea77">motion_model_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a8d178e5793d9800c9e1f249c6c558d0d">obsv_thr_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a85a799eccf076fd887cac0eb38e41317">Optimize</a>(int num_iterations=1)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#af47609c2c97b43390fd856ed44fc1c06">params_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a861b7bbff967c54249690f860faa5a44">pose_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#abda6bebcf4b5ef342f201866bc74533d">pose_cnt</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a533a462521f6308b45d79396e97d68ef">results_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a22db82d149b850f07367db5069d383e4">small_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ae2ee832384b78fc4006dd5c863237392">small_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a2921d51be62224ca551f222478831740">tag_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a38a06f46a180c58ef6f4678c68ab6b5c">tag_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a0ae016c8084b07589b13f8ca20099060">tag_prior_poses_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#acabb963c2ba5742be61b468575f77300">tag_size_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ad6800e60ce0044a07bb3f814a838ab10">tag_size_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a4f01bd94a35b2a5899940ac960e75ca4">tags_in_isam_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#aa8f831bcb55456da5b1ed253b9954570">tags_obsv_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511">Update</a>(aprilslam::TagMap *map, geometry_msgs::Pose *pose)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe">UpdateTagsPriorInfo</a>(const std::map&lt; size_t, geometry_msgs::Pose &gt; tag_prior_poses)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
-  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a26ede69763dbbdba45cdc6f78dc1fe65">UpdateTagsW</a>(const std::vector&lt; Apriltag &gt; tags_w)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a1791dae53b2da3c0aec99e14c632e36d">all_ids_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a448032719acafe40d38a4c1e83914d23">all_tags_c_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a92a08f6806c3a5e2e5693305af86b7a3">all_tags_w_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ab8d438df818351d7210d8b95b1a02186">batch_results_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a78ed83ba497e0677c922f4793c4d245c">BatchOptimize</a>()=delete</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ace4755f464768834c7483b7b91acb1b8">BatchUpdate</a>(aprilslam::TagMap *map, geometry_msgs::Pose *pose)=delete</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a443e9587dd881b210b6aab2318f37eb6">BearingRange3D</a> typedef</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ace81fcaa42deb3ea018c83ac12f2b645">Clear</a>()</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a8cef670ef17bbbc0aec83517499cf7e0">graph_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577">init</a>() const</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">inline</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a6783f9938d9e15aea2a230c33b10013e">init_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#add8c1ccc9de3f26485f542e01a5a3b4d">init_opt_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a081157e0e56bb59569a7882e01e901e0">InitCameraParams</a>(const cv::Matx33d &amp;intrinsic, const cv::Mat &amp;distCoeff)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a9a24bb3b838ce8f9fc599edd6a40dfa2">initial_estimates_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#af82f8cdacbe2b18acb11f1405217b8af">Initialize</a>(const Apriltag &amp;tag_w)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a28f7f8be865ff77826a6cf80d9f8134e">isam2_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#aab1deb5163f84f90788159641a5d7c72">K_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a6c81c0f82c268f2b427338d0061c299f">lm_params_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ab539e37b157d52f4f3fea226c45fa346">Mapper</a>(double relinearize_thresh, int relinearize_skip)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a121d770fc8c655ba2417516470fec339">measurement_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a2f50961cf7b6afbcde50c27d21005697">measurement_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a047e1f47e8eb34925800573c4c4fbd4f">min_pose_count_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ab637a53b07cda0f119e233832af1ea77">motion_model_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a8d178e5793d9800c9e1f249c6c558d0d">obsv_thr_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a85a799eccf076fd887cac0eb38e41317">Optimize</a>(int num_iterations=1)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#af47609c2c97b43390fd856ed44fc1c06">params_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a861b7bbff967c54249690f860faa5a44">pose_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#abda6bebcf4b5ef342f201866bc74533d">pose_cnt</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">static</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a533a462521f6308b45d79396e97d68ef">results_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a22db82d149b850f07367db5069d383e4">small_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ae2ee832384b78fc4006dd5c863237392">small_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a2921d51be62224ca551f222478831740">tag_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a38a06f46a180c58ef6f4678c68ab6b5c">tag_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a0ae016c8084b07589b13f8ca20099060">tag_prior_poses_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#acabb963c2ba5742be61b468575f77300">tag_size_noise_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#ad6800e60ce0044a07bb3f814a838ab10">tag_size_noise_huber_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a4f01bd94a35b2a5899940ac960e75ca4">tags_in_isam_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#aa8f831bcb55456da5b1ed253b9954570">tags_obsv_</a></td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"><span class="mlabel">private</span></td></tr>
+  <tr class="even"><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511">Update</a>(aprilslam::TagMap *map, geometry_msgs::Pose *pose)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
+  <tr><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe">UpdateTagsPriorInfo</a>(const std::map&lt; size_t, geometry_msgs::Pose &gt; tag_prior_poses)</td><td class="entry"><a class="el" href="classaprilslam_1_1Mapper.html">aprilslam::Mapper</a></td><td class="entry"></td></tr>
 </table></div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>

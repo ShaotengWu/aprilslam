@@ -9,6 +9,13 @@
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript">
+  $(document).ready(initResizable);
+</script>
 <link href="search/search.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="search/searchdata.js"></script>
 <script type="text/javascript" src="search/search.js"></script>
@@ -42,6 +49,21 @@ $(function() {
 });
 </script>
 <div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+$(document).ready(function(){initNavTree('classaprilslam_1_1MapperNode.html','');});
+</script>
+<div id="doc-content">
 <!-- window showing the filter options -->
 <div id="MSearchSelectWindow"
      onmouseover="return searchBox.OnSearchSelectShow()"
@@ -56,11 +78,6 @@ $(function() {
 </iframe>
 </div>
 
-<div id="nav-path" class="navpath">
-  <ul>
-<li class="navelem"><a class="el" href="namespaceaprilslam.html">aprilslam</a></li><li class="navelem"><a class="el" href="classaprilslam_1_1MapperNode.html">MapperNode</a></li>  </ul>
-</div>
-</div><!-- top -->
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
@@ -82,10 +99,10 @@ Collaboration diagram for aprilslam::MapperNode:</div>
 <div class="center"><img src="classaprilslam_1_1MapperNode__coll__graph.png" border="0" usemap="#aprilslam_1_1MapperNode_coll__map" alt="Collaboration graph"/></div>
 <map name="aprilslam_1_1MapperNode_coll__map" id="aprilslam_1_1MapperNode_coll__map">
 <area shape="rect" id="node2" href="classaprilslam_1_1ApriltagVisualizer.html" title="aprilslam::ApriltagVisualizer" alt="" coords="5,5,188,32"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html" title="aprilslam::Mapper" alt="" coords="213,5,338,32"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html" title="Backend optimization class. " alt="" coords="213,5,338,32"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1TagMap.html" title="aprilslam::TagMap" alt="" coords="363,5,492,32"/>
 </map>
-<center><span class="legend">[<a href="graph_legend.html">legend</a>]</span></center></div>
+<center><span class="legend">[<a target="top" href="graph_legend.html">legend</a>]</span></center></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
@@ -208,7 +225,7 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph.png" border="0" usemap="#classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph" alt=""/></div>
 <map name="classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph" id="classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe" title="aprilslam::Mapper::\lUpdateTagsPriorInfo" alt="" coords="229,5,372,47"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe" title="Load prior info. " alt="" coords="229,5,372,47"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1TagMap.html#ac52f6f9b0a332eb84ef50b1a302e7cd2" title="aprilslam::TagMap::\lUpdateTagsPriorInfo" alt="" coords="229,71,372,112"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1ApriltagVisualizer.html#aa1ee4c66cd998f4ac470991466042058" title="aprilslam::ApriltagVisualizer\l::SetColor" alt="" coords="209,136,392,177"/>
 <area shape="rect" id="node5" href="classaprilslam_1_1ApriltagVisualizer.html#a7314529215d6d2bbfdf7c8cc26506b64" title="aprilslam::ApriltagVisualizer\l::SetAlpha" alt="" coords="209,201,392,243"/>
@@ -252,7 +269,7 @@ Here is the call graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper__node_8cpp_source.html#l00193">193</a> of file <a class="el" href="mapper__node_8cpp_source.html">mapper_node.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper__node_8cpp_source.html#l00212">212</a> of file <a class="el" href="mapper__node_8cpp_source.html">mapper_node.cpp</a>.</p>
 
 </div>
 </div>
@@ -294,7 +311,7 @@ Here is the call graph for this function:</div>
 <dd>
 false :If there is no good detection. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper__node_8cpp_source.html#l00204">204</a> of file <a class="el" href="mapper__node_8cpp_source.html">mapper_node.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper__node_8cpp_source.html#l00223">223</a> of file <a class="el" href="mapper__node_8cpp_source.html">mapper_node.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -347,54 +364,52 @@ Here is the caller graph for this function:</div>
 </dl>
 <dl class="todo"><dt><b><a class="el" href="todo.html#_todo000001">Todo:</a></b></dt><dd>The callback function should not be so long for efficiency. Move optimization steps out of the callback function. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper__node_8cpp_source.html#l00084">84</a> of file <a class="el" href="mapper__node_8cpp_source.html">mapper_node.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper__node_8cpp_source.html#l00091">91</a> of file <a class="el" href="mapper__node_8cpp_source.html">mapper_node.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classaprilslam_1_1MapperNode_afd0f199dcf121ce5a548a3c5defa0b4c_cgraph.png" border="0" usemap="#classaprilslam_1_1MapperNode_afd0f199dcf121ce5a548a3c5defa0b4c_cgraph" alt=""/></div>
 <map name="classaprilslam_1_1MapperNode_afd0f199dcf121ce5a548a3c5defa0b4c_cgraph" id="classaprilslam_1_1MapperNode_afd0f199dcf121ce5a548a3c5defa0b4c_cgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a081157e0e56bb59569a7882e01e901e0" title="aprilslam::Mapper::\lInitCameraParams" alt="" coords="490,71,623,112"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1MapperNode.html#a8cb666d7e61141d8823ee50ac4788a9c" title="Filter good apriltag detections for better localization performance. " alt="" coords="227,1393,383,1435"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a334d5bc238baa98c48a42a3275067983" title="aprilslam::TagMap::init" alt="" coords="745,1123,899,1150"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#afd3245eb2297525801cbde5311b2bbde" title="aprilslam::TagMap::\ltags_w" alt="" coords="979,1167,1116,1208"/>
-<area shape="rect" id="node7" href="classaprilslam_1_1TagMap.html#a554df2b051876cedb14c9600fad1c8db" title="aprilslam::TagMap::\lAddFirstTag" alt="" coords="753,687,891,728"/>
-<area shape="rect" id="node12" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="488,1225,625,1267"/>
-<area shape="rect" id="node14" href="classaprilslam_1_1TagMap.html#a42b5b5e37c2343fea31976593df62618" title="aprilslam::TagMap::\lobj_pointcloud_viz" alt="" coords="753,1428,891,1469"/>
-<area shape="rect" id="node19" href="classaprilslam_1_1Mapper.html#adfe0c2b62c0e786fb9cdca757bd41473" title="aprilslam::Mapper::\lAddPose" alt="" coords="490,5,623,47"/>
-<area shape="rect" id="node21" href="classaprilslam_1_1Mapper.html#abde10f8e59553c5f2c40ecfcea9f8b30" title="aprilslam::Mapper::\lAddFactors" alt="" coords="981,445,1114,487"/>
-<area shape="rect" id="node22" href="classaprilslam_1_1Mapper.html#a95fe539994b9c809e61d6b4e587822f9" title="aprilslam::Mapper::\lAddLandmarks" alt="" coords="490,136,623,177"/>
-<area shape="rect" id="node25" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="aprilslam::Mapper::init" alt="" coords="229,479,380,506"/>
-<area shape="rect" id="node26" href="classaprilslam_1_1Mapper.html#a85a799eccf076fd887cac0eb38e41317" title="aprilslam::Mapper::\lOptimize" alt="" coords="490,733,623,775"/>
-<area shape="rect" id="node28" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="aprilslam::Mapper::\lUpdate" alt="" coords="490,1019,623,1060"/>
-<area shape="rect" id="node31" href="classaprilslam_1_1Mapper.html#af82f8cdacbe2b18acb11f1405217b8af" title="aprilslam::Mapper::\lInitialize" alt="" coords="490,201,623,243"/>
-<area shape="rect" id="node36" href="classaprilslam_1_1TagMap.html#a7cd3d36c74c64c4fd28544e943923c21" title="aprilslam::TagMap::\lgetVelocity" alt="" coords="236,973,373,1015"/>
-<area shape="rect" id="node37" href="classaprilslam_1_1TagMap.html#a43fcef916cae20b16393538c7add7c3e" title="aprilslam::TagMap::\lUpdateCurrentCamPose" alt="" coords="222,1459,387,1500"/>
-<area shape="rect" id="node39" href="classaprilslam_1_1TagMap.html#a80997672059db64b064414d0ccf8a70d" title="aprilslam::TagMap::\lfirst_tag" alt="" coords="236,1167,373,1208"/>
-<area shape="rect" id="node40" href="classaprilslam_1_1ApriltagVisualizer.html#aa1ee4c66cd998f4ac470991466042058" title="aprilslam::ApriltagVisualizer\l::SetColor" alt="" coords="213,1524,396,1565"/>
-<area shape="rect" id="node41" href="classaprilslam_1_1ApriltagVisualizer.html#aaf614f81803b41d22de3c8db2ce8ae3c" title="aprilslam::ApriltagVisualizer\l::PublishApriltagsMarker" alt="" coords="213,1589,396,1631"/>
-<area shape="rect" id="node42" href="classaprilslam_1_1TagMap.html#a8354dfd9d4a0aab42d37e605dd0660e4" title="aprilslam::TagMap::\ltags_w_prior" alt="" coords="236,1655,373,1696"/>
-<area shape="rect" id="node43" href="classaprilslam_1_1ApriltagVisualizer.html#adb59874608823df9c3f829b04f1342cb" title="aprilslam::ApriltagVisualizer\l::PublishPriorApriltagsMarker" alt="" coords="209,1720,400,1761"/>
-<area shape="rect" id="node4" href="namespaceaprilslam.html#a510f9a80be42bb485d172140f7123de1" title="aprilslam::IsInsideImage\lCenter" alt="" coords="475,1393,639,1435"/>
-<area shape="rect" id="node8" href="classaprilslam_1_1TagMap.html#a969b7154ff6bed3b4d99f48c9f6a7a24" title="aprilslam::TagMap::\lAddTag" alt="" coords="979,855,1116,896"/>
-<area shape="rect" id="node9" href="classaprilslam_1_1TagMap.html#afd1fa0d8fb5d772465ef8f157974d119" title="aprilslam::TagMap::\lUpdateTag" alt="" coords="1195,855,1332,896"/>
-<area shape="rect" id="node10" href="namespaceaprilslam.html#a13c6ed89e188b47ad0be5795db45a4ac" title="aprilslam::SetCorners" alt="" coords="1411,833,1559,859"/>
-<area shape="rect" id="node11" href="calibrate__bundle_8m.html#ae067d3d934beb2040430002191957cde" title="a" alt="" coords="1607,753,1645,779"/>
-<area shape="rect" id="node13" href="namespaceaprilslam.html#aa3aac0d52735834e72dea7e2bb0220f1" title="aprilslam::FindById" alt="" coords="980,1094,1115,1121"/>
-<area shape="rect" id="node15" href="namespaceaprilslam.html#a98521345401d6bbfa89e90ef1147e9f5" title="aprilslam::SetPosition" alt="" coords="747,971,897,998"/>
-<area shape="rect" id="node16" href="namespaceaprilslam.html#a1f8c381e615f4534e075b3997b46c60e" title="aprilslam::RodriguesToQuat" alt="" coords="730,1326,914,1353"/>
-<area shape="rect" id="node17" href="namespaceaprilslam.html#a841bab97034214c1876936262d7a14ef" title="aprilslam::SetOrientation" alt="" coords="739,1073,905,1099"/>
-<area shape="rect" id="node18" href="namespaceaprilslam.html#ae88b1bac20fdd1c112fd9dadc2dc0115" title="aprilslam::Isometry3dToPoseMsg" alt="" coords="713,1377,931,1403"/>
-<area shape="rect" id="node20" href="namespaceaprilslam.html#aafa9903c2cfbe78c279a3698bffe42df" title="aprilslam::FromGeometryPose" alt="" coords="1164,198,1363,225"/>
-<area shape="rect" id="node23" href="classaprilslam_1_1Mapper.html#aef3b0f21bb896cb9a1dbdb6522274f2a" title="aprilslam::Mapper::\lAddLandmark" alt="" coords="755,249,889,291"/>
-<area shape="rect" id="node24" href="classaprilslam_1_1Mapper.html#a3cd57807f2daa52a33f3638d0d3449f8" title="aprilslam::Mapper::\lAddLandmarkPrior" alt="" coords="981,249,1114,291"/>
-<area shape="rect" id="node27" href="classaprilslam_1_1Mapper.html#ace81fcaa42deb3ea018c83ac12f2b645" title="aprilslam::Mapper::\lClear" alt="" coords="755,569,889,611"/>
-<area shape="rect" id="node30" href="classaprilslam_1_1Mapper.html#a9029e9caa100e1bbda70687b93533bd6" title="aprilslam::Mapper::\lAddTagw" alt="" coords="490,485,623,527"/>
-<area shape="rect" id="node32" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe" title="aprilslam::Mapper::\lUpdateTagsPriorInfo" alt="" coords="485,551,628,592"/>
-<area shape="rect" id="node33" href="classaprilslam_1_1Mapper.html#a26ede69763dbbdba45cdc6f78dc1fe65" title="aprilslam::Mapper::\lUpdateTagsW" alt="" coords="490,616,623,657"/>
-<area shape="rect" id="node34" href="classaprilslam_1_1Mapper.html#a4bef32335d47998cdfa364a911f077b7" title="aprilslam::Mapper::\lBatchOptimize" alt="" coords="490,420,623,461"/>
-<area shape="rect" id="node35" href="classaprilslam_1_1Mapper.html#a03933d12c6e324e745824ffaab3fea99" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="490,901,623,943"/>
-<area shape="rect" id="node29" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="753,905,891,947"/>
-<area shape="rect" id="node38" href="namespaceaprilslam.html#a2e4664df27d19c493204edebecc1ef54" title="aprilslam::PoseMsgToIsometry3d" alt="" coords="448,1466,665,1493"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a081157e0e56bb59569a7882e01e901e0" title="Initialize camera model. " alt="" coords="490,36,623,78"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1MapperNode.html#a8cb666d7e61141d8823ee50ac4788a9c" title="Filter good apriltag detections for better localization performance. " alt="" coords="227,1287,383,1328"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a334d5bc238baa98c48a42a3275067983" title="aprilslam::TagMap::init" alt="" coords="745,1260,899,1286"/>
+<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#afd3245eb2297525801cbde5311b2bbde" title="aprilslam::TagMap::\ltags_w" alt="" coords="979,1151,1116,1192"/>
+<area shape="rect" id="node7" href="classaprilslam_1_1TagMap.html#a554df2b051876cedb14c9600fad1c8db" title="aprilslam::TagMap::\lAddFirstTag" alt="" coords="753,554,891,595"/>
+<area shape="rect" id="node12" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="488,932,625,974"/>
+<area shape="rect" id="node14" href="classaprilslam_1_1TagMap.html#a42b5b5e37c2343fea31976593df62618" title="aprilslam::TagMap::\lobj_pointcloud_viz" alt="" coords="753,1092,891,1134"/>
+<area shape="rect" id="node19" href="classaprilslam_1_1Mapper.html#adfe0c2b62c0e786fb9cdca757bd41473" title="Add pose factor. " alt="" coords="490,102,623,143"/>
+<area shape="rect" id="node21" href="classaprilslam_1_1Mapper.html#abde10f8e59553c5f2c40ecfcea9f8b30" title="Add factors. " alt="" coords="981,100,1114,142"/>
+<area shape="rect" id="node22" href="classaprilslam_1_1Mapper.html#a95fe539994b9c809e61d6b4e587822f9" title="Only add init esitimate and prior factor of new landmarks. " alt="" coords="490,632,623,674"/>
+<area shape="rect" id="node25" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="229,425,380,452"/>
+<area shape="rect" id="node26" href="classaprilslam_1_1Mapper.html#a85a799eccf076fd887cac0eb38e41317" title="iSAM 2 Optimization " alt="" coords="490,167,623,208"/>
+<area shape="rect" id="node28" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="490,866,623,907"/>
+<area shape="rect" id="node30" href="classaprilslam_1_1Mapper.html#af82f8cdacbe2b18acb11f1405217b8af" title="Initialization. If there is any valid landmark estimation, set init_ true. " alt="" coords="490,698,623,739"/>
+<area shape="rect" id="node34" href="classaprilslam_1_1TagMap.html#a7cd3d36c74c64c4fd28544e943923c21" title="aprilslam::TagMap::\lgetVelocity" alt="" coords="236,816,373,858"/>
+<area shape="rect" id="node35" href="classaprilslam_1_1TagMap.html#a43fcef916cae20b16393538c7add7c3e" title="aprilslam::TagMap::\lUpdateCurrentCamPose" alt="" coords="222,1352,387,1394"/>
+<area shape="rect" id="node37" href="classaprilslam_1_1TagMap.html#a80997672059db64b064414d0ccf8a70d" title="aprilslam::TagMap::\lfirst_tag" alt="" coords="236,1170,373,1211"/>
+<area shape="rect" id="node38" href="classaprilslam_1_1ApriltagVisualizer.html#aa1ee4c66cd998f4ac470991466042058" title="aprilslam::ApriltagVisualizer\l::SetColor" alt="" coords="213,1418,396,1459"/>
+<area shape="rect" id="node39" href="classaprilslam_1_1ApriltagVisualizer.html#aaf614f81803b41d22de3c8db2ce8ae3c" title="aprilslam::ApriltagVisualizer\l::PublishApriltagsMarker" alt="" coords="213,1483,396,1524"/>
+<area shape="rect" id="node40" href="classaprilslam_1_1TagMap.html#a8354dfd9d4a0aab42d37e605dd0660e4" title="aprilslam::TagMap::\ltags_w_prior" alt="" coords="236,1548,373,1590"/>
+<area shape="rect" id="node41" href="classaprilslam_1_1ApriltagVisualizer.html#adb59874608823df9c3f829b04f1342cb" title="aprilslam::ApriltagVisualizer\l::PublishPriorApriltagsMarker" alt="" coords="209,1614,400,1655"/>
+<area shape="rect" id="node4" href="namespaceaprilslam.html#a510f9a80be42bb485d172140f7123de1" title="aprilslam::IsInsideImage\lCenter" alt="" coords="475,1287,639,1328"/>
+<area shape="rect" id="node8" href="classaprilslam_1_1TagMap.html#a969b7154ff6bed3b4d99f48c9f6a7a24" title="aprilslam::TagMap::\lAddTag" alt="" coords="979,604,1116,646"/>
+<area shape="rect" id="node9" href="classaprilslam_1_1TagMap.html#afd1fa0d8fb5d772465ef8f157974d119" title="aprilslam::TagMap::\lUpdateTag" alt="" coords="1195,604,1332,646"/>
+<area shape="rect" id="node10" href="namespaceaprilslam.html#a13c6ed89e188b47ad0be5795db45a4ac" title="aprilslam::SetCorners" alt="" coords="1411,612,1559,638"/>
+<area shape="rect" id="node11" href="calibrate__bundle_8m.html#ae067d3d934beb2040430002191957cde" title="a" alt="" coords="1607,404,1645,430"/>
+<area shape="rect" id="node13" href="namespaceaprilslam.html#aa3aac0d52735834e72dea7e2bb0220f1" title="aprilslam::FindById" alt="" coords="980,832,1115,858"/>
+<area shape="rect" id="node15" href="namespaceaprilslam.html#a98521345401d6bbfa89e90ef1147e9f5" title="aprilslam::SetPosition" alt="" coords="747,838,897,865"/>
+<area shape="rect" id="node16" href="namespaceaprilslam.html#a1f8c381e615f4534e075b3997b46c60e" title="aprilslam::RodriguesToQuat" alt="" coords="730,990,914,1017"/>
+<area shape="rect" id="node17" href="namespaceaprilslam.html#a841bab97034214c1876936262d7a14ef" title="aprilslam::SetOrientation" alt="" coords="739,788,905,814"/>
+<area shape="rect" id="node18" href="namespaceaprilslam.html#ae88b1bac20fdd1c112fd9dadc2dc0115" title="aprilslam::Isometry3dToPoseMsg" alt="" coords="713,940,931,966"/>
+<area shape="rect" id="node20" href="namespaceaprilslam.html#aafa9903c2cfbe78c279a3698bffe42df" title="aprilslam::FromGeometryPose" alt="" coords="1164,364,1363,390"/>
+<area shape="rect" id="node23" href="classaprilslam_1_1Mapper.html#aef3b0f21bb896cb9a1dbdb6522274f2a" title="Add init esitimate and prior factor of tag_w. " alt="" coords="755,386,889,427"/>
+<area shape="rect" id="node24" href="classaprilslam_1_1Mapper.html#a3cd57807f2daa52a33f3638d0d3449f8" title="Add landmark prior factor. " alt="" coords="981,356,1114,398"/>
+<area shape="rect" id="node27" href="classaprilslam_1_1Mapper.html#ace81fcaa42deb3ea018c83ac12f2b645" title="Clear factor graph and initial estimation. " alt="" coords="755,218,889,259"/>
+<area shape="rect" id="node31" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe" title="Load prior info. " alt="" coords="485,436,628,478"/>
+<area shape="rect" id="node32" href="classaprilslam_1_1Mapper.html#a78ed83ba497e0677c922f4793c4d245c" title="aprilslam::Mapper::\lBatchOptimize" alt="" coords="490,502,623,543"/>
+<area shape="rect" id="node33" href="classaprilslam_1_1Mapper.html#ace4755f464768834c7483b7b91acb1b8" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="490,567,623,608"/>
+<area shape="rect" id="node29" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="753,722,891,763"/>
+<area shape="rect" id="node36" href="namespaceaprilslam.html#a2e4664df27d19c493204edebecc1ef54" title="aprilslam::PoseMsgToIsometry3d" alt="" coords="448,1360,665,1386"/>
 </map>
 </div>
 
@@ -874,11 +889,15 @@ Here is the call graph for this function:</div>
 <li>aprilslam/src/mapper/<a class="el" href="mapper__node_8cpp_source.html">mapper_node.cpp</a></li>
 </ul>
 </div><!-- contents -->
+</div><!-- doc-content -->
 <!-- start footer part -->
-<hr class="footer"/><address class="footer"><small>
-Generated by &#160;<a href="http://www.doxygen.org/index.html">
-<img class="footer" src="doxygen.png" alt="doxygen"/>
-</a> 1.8.13
-</small></address>
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceaprilslam.html">aprilslam</a></li><li class="navelem"><a class="el" href="classaprilslam_1_1MapperNode.html">MapperNode</a></li>
+    <li class="footer">Generated by
+    <a href="http://www.doxygen.org/index.html">
+    <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.13 </li>
+  </ul>
+</div>
 </body>
 </html>

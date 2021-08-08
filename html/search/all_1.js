@@ -14,7 +14,6 @@ var searchData=
   ['addpath',['addpath',['../calibrate__bundle_8m.html#a1e5f3898fffb0324d578e7d90b643abf',1,'calibrate_bundle.m']]],
   ['addpose',['AddPose',['../classaprilslam_1_1Mapper.html#adfe0c2b62c0e786fb9cdca757bd41473',1,'aprilslam::Mapper::AddPose(const geometry_msgs::Pose &amp;pose)'],['../classaprilslam_1_1Mapper.html#a17526ceae2007b08ce21c6ef1bf0b8a7',1,'aprilslam::Mapper::AddPose(const geometry_msgs::Pose &amp;pose, const geometry_msgs::Pose &amp;vel)']]],
   ['addtag',['AddTag',['../classaprilslam_1_1TagMap.html#a969b7154ff6bed3b4d99f48c9f6a7a24',1,'aprilslam::TagMap']]],
-  ['addtagw',['AddTagw',['../classaprilslam_1_1Mapper.html#a9029e9caa100e1bbda70687b93533bd6',1,'aprilslam::Mapper']]],
   ['all_5fids_5f',['all_ids_',['../classaprilslam_1_1Mapper.html#a1791dae53b2da3c0aec99e14c632e36d',1,'aprilslam::Mapper']]],
   ['all_5ftags_5fc_5f',['all_tags_c_',['../classaprilslam_1_1Mapper.html#a448032719acafe40d38a4c1e83914d23',1,'aprilslam::Mapper']]],
   ['all_5ftags_5fw_5f',['all_tags_w_',['../classaprilslam_1_1Mapper.html#a92a08f6806c3a5e2e5693305af86b7a3',1,'aprilslam::Mapper']]],
