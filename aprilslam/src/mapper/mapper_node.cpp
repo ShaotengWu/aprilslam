@@ -11,20 +11,26 @@ namespace aprilslam
           mapper_(0.04, 1),
           map_("36h11", 0.4),
           tag_viz_(nh, "apriltags_map"),
-          pose_cnt_(0),
-          key_frame_interval_(3)
+          pose_cnt_(0)
 
     {
 
         nh_.getParam(nh_.getNamespace() + "/mapper/use_tag_prior_info", use_tag_prior_info_);
         nh_.getParam(nh_.getNamespace() + "/mapper/tag_prior_info_path", tag_prior_info_path_);
 
+        // Publisher settings.
+        pub_cam_trajectory_ = nh_.advertise<nav_msgs::Path>("cam_trajectory", 1);
+        pub_obj_pointcloud_ = nh_.advertise<sensor_msgs::PointCloud>("object_points", 1);
+        cam_trajectory_.header.frame_id = frame_id_;
+
         if (use_tag_prior_info_)
         {
+            // Load prior information
             ROS_INFO("\033[1;32m----> Use prior information of apriltags. \033[0m");
             ROS_INFO("\033[1;32m----> The yaml file path: %s \033[0m", tag_prior_info_path_.c_str());
             tag_prior_info_node_ = YAML::LoadFile(tag_prior_info_path_);
-
+            
+            // If there is no valid information
             if (!tag_prior_info_node_["tags"].IsDefined())
             {
                 ROS_ERROR("Invalid yaml file!");
@@ -37,6 +43,7 @@ namespace aprilslam
                 ROS_ERROR("Do not use prior information of apriltags. ");
                 exit(0);
             }
+            // If there is valid info.
             else
             {
                 size_t tags_num = tag_prior_info_node_["tags"].size();
@@ -44,11 +51,11 @@ namespace aprilslam
                 ROS_INFO("\033[1;32m----> Prior apriltags number: %d \033[0m", tags_num);
 
                 // load prior information
-                YAML::const_iterator tag_iter_begin = tag_prior_info_node_["tags"].begin();
-                YAML::const_iterator tag_iter_end = tag_prior_info_node_["tags"].end();
-                for (YAML::const_iterator tag_iter = tag_iter_begin; tag_iter != tag_iter_end; tag_iter++)
+                auto tag_iter_begin = tag_prior_info_node_["tags"].begin();
+                auto tag_iter_end = tag_prior_info_node_["tags"].end();
+                for (auto tag_iter = tag_iter_begin; tag_iter != tag_iter_end; tag_iter++)
                 {
-                    YAML::Node tag_node = *tag_iter;
+                    auto tag_node = *tag_iter;
                     size_t id = tag_node["id"].as<size_t>();
                     std::vector<double> translation = tag_node["translation"].as<std::vector<double>>();
                     std::vector<double> rotation = tag_node["rotation"].as<std::vector<double>>();
@@ -64,6 +71,8 @@ namespace aprilslam
 
                     tag_prior_poses_.insert(std::pair<size_t, geometry_msgs::Pose>(id, tag_prior_pose));
                 }
+
+                // Pass prior info to mapper(Optimizer) and tag_map(Manager)
                 mapper_.UpdateTagsPriorInfo(tag_prior_poses_);
                 map_.UpdateTagsPriorInfo(tag_prior_poses_);
             }
@@ -73,12 +82,10 @@ namespace aprilslam
             ROS_INFO(" Do not use prior information of apriltags. ");
         }
 
+        // Visualization settings
         tag_viz_.SetColor(aprilslam::GREEN);
         tag_viz_.SetAlpha(0.75);
 
-        pub_cam_trajectory_ = nh_.advertise<nav_msgs::Path>("cam_trajectory", 1);
-        pub_obj_pointcloud_ = nh_.advertise<sensor_msgs::PointCloud>("object_points", 1);
-        cam_trajectory_.header.frame_id = frame_id_;
     }
 
     void MapperNode::TagsCb(const aprilslam::ApriltagsConstPtr &tags_c_msg)

@@ -4,7 +4,9 @@
 
 Some basic code in this repository is forked from https://github.com/ProjectArtemis/aprilslam . Thanks [*@mhkabir*](https://github.com/mhkabir) for opening the awesome code.
 
-AprilSLAM is a package designed for fast camera pose estimation from a single or multiple AprilTags(link) in an unstructured environment. AprilSLAM needs prior information of Apriltags for better localization performance. The system can map multiple tags in the camera's view as long as there is atleast another tag in view to estimate relative tag pose the first time. The system has been run with a forward looking ZED2 stereo camera on an AGV with an X86-based computing solutions for precise estimation of the vehicle pose. The localization FPS is nearly 30Hz. The system is implemented under ROS (Robot Operating System) for ease of integration, but should be easy to run without it as well.
+Your can refer to [doxygen documentation](./html/index.html) created by [*@ShaotengWu*](https://github.com/ShaotengWu) for details.
+
+AprilSLAM is a package designed for fast camera pose estimation from a single or multiple AprilTags(link) in an unstructured environment. AprilSLAM needs prior information of Apriltags for better localization performance. The system can map multiple tags in the camera's view as long as there is atleast another tag in view to estimate relative tag pose the first time. The system has been run with a forward looking ZED2 stereo camera on an AGV with a X86-based computing solutions for precise estimation of the vehicle pose. The localization FPS is nearly 30Hz. The system is implemented under ROS (Robot Operating System) for ease of integration, but should be easy to run without it as well.
 
 
 ![aprilslam](./aprilslam/pics/aprilslam.jpg)
@@ -20,10 +22,18 @@ Package originally developed by Chao Qu and Gareth Cross from Kumar Robotics (ww
 
 The code is implemented majorly based on [ROS melodic](https://www.ros.org/), [GTSAM 4.0.2](https://github.com/borglab/gtsam) and [OpenCV 4.4.0](https://opencv.org/opencv-4-0/).
 
-### 2.1 GTSAM 4.0.2
+### 2.1 ROS Melodic
+Install ROS Melodic according to [ROS official instructions](http://wiki.ros.org/melodic/Installation/Ubuntu). Additionally, install `apriltag-ros` dependency with following step.
+```bash
+#!bash
+$ sudo apt-get install ros-melodic-apriltag
+```
+
+
+### 2.2 GTSAM 4.0.2
 
 GTSAM [installation](https://github.com/borglab/gtsam)
-```
+```bash
 #!bash
 $ git clone https://github.com/borglab/gtsam.git
 $ cd gtsam
@@ -34,15 +44,10 @@ $ make check (optional, runs unit tests)
 $ sudo make install
 ```
 
-### 2.2 OpenCV 4.4.0
+### 2.3 OpenCV 4.4.0
 
-You can install OpenCV 4.4.0 refer to this [link](https://gist.github.com/raulqf/f42c718a658cddc16f9df07ecc627be7). CUDA is not necessarily needed and you can customize your own compilation settings. Aprilslam only need some basic data structures and algorithms.
+You can install OpenCV 4.4.0 referring to this [link](https://gist.github.com/raulqf/f42c718a658cddc16f9df07ecc627be7). CUDA is not necessarily needed and you can customize your own compilation settings. Aprilslam only need some basic data structures and algorithms.
 
-### 2.3 Apriltag ROS
-```bash
-#!bash
-$ sudo apt-get install ros-melodic-apriltag
-```
 
 
 ## 3. Get Started
@@ -78,6 +83,7 @@ In `aprilslam/aprilslam/launch/slam.launch`, set proper value of following param
 
 ### 3.4 Launch
 ```bash
+#!bash
 $ catkin build
 $ source devel/setup.bash
 # if you use zsh:

@@ -22,8 +22,6 @@
 
 namespace aprilslam
 {
-
-    // Feel like using iSAM2?
     class Mapper
     {
     public:
@@ -46,8 +44,8 @@ namespace aprilslam
         void UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tag_prior_poses);
         void UpdateTagsW(const std::vector<Apriltag> tags_w);
 
-        void BatchOptimize();
-        void BatchUpdate(aprilslam::TagMap *map, geometry_msgs::Pose *pose);
+        void BatchOptimize() = delete;
+        void BatchUpdate(aprilslam::TagMap *map, geometry_msgs::Pose *pose) =delete;
 
     private:
         void AddLandmark(const aprilslam::Apriltag &tag_w,
