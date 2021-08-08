@@ -18,7 +18,7 @@ var classaprilslam_1_1MapperNode =
     [ "sub_tags_", "classaprilslam_1_1MapperNode.html#a41dca7723173e1560491eb9a314ac363", null ],
     [ "tag_prior_info_node_", "classaprilslam_1_1MapperNode.html#af8f70814ad9f2c9f389f73696743f0ed", null ],
     [ "tag_prior_info_path_", "classaprilslam_1_1MapperNode.html#a446692dbde834772c5c16e3800acfd31", null ],
-    [ "tag_prior_poses_", "classaprilslam_1_1MapperNode.html#ac86087a7add16cdc7ed43a329e701f4b", null ],
+    [ "tag_prior_poses_", "classaprilslam_1_1MapperNode.html#a32801a544cae086263aa49545bdc8a58", null ],
     [ "tag_viz_", "classaprilslam_1_1MapperNode.html#a2fc514f055c96eb62820bef3af2ce7a0", null ],
     [ "tf_broadcaster_", "classaprilslam_1_1MapperNode.html#a7bdfd7cc2090efb7624e4afbd158dea3", null ],
     [ "use_tag_prior_info_", "classaprilslam_1_1MapperNode.html#aadf3c63d2b37dd0b06ba03813edfcfa4", null ]

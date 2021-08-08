@@ -197,7 +197,7 @@ namespace aprilslam
         return true;
     }
 
-    void TagMap::UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tags_prior_info)
+    void TagMap::UpdateTagsPriorInfo(const std::map<int, geometry_msgs::Pose> tags_prior_info)
     {
         //tags_w_prior_.resize(tags_prior_info.size());
         tags_prior_info_ = tags_prior_info;

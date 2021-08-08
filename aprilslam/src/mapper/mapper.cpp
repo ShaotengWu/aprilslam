@@ -20,17 +20,14 @@ namespace aprilslam
           tag_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.10, 0.10, 0.10, 0.10, 0.20, 0.20).finished())),
           small_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.05, 0.05, 0.05, 0.05, 0.10, 0.10).finished())),
           tag_size_noise_(noiseModel::Isotropic::Sigma(1, 0.01)),
-          motion_model_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.15, 0.01, 0.15, 0.01, 0.05, 0.01).finished()))
+          motion_model_noise_(noiseModel::Diagonal::Sigmas((Vector(6) << 0.15, 0.01, 0.15, 0.01, 0.05, 0.01).finished())),
+          measurement_noise_(noiseModel::Isotropic::Sigma(2, 1.0)),
+          tag_noise_huber_(noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.0), tag_noise_)),
+          small_noise_huber_(noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.0), small_noise_)),
+          tag_size_noise_huber_(noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.1), small_noise_)),
+          measurement_noise_huber_(noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.5), measurement_noise_))
     {
-        measurement_noise_ = noiseModel::Isotropic::Sigma(2, 1.0);
-
-        tag_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.0), tag_noise_);
-        small_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(1.0), small_noise_);
-        tag_size_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.1), small_noise_);
-        measurement_noise_huber_ = noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.5), measurement_noise_);
-
-        // lm_params_.setMaxIterations(10);
-        // lm_params_.setVerbosity("ERROR");
+        
     }
 
     void Mapper::InitCameraParams(const cv::Matx33d &intrinsic, const cv::Mat &distCoeff)
@@ -44,7 +41,7 @@ namespace aprilslam
         K_ = Cal3_S2::shared_ptr(new Cal3_S2(fx, fy, 0, cx, cy));
     }
 
-    void Mapper::UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tag_prior_poses)
+    void Mapper::UpdateTagsPriorInfo(const std::map<int, geometry_msgs::Pose> tag_prior_poses)
     {
         tag_prior_poses_ = tag_prior_poses;
     }
@@ -180,7 +177,7 @@ namespace aprilslam
                                 int corner_id = ip + tag_c.id * 4;
                                 Symbol p_i('p', corner_id);
                                 graph_.push_back(GenericProjectionFactor<Pose3, Point3, Cal3_S2>(corner_measurment, measurement_noise_, x_i, p_i, K_));
-                                
+
                                 if (!initial_estimates_.exists(p_i))
                                 {
                                     double a = tag_w.size / 2;
@@ -216,7 +213,7 @@ namespace aprilslam
                         int corner_id = ip + tag_c.id * 4;
                         Symbol p_i('p', corner_id);
                         graph_.push_back(GenericProjectionFactor<Pose3, Point3, Cal3_S2>(corner_measurment, measurement_noise_, x_i, p_i, K_));
-                        }
+                    }
                 }
             }
         }
@@ -225,12 +222,11 @@ namespace aprilslam
     void Mapper::Optimize(int num_iterations)
     {
         std::ofstream graph_ofs("./aprilslam.dot");
-        graph_.saveGraph(graph_ofs, batch_results_);
+        graph_.saveGraph(graph_ofs, results_);
 
-        
         if ((pose_cnt > min_pose_count_))
         {
-            
+
             if (!init_opt_)
             { // Do a full optimize for first minK ranges
                 init_opt_ = true;
@@ -252,7 +248,6 @@ namespace aprilslam
                     // printf("\033[1A");
                     // printf("\033[K");
                 }
-                
             }
 
             results_ = isam2_.calculateEstimate();
@@ -301,7 +296,7 @@ namespace aprilslam
 
     void Mapper::Clear()
     {
-        
+
         graph_.resize(0);
         initial_estimates_.clear();
     }

@@ -166,9 +166,9 @@ Private Attributes</h2></td></tr>
 <tr class="memitem:af8f70814ad9f2c9f389f73696743f0ed"><td class="memItemLeft" align="right" valign="top">YAML::Node&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1MapperNode.html#af8f70814ad9f2c9f389f73696743f0ed">tag_prior_info_node_</a></td></tr>
 <tr class="memdesc:af8f70814ad9f2c9f389f73696743f0ed"><td class="mdescLeft">&#160;</td><td class="mdescRight">The prior info is loaded in this YAML data structure.  <a href="#af8f70814ad9f2c9f389f73696743f0ed">More...</a><br /></td></tr>
 <tr class="separator:af8f70814ad9f2c9f389f73696743f0ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac86087a7add16cdc7ed43a329e701f4b"><td class="memItemLeft" align="right" valign="top">std::map&lt; size_t, geometry_msgs::Pose &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1MapperNode.html#ac86087a7add16cdc7ed43a329e701f4b">tag_prior_poses_</a></td></tr>
-<tr class="memdesc:ac86087a7add16cdc7ed43a329e701f4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prior information is extracted from YAML::NODE and stored in this RbTree.  <a href="#ac86087a7add16cdc7ed43a329e701f4b">More...</a><br /></td></tr>
-<tr class="separator:ac86087a7add16cdc7ed43a329e701f4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32801a544cae086263aa49545bdc8a58"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, geometry_msgs::Pose &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1MapperNode.html#a32801a544cae086263aa49545bdc8a58">tag_prior_poses_</a></td></tr>
+<tr class="memdesc:a32801a544cae086263aa49545bdc8a58"><td class="mdescLeft">&#160;</td><td class="mdescRight">Prior information is extracted from YAML::NODE and stored in this RbTree.  <a href="#a32801a544cae086263aa49545bdc8a58">More...</a><br /></td></tr>
+<tr class="separator:a32801a544cae086263aa49545bdc8a58"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4485f1b3b5cca0537984fe40b71766b1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1MapperNode.html#a4485f1b3b5cca0537984fe40b71766b1">pose_cnt_</a></td></tr>
 <tr class="memdesc:a4485f1b3b5cca0537984fe40b71766b1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pose number counter .  <a href="#a4485f1b3b5cca0537984fe40b71766b1">More...</a><br /></td></tr>
 <tr class="separator:a4485f1b3b5cca0537984fe40b71766b1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -225,8 +225,8 @@ Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph.png" border="0" usemap="#classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph" alt=""/></div>
 <map name="classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph" id="classaprilslam_1_1MapperNode_ac3ce1518ae13119e26b4e0bd74385591_cgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe" title="Load prior info. " alt="" coords="229,5,372,47"/>
-<area shape="rect" id="node3" href="classaprilslam_1_1TagMap.html#ac52f6f9b0a332eb84ef50b1a302e7cd2" title="aprilslam::TagMap::\lUpdateTagsPriorInfo" alt="" coords="229,71,372,112"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#aff308c25c98e97d9d1de6410b6d5fe20" title="Load prior info. " alt="" coords="229,5,372,47"/>
+<area shape="rect" id="node3" href="classaprilslam_1_1TagMap.html#a8c45fe91bd051e79e3623e6b43e5f606" title="aprilslam::TagMap::\lUpdateTagsPriorInfo" alt="" coords="229,71,372,112"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1ApriltagVisualizer.html#aa1ee4c66cd998f4ac470991466042058" title="aprilslam::ApriltagVisualizer\l::SetColor" alt="" coords="209,136,392,177"/>
 <area shape="rect" id="node5" href="classaprilslam_1_1ApriltagVisualizer.html#a7314529215d6d2bbfdf7c8cc26506b64" title="aprilslam::ApriltagVisualizer\l::SetAlpha" alt="" coords="209,201,392,243"/>
 <area shape="rect" id="node6" href="classaprilslam_1_1ApriltagVisualizer.html#aaf614f81803b41d22de3c8db2ce8ae3c" title="aprilslam::ApriltagVisualizer\l::PublishApriltagsMarker" alt="" coords="444,168,627,209"/>
@@ -405,7 +405,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node23" href="classaprilslam_1_1Mapper.html#aef3b0f21bb896cb9a1dbdb6522274f2a" title="Add init esitimate and prior factor of tag_w. " alt="" coords="755,386,889,427"/>
 <area shape="rect" id="node24" href="classaprilslam_1_1Mapper.html#a3cd57807f2daa52a33f3638d0d3449f8" title="Add landmark prior factor. " alt="" coords="981,356,1114,398"/>
 <area shape="rect" id="node27" href="classaprilslam_1_1Mapper.html#ace81fcaa42deb3ea018c83ac12f2b645" title="Clear factor graph and initial estimation. " alt="" coords="755,218,889,259"/>
-<area shape="rect" id="node31" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe" title="Load prior info. " alt="" coords="485,436,628,478"/>
+<area shape="rect" id="node31" href="classaprilslam_1_1Mapper.html#aff308c25c98e97d9d1de6410b6d5fe20" title="Load prior info. " alt="" coords="485,436,628,478"/>
 <area shape="rect" id="node32" href="classaprilslam_1_1Mapper.html#a78ed83ba497e0677c922f4793c4d245c" title="aprilslam::Mapper::\lBatchOptimize" alt="" coords="490,502,623,543"/>
 <area shape="rect" id="node33" href="classaprilslam_1_1Mapper.html#ace4755f464768834c7483b7b91acb1b8" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="490,567,623,608"/>
 <area shape="rect" id="node29" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="753,722,891,763"/>
@@ -780,8 +780,8 @@ Here is the call graph for this function:</div>
 
 </div>
 </div>
-<a id="ac86087a7add16cdc7ed43a329e701f4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac86087a7add16cdc7ed43a329e701f4b">&#9670;&nbsp;</a></span>tag_prior_poses_</h2>
+<a id="a32801a544cae086263aa49545bdc8a58"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32801a544cae086263aa49545bdc8a58">&#9670;&nbsp;</a></span>tag_prior_poses_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -790,7 +790,7 @@ Here is the call graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;size_t, geometry_msgs::Pose&gt; aprilslam::MapperNode::tag_prior_poses_</td>
+          <td class="memname">std::map&lt;int, geometry_msgs::Pose&gt; aprilslam::MapperNode::tag_prior_poses_</td>
         </tr>
       </table>
   </td>

@@ -22,6 +22,7 @@
 
 namespace aprilslam
 {
+    using BearingRange3D = gtsam::BearingRangeFactor<gtsam::Pose3, gtsam::Point3>;
     /**
      * @brief Backend optimization class.
      * 
@@ -126,7 +127,7 @@ namespace aprilslam
          * 
          * @param tag_prior_poses Apriltags prior info extracted from yaml. 
          */
-        void UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tag_prior_poses);
+        void UpdateTagsPriorInfo(const std::map<int, geometry_msgs::Pose> tag_prior_poses);
 
         // Use batch optimization to check data association. No use right now.
         void BatchOptimize() = delete;
@@ -154,38 +155,71 @@ namespace aprilslam
         /// @brief For stable optimization, new landmark should be observed more than obsv_thr_ times before being added into factor graph.
         int obsv_thr_;
 
-        /// @brief iSAM 2 parameters
+        /// @brief iSAM 2 parameters. For more details, refer to gtsam offcial documentation(https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://).
         gtsam::ISAM2Params params_;
 
-        /// @brief iSAM 2 data structure
+        /// @brief iSAM 2 data structure. For more details, refer to gtsam offcial documentation(https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://).
         gtsam::ISAM2 isam2_;
 
         /// @brief Factor graph. For more details, refer to gtsam offcial documentation(https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://).
         gtsam::NonlinearFactorGraph graph_;
-        gtsam::Values initial_estimates_;
-        gtsam::Pose3 pose_;
-        gtsam::Cal3_S2::shared_ptr K_;
-        gtsam::noiseModel::Diagonal::shared_ptr tag_noise_;
-        gtsam::noiseModel::Diagonal::shared_ptr small_noise_;
-        gtsam::noiseModel::Diagonal::shared_ptr tag_size_noise_;
-        gtsam::noiseModel::Diagonal::shared_ptr motion_model_noise_;
-        gtsam::noiseModel::Isotropic::shared_ptr measurement_noise_;
-        gtsam::noiseModel::Base::shared_ptr tag_noise_huber_;
-        gtsam::noiseModel::Base::shared_ptr small_noise_huber_;
-        gtsam::noiseModel::Base::shared_ptr tag_size_noise_huber_;
-        gtsam::noiseModel::Base::shared_ptr measurement_noise_huber_;
-        std::set<int> all_ids_;
-        std::map<int, aprilslam::Apriltag> all_tags_c_;
-        std::map<int, aprilslam::Apriltag> all_tags_w_;
-        std::map<int, std::vector<int>> tags_obsv_;
-        std::map<int, bool> tags_in_isam_;
-        std::map<size_t, geometry_msgs::Pose> tag_prior_poses_;
 
-        gtsam::LevenbergMarquardtParams lm_params_;
-        gtsam::Values batch_results_;
+        /// @brief Initial estiamtes of varibles in iSAM2. For more details, refer to gtsam offcial documentation(https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://).
+        gtsam::Values initial_estimates_;
+
+        /// @brief Results.
         gtsam::Values results_;
 
-        typedef gtsam::BearingRangeFactor<gtsam::Pose3, gtsam::Point3> BearingRange3D;
+        /// @brief Camera pose.
+        gtsam::Pose3 pose_;
+
+        /// @brief Camera intrinsics.
+        gtsam::Cal3_S2::shared_ptr K_;
+
+        /// @brief noise of relative pose estimation during Apriltag detection.
+        gtsam::noiseModel::Diagonal::shared_ptr tag_noise_;
+
+        /// @brief noise of prior information.
+        gtsam::noiseModel::Diagonal::shared_ptr small_noise_;
+
+        /// @brief noise of Apriltag size constraint.
+        gtsam::noiseModel::Diagonal::shared_ptr tag_size_noise_;
+
+        /// @brief noise of const motion model.
+        gtsam::noiseModel::Diagonal::shared_ptr motion_model_noise_;
+
+        /// @brief noise of camera measurement.
+        gtsam::noiseModel::Isotropic::shared_ptr measurement_noise_;
+
+        ///@brief Huber kernel for noise of relative pose estimation during Apriltag detection.
+        gtsam::noiseModel::Base::shared_ptr tag_noise_huber_;
+
+        ///@brief Huber kernel for noise of prior information.
+        gtsam::noiseModel::Base::shared_ptr small_noise_huber_;
+
+        ///@brief Huber kernel for noise of Apriltag size constraint.
+        gtsam::noiseModel::Base::shared_ptr tag_size_noise_huber_;
+
+        ///@brief Huber kernel for noise of const motion model.
+        gtsam::noiseModel::Base::shared_ptr measurement_noise_huber_;
+
+        ///@brief All apriltags id in SLAM framework.
+        std::set<int> all_ids_;
+
+        ///@brief Key: Apriltags id  Value: Pose in camera frame
+        std::map<int, aprilslam::Apriltag> all_tags_c_;
+
+        ///@brief Key: Apriltags id  Value: Pose in world(tag) frame
+        std::map<int, aprilslam::Apriltag> all_tags_w_;
+
+        ///@brief Key: Apriltags id  Value: Observation times
+        std::map<int, std::vector<int>> tags_obsv_;
+
+        ///@brief Key: Apriltags id  Value: If the landmark is already in iSAM2
+        std::map<int, bool> tags_in_isam_;
+
+        ///@brief Key: Apriltags id  Value: Prior pose
+        std::map<int, geometry_msgs::Pose> tag_prior_poses_;
     };
 
     gtsam::Pose3 FromGeometryPose(const geometry_msgs::Pose &pose);

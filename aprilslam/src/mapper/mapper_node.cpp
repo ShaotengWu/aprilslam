@@ -69,7 +69,7 @@ namespace aprilslam
                     tag_prior_pose.orientation.z = rotation[2];
                     tag_prior_pose.orientation.w = rotation[3];
 
-                    tag_prior_poses_.insert(std::pair<size_t, geometry_msgs::Pose>(id, tag_prior_pose));
+                    tag_prior_poses_.insert(std::pair<int, geometry_msgs::Pose>(id, tag_prior_pose));
                 }
 
                 // Pass prior info to mapper(Optimizer) and tag_map(Manager)

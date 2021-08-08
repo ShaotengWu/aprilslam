@@ -17,7 +17,7 @@ namespace aprilslam
 
         void AddOrUpdate(const Apriltag &tag_w, const geometry_msgs::Pose &pose);
         void UpdateTag(Apriltag *tag_w, const geometry_msgs::Pose &pose);
-        void UpdateTagsPriorInfo(const std::map<size_t, geometry_msgs::Pose> tags_prior_info);
+        void UpdateTagsPriorInfo(const std::map<int, geometry_msgs::Pose> tags_prior_info);
         void AddFirstTag(const Apriltag &tag_c);
         bool EstimatePose(const std::vector<Apriltag> &tags_c, const cv::Matx33d &K, const cv::Mat_<double> &D, geometry_msgs::Pose *pose);
         void UpdateCurrentCamPose(const geometry_msgs::Pose &pose);
@@ -37,7 +37,7 @@ namespace aprilslam
         std::vector<aprilslam::Apriltag> tags_w_;
         std::vector<aprilslam::Apriltag> tags_w_prior_;
         std::map<int, aprilslam::Apriltag> tags_w_map_;
-        std::map<size_t, geometry_msgs::Pose> tags_prior_info_;
+        std::map<int, geometry_msgs::Pose> tags_prior_info_;
 
         std::string tag_family_;
         double tag_size_;

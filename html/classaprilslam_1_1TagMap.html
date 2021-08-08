@@ -99,8 +99,8 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a41b011d96e513916651b9802d3c46eac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afd1fa0d8fb5d772465ef8f157974d119"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#afd1fa0d8fb5d772465ef8f157974d119">UpdateTag</a> (Apriltag *tag_w, const geometry_msgs::Pose &amp;pose)</td></tr>
 <tr class="separator:afd1fa0d8fb5d772465ef8f157974d119"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac52f6f9b0a332eb84ef50b1a302e7cd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#ac52f6f9b0a332eb84ef50b1a302e7cd2">UpdateTagsPriorInfo</a> (const std::map&lt; size_t, geometry_msgs::Pose &gt; tags_prior_info)</td></tr>
-<tr class="separator:ac52f6f9b0a332eb84ef50b1a302e7cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c45fe91bd051e79e3623e6b43e5f606"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#a8c45fe91bd051e79e3623e6b43e5f606">UpdateTagsPriorInfo</a> (const std::map&lt; int, geometry_msgs::Pose &gt; tags_prior_info)</td></tr>
+<tr class="separator:a8c45fe91bd051e79e3623e6b43e5f606"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a554df2b051876cedb14c9600fad1c8db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#a554df2b051876cedb14c9600fad1c8db">AddFirstTag</a> (const Apriltag &amp;tag_c)</td></tr>
 <tr class="separator:a554df2b051876cedb14c9600fad1c8db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a66fdc90bfef7b4b8fae1ccdf3f60a490"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490">EstimatePose</a> (const std::vector&lt; Apriltag &gt; &amp;tags_c, const cv::Matx33d &amp;K, const cv::Mat_&lt; double &gt; &amp;D, geometry_msgs::Pose *pose)</td></tr>
@@ -133,8 +133,8 @@ Private Attributes</h2></td></tr>
 <tr class="separator:a2aa94a19379b0a00bdc60476c718adfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4bf36741fb3ce1290c08aa8eba385f7f"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, aprilslam::Apriltag &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#a4bf36741fb3ce1290c08aa8eba385f7f">tags_w_map_</a></td></tr>
 <tr class="separator:a4bf36741fb3ce1290c08aa8eba385f7f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe5f973479c2a54500fc3f26fed69339"><td class="memItemLeft" align="right" valign="top">std::map&lt; size_t, geometry_msgs::Pose &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#afe5f973479c2a54500fc3f26fed69339">tags_prior_info_</a></td></tr>
-<tr class="separator:afe5f973479c2a54500fc3f26fed69339"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a223fc045c226cdb13c47440bbdcb5bcf"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, geometry_msgs::Pose &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#a223fc045c226cdb13c47440bbdcb5bcf">tags_prior_info_</a></td></tr>
+<tr class="separator:a223fc045c226cdb13c47440bbdcb5bcf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a51c26bc09f276bc785e2af4e95c864fb"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#a51c26bc09f276bc785e2af4e95c864fb">tag_family_</a></td></tr>
 <tr class="separator:a51c26bc09f276bc785e2af4e95c864fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34fc72a66a2ed26ee9a9a8c33344684e"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html#a34fc72a66a2ed26ee9a9a8c33344684e">tag_size_</a></td></tr>
@@ -742,8 +742,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="ac52f6f9b0a332eb84ef50b1a302e7cd2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac52f6f9b0a332eb84ef50b1a302e7cd2">&#9670;&nbsp;</a></span>UpdateTagsPriorInfo()</h2>
+<a id="a8c45fe91bd051e79e3623e6b43e5f606"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c45fe91bd051e79e3623e6b43e5f606">&#9670;&nbsp;</a></span>UpdateTagsPriorInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -751,7 +751,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void aprilslam::TagMap::UpdateTagsPriorInfo </td>
           <td>(</td>
-          <td class="paramtype">const std::map&lt; size_t, geometry_msgs::Pose &gt;&#160;</td>
+          <td class="paramtype">const std::map&lt; int, geometry_msgs::Pose &gt;&#160;</td>
           <td class="paramname"><em>tags_prior_info</em></td><td>)</td>
           <td></td>
         </tr>
@@ -762,8 +762,8 @@ Here is the caller graph for this function:</div>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classaprilslam_1_1TagMap_ac52f6f9b0a332eb84ef50b1a302e7cd2_icgraph.png" border="0" usemap="#classaprilslam_1_1TagMap_ac52f6f9b0a332eb84ef50b1a302e7cd2_icgraph" alt=""/></div>
-<map name="classaprilslam_1_1TagMap_ac52f6f9b0a332eb84ef50b1a302e7cd2_icgraph" id="classaprilslam_1_1TagMap_ac52f6f9b0a332eb84ef50b1a302e7cd2_icgraph">
+<div class="center"><img src="classaprilslam_1_1TagMap_a8c45fe91bd051e79e3623e6b43e5f606_icgraph.png" border="0" usemap="#classaprilslam_1_1TagMap_a8c45fe91bd051e79e3623e6b43e5f606_icgraph" alt=""/></div>
+<map name="classaprilslam_1_1TagMap_a8c45fe91bd051e79e3623e6b43e5f606_icgraph" id="classaprilslam_1_1TagMap_a8c45fe91bd051e79e3623e6b43e5f606_icgraph">
 <area shape="rect" id="node2" href="classaprilslam_1_1MapperNode.html#ac3ce1518ae13119e26b4e0bd74385591" title="Construct a new MapperNode object. " alt="" coords="196,5,352,47"/>
 </map>
 </div>
@@ -987,8 +987,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="afe5f973479c2a54500fc3f26fed69339"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe5f973479c2a54500fc3f26fed69339">&#9670;&nbsp;</a></span>tags_prior_info_</h2>
+<a id="a223fc045c226cdb13c47440bbdcb5bcf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a223fc045c226cdb13c47440bbdcb5bcf">&#9670;&nbsp;</a></span>tags_prior_info_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -997,7 +997,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;size_t, geometry_msgs::Pose&gt; aprilslam::TagMap::tags_prior_info_</td>
+          <td class="memname">std::map&lt;int, geometry_msgs::Pose&gt; aprilslam::TagMap::tags_prior_info_</td>
         </tr>
       </table>
   </td>

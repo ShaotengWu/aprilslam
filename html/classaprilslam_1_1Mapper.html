@@ -82,7 +82,6 @@ $(document).ready(function(){initNavTree('classaprilslam_1_1Mapper.html','');});
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-static-attribs">Static Public Attributes</a> &#124;
-<a href="#pri-types">Private Types</a> &#124;
 <a href="#pri-methods">Private Member Functions</a> &#124;
 <a href="#pri-attribs">Private Attributes</a> &#124;
 <a href="classaprilslam_1_1Mapper-members.html">List of all members</a>  </div>
@@ -134,9 +133,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ace81fcaa42deb3ea018c83ac12f2b645"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#ace81fcaa42deb3ea018c83ac12f2b645">Clear</a> ()</td></tr>
 <tr class="memdesc:ace81fcaa42deb3ea018c83ac12f2b645"><td class="mdescLeft">&#160;</td><td class="mdescRight">Clear factor graph and initial estimation.  <a href="#ace81fcaa42deb3ea018c83ac12f2b645">More...</a><br /></td></tr>
 <tr class="separator:ace81fcaa42deb3ea018c83ac12f2b645"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4b228a025cb70a5d72fafdace358e7fe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe">UpdateTagsPriorInfo</a> (const std::map&lt; size_t, geometry_msgs::Pose &gt; tag_prior_poses)</td></tr>
-<tr class="memdesc:a4b228a025cb70a5d72fafdace358e7fe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load prior info.  <a href="#a4b228a025cb70a5d72fafdace358e7fe">More...</a><br /></td></tr>
-<tr class="separator:a4b228a025cb70a5d72fafdace358e7fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff308c25c98e97d9d1de6410b6d5fe20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#aff308c25c98e97d9d1de6410b6d5fe20">UpdateTagsPriorInfo</a> (const std::map&lt; int, geometry_msgs::Pose &gt; tag_prior_poses)</td></tr>
+<tr class="memdesc:aff308c25c98e97d9d1de6410b6d5fe20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Load prior info.  <a href="#aff308c25c98e97d9d1de6410b6d5fe20">More...</a><br /></td></tr>
+<tr class="separator:aff308c25c98e97d9d1de6410b6d5fe20"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a78ed83ba497e0677c922f4793c4d245c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a78ed83ba497e0677c922f4793c4d245c">BatchOptimize</a> ()=delete</td></tr>
 <tr class="separator:a78ed83ba497e0677c922f4793c4d245c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ace4755f464768834c7483b7b91acb1b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#ace4755f464768834c7483b7b91acb1b8">BatchUpdate</a> (<a class="el" href="classaprilslam_1_1TagMap.html">aprilslam::TagMap</a> *map, geometry_msgs::Pose *pose)=delete</td></tr>
@@ -147,11 +146,6 @@ Static Public Attributes</h2></td></tr>
 <tr class="memitem:abda6bebcf4b5ef342f201866bc74533d"><td class="memItemLeft" align="right" valign="top">static int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#abda6bebcf4b5ef342f201866bc74533d">pose_cnt</a> = 0</td></tr>
 <tr class="memdesc:abda6bebcf4b5ef342f201866bc74533d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Pose number counter .  <a href="#abda6bebcf4b5ef342f201866bc74533d">More...</a><br /></td></tr>
 <tr class="separator:abda6bebcf4b5ef342f201866bc74533d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-types"></a>
-Private Types</h2></td></tr>
-<tr class="memitem:a443e9587dd881b210b6aab2318f37eb6"><td class="memItemLeft" align="right" valign="top">typedef gtsam::BearingRangeFactor&lt; gtsam::Pose3, gtsam::Point3 &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a443e9587dd881b210b6aab2318f37eb6">BearingRange3D</a></td></tr>
-<tr class="separator:a443e9587dd881b210b6aab2318f37eb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pri-methods"></a>
 Private Member Functions</h2></td></tr>
@@ -174,87 +168,77 @@ Private Attributes</h2></td></tr>
 <tr class="memdesc:a8d178e5793d9800c9e1f249c6c558d0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">For stable optimization, new landmark should be observed more than obsv_thr_ times before being added into factor graph.  <a href="#a8d178e5793d9800c9e1f249c6c558d0d">More...</a><br /></td></tr>
 <tr class="separator:a8d178e5793d9800c9e1f249c6c558d0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af47609c2c97b43390fd856ed44fc1c06"><td class="memItemLeft" align="right" valign="top">gtsam::ISAM2Params&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#af47609c2c97b43390fd856ed44fc1c06">params_</a></td></tr>
-<tr class="memdesc:af47609c2c97b43390fd856ed44fc1c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSAM 2 parameters  <a href="#af47609c2c97b43390fd856ed44fc1c06">More...</a><br /></td></tr>
+<tr class="memdesc:af47609c2c97b43390fd856ed44fc1c06"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSAM 2 parameters. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>).  <a href="#af47609c2c97b43390fd856ed44fc1c06">More...</a><br /></td></tr>
 <tr class="separator:af47609c2c97b43390fd856ed44fc1c06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a28f7f8be865ff77826a6cf80d9f8134e"><td class="memItemLeft" align="right" valign="top">gtsam::ISAM2&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a28f7f8be865ff77826a6cf80d9f8134e">isam2_</a></td></tr>
-<tr class="memdesc:a28f7f8be865ff77826a6cf80d9f8134e"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSAM 2 data structure  <a href="#a28f7f8be865ff77826a6cf80d9f8134e">More...</a><br /></td></tr>
+<tr class="memdesc:a28f7f8be865ff77826a6cf80d9f8134e"><td class="mdescLeft">&#160;</td><td class="mdescRight">iSAM 2 data structure. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>).  <a href="#a28f7f8be865ff77826a6cf80d9f8134e">More...</a><br /></td></tr>
 <tr class="separator:a28f7f8be865ff77826a6cf80d9f8134e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8cef670ef17bbbc0aec83517499cf7e0"><td class="memItemLeft" align="right" valign="top">gtsam::NonlinearFactorGraph&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a8cef670ef17bbbc0aec83517499cf7e0">graph_</a></td></tr>
 <tr class="memdesc:a8cef670ef17bbbc0aec83517499cf7e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Factor graph. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>).  <a href="#a8cef670ef17bbbc0aec83517499cf7e0">More...</a><br /></td></tr>
 <tr class="separator:a8cef670ef17bbbc0aec83517499cf7e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a24bb3b838ce8f9fc599edd6a40dfa2"><td class="memItemLeft" align="right" valign="top">gtsam::Values&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a9a24bb3b838ce8f9fc599edd6a40dfa2">initial_estimates_</a></td></tr>
+<tr class="memdesc:a9a24bb3b838ce8f9fc599edd6a40dfa2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initial estiamtes of varibles in iSAM2. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>).  <a href="#a9a24bb3b838ce8f9fc599edd6a40dfa2">More...</a><br /></td></tr>
 <tr class="separator:a9a24bb3b838ce8f9fc599edd6a40dfa2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a533a462521f6308b45d79396e97d68ef"><td class="memItemLeft" align="right" valign="top">gtsam::Values&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a533a462521f6308b45d79396e97d68ef">results_</a></td></tr>
+<tr class="memdesc:a533a462521f6308b45d79396e97d68ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Results.  <a href="#a533a462521f6308b45d79396e97d68ef">More...</a><br /></td></tr>
+<tr class="separator:a533a462521f6308b45d79396e97d68ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a861b7bbff967c54249690f860faa5a44"><td class="memItemLeft" align="right" valign="top">gtsam::Pose3&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a861b7bbff967c54249690f860faa5a44">pose_</a></td></tr>
+<tr class="memdesc:a861b7bbff967c54249690f860faa5a44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Camera pose.  <a href="#a861b7bbff967c54249690f860faa5a44">More...</a><br /></td></tr>
 <tr class="separator:a861b7bbff967c54249690f860faa5a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aab1deb5163f84f90788159641a5d7c72"><td class="memItemLeft" align="right" valign="top">gtsam::Cal3_S2::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#aab1deb5163f84f90788159641a5d7c72">K_</a></td></tr>
+<tr class="memdesc:aab1deb5163f84f90788159641a5d7c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">Camera intrinsics.  <a href="#aab1deb5163f84f90788159641a5d7c72">More...</a><br /></td></tr>
 <tr class="separator:aab1deb5163f84f90788159641a5d7c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2921d51be62224ca551f222478831740"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Diagonal::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a2921d51be62224ca551f222478831740">tag_noise_</a></td></tr>
+<tr class="memdesc:a2921d51be62224ca551f222478831740"><td class="mdescLeft">&#160;</td><td class="mdescRight">noise of relative pose estimation during Apriltag detection.  <a href="#a2921d51be62224ca551f222478831740">More...</a><br /></td></tr>
 <tr class="separator:a2921d51be62224ca551f222478831740"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a22db82d149b850f07367db5069d383e4"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Diagonal::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a22db82d149b850f07367db5069d383e4">small_noise_</a></td></tr>
+<tr class="memdesc:a22db82d149b850f07367db5069d383e4"><td class="mdescLeft">&#160;</td><td class="mdescRight">noise of prior information.  <a href="#a22db82d149b850f07367db5069d383e4">More...</a><br /></td></tr>
 <tr class="separator:a22db82d149b850f07367db5069d383e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acabb963c2ba5742be61b468575f77300"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Diagonal::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#acabb963c2ba5742be61b468575f77300">tag_size_noise_</a></td></tr>
+<tr class="memdesc:acabb963c2ba5742be61b468575f77300"><td class="mdescLeft">&#160;</td><td class="mdescRight">noise of Apriltag size constraint.  <a href="#acabb963c2ba5742be61b468575f77300">More...</a><br /></td></tr>
 <tr class="separator:acabb963c2ba5742be61b468575f77300"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab637a53b07cda0f119e233832af1ea77"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Diagonal::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#ab637a53b07cda0f119e233832af1ea77">motion_model_noise_</a></td></tr>
+<tr class="memdesc:ab637a53b07cda0f119e233832af1ea77"><td class="mdescLeft">&#160;</td><td class="mdescRight">noise of const motion model.  <a href="#ab637a53b07cda0f119e233832af1ea77">More...</a><br /></td></tr>
 <tr class="separator:ab637a53b07cda0f119e233832af1ea77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a121d770fc8c655ba2417516470fec339"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Isotropic::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a121d770fc8c655ba2417516470fec339">measurement_noise_</a></td></tr>
+<tr class="memdesc:a121d770fc8c655ba2417516470fec339"><td class="mdescLeft">&#160;</td><td class="mdescRight">noise of camera measurement.  <a href="#a121d770fc8c655ba2417516470fec339">More...</a><br /></td></tr>
 <tr class="separator:a121d770fc8c655ba2417516470fec339"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38a06f46a180c58ef6f4678c68ab6b5c"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Base::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a38a06f46a180c58ef6f4678c68ab6b5c">tag_noise_huber_</a></td></tr>
+<tr class="memdesc:a38a06f46a180c58ef6f4678c68ab6b5c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Huber kernel for noise of relative pose estimation during Apriltag detection.  <a href="#a38a06f46a180c58ef6f4678c68ab6b5c">More...</a><br /></td></tr>
 <tr class="separator:a38a06f46a180c58ef6f4678c68ab6b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae2ee832384b78fc4006dd5c863237392"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Base::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#ae2ee832384b78fc4006dd5c863237392">small_noise_huber_</a></td></tr>
+<tr class="memdesc:ae2ee832384b78fc4006dd5c863237392"><td class="mdescLeft">&#160;</td><td class="mdescRight">Huber kernel for noise of prior information.  <a href="#ae2ee832384b78fc4006dd5c863237392">More...</a><br /></td></tr>
 <tr class="separator:ae2ee832384b78fc4006dd5c863237392"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad6800e60ce0044a07bb3f814a838ab10"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Base::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#ad6800e60ce0044a07bb3f814a838ab10">tag_size_noise_huber_</a></td></tr>
+<tr class="memdesc:ad6800e60ce0044a07bb3f814a838ab10"><td class="mdescLeft">&#160;</td><td class="mdescRight">Huber kernel for noise of Apriltag size constraint.  <a href="#ad6800e60ce0044a07bb3f814a838ab10">More...</a><br /></td></tr>
 <tr class="separator:ad6800e60ce0044a07bb3f814a838ab10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f50961cf7b6afbcde50c27d21005697"><td class="memItemLeft" align="right" valign="top">gtsam::noiseModel::Base::shared_ptr&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a2f50961cf7b6afbcde50c27d21005697">measurement_noise_huber_</a></td></tr>
+<tr class="memdesc:a2f50961cf7b6afbcde50c27d21005697"><td class="mdescLeft">&#160;</td><td class="mdescRight">Huber kernel for noise of const motion model.  <a href="#a2f50961cf7b6afbcde50c27d21005697">More...</a><br /></td></tr>
 <tr class="separator:a2f50961cf7b6afbcde50c27d21005697"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1791dae53b2da3c0aec99e14c632e36d"><td class="memItemLeft" align="right" valign="top">std::set&lt; int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a1791dae53b2da3c0aec99e14c632e36d">all_ids_</a></td></tr>
+<tr class="memdesc:a1791dae53b2da3c0aec99e14c632e36d"><td class="mdescLeft">&#160;</td><td class="mdescRight">All apriltags id in SLAM framework.  <a href="#a1791dae53b2da3c0aec99e14c632e36d">More...</a><br /></td></tr>
 <tr class="separator:a1791dae53b2da3c0aec99e14c632e36d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a448032719acafe40d38a4c1e83914d23"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, aprilslam::Apriltag &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a448032719acafe40d38a4c1e83914d23">all_tags_c_</a></td></tr>
+<tr class="memdesc:a448032719acafe40d38a4c1e83914d23"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key: Apriltags id Value: Pose in camera frame.  <a href="#a448032719acafe40d38a4c1e83914d23">More...</a><br /></td></tr>
 <tr class="separator:a448032719acafe40d38a4c1e83914d23"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a92a08f6806c3a5e2e5693305af86b7a3"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, aprilslam::Apriltag &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a92a08f6806c3a5e2e5693305af86b7a3">all_tags_w_</a></td></tr>
+<tr class="memdesc:a92a08f6806c3a5e2e5693305af86b7a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key: Apriltags id Value: Pose in world(tag) frame.  <a href="#a92a08f6806c3a5e2e5693305af86b7a3">More...</a><br /></td></tr>
 <tr class="separator:a92a08f6806c3a5e2e5693305af86b7a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8f831bcb55456da5b1ed253b9954570"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#aa8f831bcb55456da5b1ed253b9954570">tags_obsv_</a></td></tr>
+<tr class="memdesc:aa8f831bcb55456da5b1ed253b9954570"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key: Apriltags id Value: Observation times.  <a href="#aa8f831bcb55456da5b1ed253b9954570">More...</a><br /></td></tr>
 <tr class="separator:aa8f831bcb55456da5b1ed253b9954570"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f01bd94a35b2a5899940ac960e75ca4"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, bool &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a4f01bd94a35b2a5899940ac960e75ca4">tags_in_isam_</a></td></tr>
+<tr class="memdesc:a4f01bd94a35b2a5899940ac960e75ca4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key: Apriltags id Value: If the landmark is already in iSAM2.  <a href="#a4f01bd94a35b2a5899940ac960e75ca4">More...</a><br /></td></tr>
 <tr class="separator:a4f01bd94a35b2a5899940ac960e75ca4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ae016c8084b07589b13f8ca20099060"><td class="memItemLeft" align="right" valign="top">std::map&lt; size_t, geometry_msgs::Pose &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a0ae016c8084b07589b13f8ca20099060">tag_prior_poses_</a></td></tr>
-<tr class="separator:a0ae016c8084b07589b13f8ca20099060"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6c81c0f82c268f2b427338d0061c299f"><td class="memItemLeft" align="right" valign="top">gtsam::LevenbergMarquardtParams&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a6c81c0f82c268f2b427338d0061c299f">lm_params_</a></td></tr>
-<tr class="separator:a6c81c0f82c268f2b427338d0061c299f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab8d438df818351d7210d8b95b1a02186"><td class="memItemLeft" align="right" valign="top">gtsam::Values&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#ab8d438df818351d7210d8b95b1a02186">batch_results_</a></td></tr>
-<tr class="separator:ab8d438df818351d7210d8b95b1a02186"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a533a462521f6308b45d79396e97d68ef"><td class="memItemLeft" align="right" valign="top">gtsam::Values&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a533a462521f6308b45d79396e97d68ef">results_</a></td></tr>
-<tr class="separator:a533a462521f6308b45d79396e97d68ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1fc584f9489bd43a62622c02b4e24a90"><td class="memItemLeft" align="right" valign="top">std::map&lt; int, geometry_msgs::Pose &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1Mapper.html#a1fc584f9489bd43a62622c02b4e24a90">tag_prior_poses_</a></td></tr>
+<tr class="memdesc:a1fc584f9489bd43a62622c02b4e24a90"><td class="mdescLeft">&#160;</td><td class="mdescRight">Key: Apriltags id Value: Prior pose.  <a href="#a1fc584f9489bd43a62622c02b4e24a90">More...</a><br /></td></tr>
+<tr class="separator:a1fc584f9489bd43a62622c02b4e24a90"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Backend optimization class. </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00029">29</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
-</div><h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="a443e9587dd881b210b6aab2318f37eb6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a443e9587dd881b210b6aab2318f37eb6">&#9670;&nbsp;</a></span>BearingRange3D</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">typedef gtsam::BearingRangeFactor&lt;gtsam::Pose3, gtsam::Point3&gt; <a class="el" href="classaprilslam_1_1Mapper.html#a443e9587dd881b210b6aab2318f37eb6">aprilslam::Mapper::BearingRange3D</a></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00188">188</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00030">30</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+</div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="ab539e37b157d52f4f3fea226c45fa346"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ab539e37b157d52f4f3fea226c45fa346">&#9670;&nbsp;</a></span>Mapper()</h2>
 
@@ -323,7 +307,7 @@ Private Attributes</h2></td></tr>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00145">145</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00142">142</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -388,7 +372,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00105">105</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00102">102</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -436,7 +420,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00129">129</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00126">126</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -484,7 +468,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00113">113</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00110">110</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -531,7 +515,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00052">52</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00049">49</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -587,7 +571,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00061">61</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00058">58</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -696,7 +680,7 @@ Here is the caller graph for this function:</div>
 <p>Clear factor graph and initial estimation. </p>
 <dl class="section note"><dt>Note</dt><dd>Important step while using iSAM 2. </dd></dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00302">302</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00297">297</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -735,7 +719,7 @@ Here is the caller graph for this function:</div>
 
 <p>Return whether init yet. </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00046">46</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00047">47</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -751,7 +735,7 @@ Here is the call graph for this function:</div>
 <area shape="rect" id="node19" href="classaprilslam_1_1Mapper.html#aef3b0f21bb896cb9a1dbdb6522274f2a" title="Add init esitimate and prior factor of tag_w. " alt="" coords="411,525,544,567"/>
 <area shape="rect" id="node20" href="classaprilslam_1_1Mapper.html#a3cd57807f2daa52a33f3638d0d3449f8" title="Add landmark prior factor. " alt="" coords="610,525,743,567"/>
 <area shape="rect" id="node21" href="classaprilslam_1_1Mapper.html#af82f8cdacbe2b18acb11f1405217b8af" title="Initialization. If there is any valid landmark estimation, set init_ true. " alt="" coords="209,409,342,451"/>
-<area shape="rect" id="node22" href="classaprilslam_1_1Mapper.html#a4b228a025cb70a5d72fafdace358e7fe" title="Load prior info. " alt="" coords="204,693,347,735"/>
+<area shape="rect" id="node22" href="classaprilslam_1_1Mapper.html#aff308c25c98e97d9d1de6410b6d5fe20" title="Load prior info. " alt="" coords="204,693,347,735"/>
 <area shape="rect" id="node23" href="classaprilslam_1_1Mapper.html#a78ed83ba497e0677c922f4793c4d245c" title="aprilslam::Mapper::\lBatchOptimize" alt="" coords="209,759,342,800"/>
 <area shape="rect" id="node24" href="classaprilslam_1_1Mapper.html#ace4755f464768834c7483b7b91acb1b8" title="aprilslam::Mapper::\lBatchUpdate" alt="" coords="209,824,342,865"/>
 <area shape="rect" id="node6" href="namespaceaprilslam.html#a98521345401d6bbfa89e90ef1147e9f5" title="aprilslam::SetPosition" alt="" coords="403,138,552,165"/>
@@ -812,7 +796,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00036">36</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00033">33</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -849,7 +833,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00076">76</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00073">73</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -896,7 +880,7 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00225">225</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00222">222</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -953,7 +937,7 @@ Here is the caller graph for this function:</div>
 </dl>
 <p>Check OK </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00267">267</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00262">262</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
@@ -982,8 +966,8 @@ Here is the caller graph for this function:</div>
 
 </div>
 </div>
-<a id="a4b228a025cb70a5d72fafdace358e7fe"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4b228a025cb70a5d72fafdace358e7fe">&#9670;&nbsp;</a></span>UpdateTagsPriorInfo()</h2>
+<a id="aff308c25c98e97d9d1de6410b6d5fe20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff308c25c98e97d9d1de6410b6d5fe20">&#9670;&nbsp;</a></span>UpdateTagsPriorInfo()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -991,7 +975,7 @@ Here is the caller graph for this function:</div>
         <tr>
           <td class="memname">void aprilslam::Mapper::UpdateTagsPriorInfo </td>
           <td>(</td>
-          <td class="paramtype">const std::map&lt; size_t, geometry_msgs::Pose &gt;&#160;</td>
+          <td class="paramtype">const std::map&lt; int, geometry_msgs::Pose &gt;&#160;</td>
           <td class="paramname"><em>tag_prior_poses</em></td><td>)</td>
           <td></td>
         </tr>
@@ -1006,12 +990,12 @@ Here is the caller graph for this function:</div>
   </dd>
 </dl>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00047">47</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00044">44</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
-<div class="center"><img src="classaprilslam_1_1Mapper_a4b228a025cb70a5d72fafdace358e7fe_icgraph.png" border="0" usemap="#classaprilslam_1_1Mapper_a4b228a025cb70a5d72fafdace358e7fe_icgraph" alt=""/></div>
-<map name="classaprilslam_1_1Mapper_a4b228a025cb70a5d72fafdace358e7fe_icgraph" id="classaprilslam_1_1Mapper_a4b228a025cb70a5d72fafdace358e7fe_icgraph">
+<div class="center"><img src="classaprilslam_1_1Mapper_aff308c25c98e97d9d1de6410b6d5fe20_icgraph.png" border="0" usemap="#classaprilslam_1_1Mapper_aff308c25c98e97d9d1de6410b6d5fe20_icgraph" alt=""/></div>
+<map name="classaprilslam_1_1Mapper_aff308c25c98e97d9d1de6410b6d5fe20_icgraph" id="classaprilslam_1_1Mapper_aff308c25c98e97d9d1de6410b6d5fe20_icgraph">
 <area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="199,13,349,39"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#ac3ce1518ae13119e26b4e0bd74385591" title="Construct a new MapperNode object. " alt="" coords="196,64,352,105"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="400,5,556,47"/>
@@ -1041,7 +1025,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00177">177</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>All apriltags id in SLAM framework. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00207">207</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1065,7 +1051,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00178">178</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Key: Apriltags id Value: Pose in camera frame. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00210">210</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1089,31 +1077,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00179">179</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Key: Apriltags id Value: Pose in world(tag) frame. </p>
 
-</div>
-</div>
-<a id="ab8d438df818351d7210d8b95b1a02186"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab8d438df818351d7210d8b95b1a02186">&#9670;&nbsp;</a></span>batch_results_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">gtsam::Values aprilslam::Mapper::batch_results_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00185">185</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00213">213</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1139,7 +1105,7 @@ Here is the caller graph for this function:</div>
 
 <p>Factor graph. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00164">164</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00165">165</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1165,7 +1131,7 @@ Here is the caller graph for this function:</div>
 
 <p>initial flag. If there is any valid landmark estimation, set init_ true. </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00146">146</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00147">147</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1191,7 +1157,7 @@ Here is the caller graph for this function:</div>
 
 <p>For stable initialization. Batch optimize the first min_pose_count_ frames. After initial optimization, init_opt_ is true. </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00149">149</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00150">150</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1215,7 +1181,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00165">165</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Initial estiamtes of varibles in iSAM2. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>). </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00168">168</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1239,9 +1207,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>iSAM 2 data structure </p>
+<p>iSAM 2 data structure. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00161">161</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00162">162</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1265,31 +1233,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00167">167</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Camera intrinsics. </p>
 
-</div>
-</div>
-<a id="a6c81c0f82c268f2b427338d0061c299f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6c81c0f82c268f2b427338d0061c299f">&#9670;&nbsp;</a></span>lm_params_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">gtsam::LevenbergMarquardtParams aprilslam::Mapper::lm_params_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">private</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00184">184</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00177">177</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1313,7 +1259,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00172">172</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>noise of camera measurement. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00192">192</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1337,7 +1285,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00176">176</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Huber kernel for noise of const motion model. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00204">204</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1363,7 +1313,7 @@ Here is the caller graph for this function:</div>
 
 <p>For stable initialization. Batch optimize the first min_pose_count_ frames. After initial optimization, init_opt_ is true. </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00152">152</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00153">153</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1387,7 +1337,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00171">171</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>noise of const motion model. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00189">189</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1413,7 +1365,7 @@ Here is the caller graph for this function:</div>
 
 <p>For stable optimization, new landmark should be observed more than obsv_thr_ times before being added into factor graph. </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00155">155</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00156">156</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1437,9 +1389,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p>iSAM 2 parameters </p>
+<p>iSAM 2 parameters. For more details, refer to gtsam offcial documentation(<a href="https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://">https://gtsam-jlblanco-docs.readthedocs.io/en/latest/_static/doxygen/html/modules.html#http://</a>). </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00158">158</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00159">159</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1463,7 +1415,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00166">166</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Camera pose. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00174">174</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1489,7 +1443,7 @@ Here is the caller graph for this function:</div>
 
 <p>Pose number counter . </p>
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00033">33</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00034">34</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1513,7 +1467,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00186">186</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Results. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00171">171</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1537,7 +1493,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00169">169</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>noise of prior information. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00183">183</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1561,7 +1519,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00174">174</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Huber kernel for noise of prior information. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00198">198</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1585,7 +1545,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00168">168</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>noise of relative pose estimation during Apriltag detection. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00180">180</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1609,12 +1571,14 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00173">173</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Huber kernel for noise of relative pose estimation during Apriltag detection. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00195">195</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
-<a id="a0ae016c8084b07589b13f8ca20099060"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ae016c8084b07589b13f8ca20099060">&#9670;&nbsp;</a></span>tag_prior_poses_</h2>
+<a id="a1fc584f9489bd43a62622c02b4e24a90"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1fc584f9489bd43a62622c02b4e24a90">&#9670;&nbsp;</a></span>tag_prior_poses_</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1623,7 +1587,7 @@ Here is the caller graph for this function:</div>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::map&lt;size_t, geometry_msgs::Pose&gt; aprilslam::Mapper::tag_prior_poses_</td>
+          <td class="memname">std::map&lt;int, geometry_msgs::Pose&gt; aprilslam::Mapper::tag_prior_poses_</td>
         </tr>
       </table>
   </td>
@@ -1633,7 +1597,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00182">182</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Key: Apriltags id Value: Prior pose. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00222">222</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1657,7 +1623,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00170">170</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>noise of Apriltag size constraint. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00186">186</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1681,7 +1649,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00175">175</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Huber kernel for noise of Apriltag size constraint. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00201">201</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1705,7 +1675,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00181">181</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Key: Apriltags id Value: If the landmark is already in iSAM2. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00219">219</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>
@@ -1729,7 +1701,9 @@ Here is the caller graph for this function:</div>
 </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00180">180</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
+<p>Key: Apriltags id Value: Observation times. </p>
+
+<p class="definition">Definition at line <a class="el" href="mapper_8h_source.html#l00216">216</a> of file <a class="el" href="mapper_8h_source.html">mapper.h</a>.</p>
 
 </div>
 </div>

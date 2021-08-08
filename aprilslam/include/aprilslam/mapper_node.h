@@ -106,7 +106,7 @@ namespace aprilslam
         YAML::Node tag_prior_info_node_;
 
         /// @brief Prior information is extracted from YAML::NODE and stored in this RbTree.
-        std::map<size_t, geometry_msgs::Pose> tag_prior_poses_;
+        std::map<int, geometry_msgs::Pose> tag_prior_poses_;
 
         /// @brief Pose number counter .
         int pose_cnt_;
