@@ -39,7 +39,7 @@ namespace aprilslam
 
     void TagMap::AddTag(const Apriltag &tag, const geometry_msgs::Pose &pose)
     {
-        // 这里的位姿应该是T_w_tag, 从tag坐标系到世界坐标系的转换矩阵，也是tag在世界坐标系中的位姿
+        // Tag pose in world
         Apriltag tag_w = tag;
         UpdateTag(&tag_w, pose);
         tags_w_.push_back(tag_w);
@@ -73,6 +73,7 @@ namespace aprilslam
         std::vector<cv::Point2f> img_pts;
         std::vector<cv::Point3f> obj_pts;
 
+        // Collect 2d-3d correspon
         for (const Apriltag &tag_c : tags_c)
         {
             // Find 2D-3D correspondences
@@ -155,6 +156,7 @@ namespace aprilslam
             cv::projectPoints(obj_pts, c_r_w_mm, c_t_w_mm, K, D, reproj_img_pts_mm);
         }
 
+        // calculate reprojection error
         float reproj_error_pnp = 0.0;
         float reproj_error_mm = 0.0;
         for (size_t ip = 0; ip < reproj_img_pts_pnp.size(); ip++)
@@ -187,13 +189,13 @@ namespace aprilslam
         Eigen::Quaterniond w_Q_c = RodriguesToQuat(c_r_w).inverse();
         SetOrientation(&pose->orientation, w_Q_c);
 
+        // If RMSE of motion model is less than 4/3 RMSE of PnP
         if (rmse_pnp >= rmse_mm * 0.75)
         {
             cam_velocity_msg_ = Isometry3dToPoseMsg(cam_velocity_);
             
         }
         
-
         return true;
     }
 
@@ -204,6 +206,7 @@ namespace aprilslam
         auto iter_begin = tags_prior_info.begin();
         auto iter_end = tags_prior_info.end();
 
+        // Convert to a vector.
         for (auto iter_tag = iter_begin; iter_tag != iter_end; iter_tag++)
         {
             aprilslam::Apriltag tag_w;

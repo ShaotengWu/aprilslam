@@ -71,31 +71,17 @@ int main(int argc, char **argv)
         std_msgs::Header new_header;
         new_header.stamp = ros::Time::now();
         new_header.seq = seq++;
-        // sensor_msgs::CompressedImage c_img;
-        // c_img.data = img->data;
-        // c_img.format = img->format;
-        // c_img.header = img->header;
+        
         cv::Mat image_raw = cv::imdecode(cv::Mat(c_imgptr->data), 1);
         cv::Rect rect_left(0, 0, 1280, 720);
         cv::Mat image_left = image_raw(rect_left);
 
         cv::Mat image_gray, image_equalized;
-        // std::cout<<image_left.channels()<<std::endl;
         cv::cvtColor(image_left, image_gray, cv::COLOR_BGR2GRAY);
-        // std::cout<<image_gray.channels()<<std::endl;
         
-        // cv::namedWindow("Gray", cv::WINDOW_AUTOSIZE);
-        // cv::imshow("Gray", image_equalized);
-        // cv::waitKey(0);
-        // std::cout<<"Debug here"<<std::endl;
         cv::equalizeHist(image_gray, image_equalized);
-        
-        // cv::namedWindow("Equalized", cv::WINDOW_AUTOSIZE);
-        // cv::imshow("Equalized", image_equalized);
-        // cv::waitKey(0);
-        // std::cout<<"Debug here"<<std::endl;
         cv_bridge::CvImage image_bridge(new_header, sensor_msgs::image_encodings::MONO8, image_equalized);
-        // std::cout<<image_bridge.encoding<<std::endl;
+        
         
         sensor_msgs::Image image_msg;
         image_bridge.toImageMsg(image_msg);

@@ -27,7 +27,6 @@ namespace aprilslam
           tag_size_noise_huber_(noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.1), small_noise_)),
           measurement_noise_huber_(noiseModel::Robust::Create(noiseModel::mEstimator::Huber::Create(0.5), measurement_noise_))
     {
-        
     }
 
     void Mapper::InitCameraParams(const cv::Matx33d &intrinsic, const cv::Mat &distCoeff)
@@ -52,6 +51,9 @@ namespace aprilslam
 
         // Transform geometey_msgs::pose to gtsam::Pose3
         pose_ = FromGeometryPose(pose);
+
+        // Add initial pose estimate.
+        //!For each varible(pose, landmark, corner point), initial value cannot be added more than once.
         initial_estimates_.insert(Symbol('x', pose_cnt), pose_);
     }
 
@@ -61,8 +63,12 @@ namespace aprilslam
 
         // Transform geometey_msgs::pose to gtsam::Pose3
         pose_ = FromGeometryPose(pose);
+
+        // Add initial pose estimate.
+        //!For each varible(pose, landmark, corner point), initial value cannot be added more than once.
         initial_estimates_.insert(Symbol('x', pose_cnt), pose_);
 
+        // Const motion model constraint is added after min_pose_count_ * 2 frames.
         if (pose_cnt > min_pose_count_ * 2)
         {
             gtsam::Pose3 velocity = FromGeometryPose(vel);
@@ -74,6 +80,8 @@ namespace aprilslam
     {
         ROS_ASSERT_MSG(pose_cnt == 1, "Incorrect initial pose");
 
+        // If there is no prior info of the first observed tag, take the first tag as the origin of world frame.
+        // Otherwise, initialize the system with prior info.
         if (tag_prior_poses_.empty() || tag_prior_poses_.find(tag_w.id) == tag_prior_poses_.end())
         {
             if (all_ids_.find(tag_w.id) == all_ids_.end())
@@ -101,9 +109,13 @@ namespace aprilslam
 
     void Mapper::AddLandmark(const Apriltag &tag_c, const Pose3 &pose)
     {
+        // Add initial landmarks estimate.
+        //!For each varible(pose, landmark, corner point), initial value cannot be added more than once.
         initial_estimates_.insert(Symbol('l', tag_c.id), pose);
         all_ids_.insert(tag_c.id);
         all_tags_c_[tag_c.id] = tag_c;
+
+        // If there is prior info of the tag, add prior factor. Otherwise do nothing.
         AddLandmarkPrior(tag_c.id);
     }
 
@@ -125,6 +137,7 @@ namespace aprilslam
 
     void Mapper::AddLandmarkPrior(const size_t tag_id)
     {
+        // If there is prior info of the tag, add prior factor. Otherwise do nothing.
         if (tag_prior_poses_.find(tag_id) == tag_prior_poses_.end())
         {
             ROS_WARN("There is no prior information about tag %d", tag_id);
@@ -141,7 +154,7 @@ namespace aprilslam
 
     void Mapper::AddFactors(const std::vector<Apriltag> &tags_c)
     {
-
+        // Only tags obserbved more than obsv_thr_ times will be added into isam2
         for (const Apriltag &tag_c : tags_c)
         {
             // Newly Observed Apriltags
@@ -153,11 +166,13 @@ namespace aprilslam
                 tags_in_isam_.insert(std::pair<int, bool>(tag_c.id, false));
                 continue;
             }
+            // Already added in management but not in iSAM2
             else if (tags_in_isam_.find(tag_c.id)->second == false)
             {
                 auto iter_obsv = tags_obsv_.find(tag_c.id);
                 iter_obsv->second.push_back(pose_cnt);
 
+                // Only tags obserbved more than obsv_thr_ times will be added into isam2
                 if (iter_obsv->second.size() > obsv_thr_)
                 {
                     // Trverse all observations
@@ -197,6 +212,7 @@ namespace aprilslam
                     continue;
                 }
             }
+            // If the tag is already in iSAM2
             else if (tags_in_isam_.find(tag_c.id)->second == true)
             {
                 // Add between factors
@@ -221,6 +237,7 @@ namespace aprilslam
 
     void Mapper::Optimize(int num_iterations)
     {
+        // save factor graph visualization.
         std::ofstream graph_ofs("./aprilslam.dot");
         graph_.saveGraph(graph_ofs, results_);
 
@@ -228,7 +245,8 @@ namespace aprilslam
         {
 
             if (!init_opt_)
-            { // Do a full optimize for first minK ranges
+            { 
+                // Do a full optimize for first min_pose_count_ frames for robust initialization
                 init_opt_ = true;
                 LevenbergMarquardtParams params;
                 params.setMaxIterations(100);
@@ -238,6 +256,7 @@ namespace aprilslam
                 ROS_INFO("Batch Optimize for first %d frames", min_pose_count_);
             }
 
+            // iSAM2 update
             isam2_.update(graph_, initial_estimates_);
             if (num_iterations > 1)
             {
@@ -249,8 +268,11 @@ namespace aprilslam
                     // printf("\033[K");
                 }
             }
-
+            
+            // get result
             results_ = isam2_.calculateEstimate();
+
+            // For reasons why factor graph needs to be cleared, refer to GTSAM official documentation 
             this->Clear();
         }
         else
