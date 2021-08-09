@@ -100,6 +100,7 @@ Classes</h2></td></tr>
 <tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">The majority of beckend for data collection and factor graph optimization.  <a href="classaprilslam_1_1MapperNode.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classaprilslam_1_1TagMap.html">TagMap</a></td></tr>
+<tr class="memdesc:"><td class="mdescLeft">&#160;</td><td class="mdescRight">Manager of all data.  <a href="classaprilslam_1_1TagMap.html#details">More...</a><br /></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="typedef-members"></a>
@@ -116,24 +117,34 @@ Functions</h2></td></tr>
 <tr class="memitem:a19c80f3257d9045fd537255dd0092d82"><td class="memItemLeft" align="right" valign="top">std::vector&lt; aprilslam::Apriltag &gt;::iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a19c80f3257d9045fd537255dd0092d82">FindById</a> (int <a class="el" href="calibrate__bundle_8m.html#a30d55b5c7268a48bd2b695923c97b4d1">id</a>, std::vector&lt; aprilslam::Apriltag &gt; &amp;tags)</td></tr>
 <tr class="separator:a19c80f3257d9045fd537255dd0092d82"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a510f9a80be42bb485d172140f7123de1"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a510f9a80be42bb485d172140f7123de1">IsInsideImageCenter</a> (double <a class="el" href="calibrate__bundle_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">x</a>, double <a class="el" href="calibrate__bundle_8m.html#a2fb1c5cf58867b5bbc9a1b145a86f3a0">y</a>, int w, int h, double <a class="el" href="calibrate__bundle_8m.html#a1c73327b2882639bc9f5e416bb3cc7ac">k</a>)</td></tr>
+<tr class="memdesc:a510f9a80be42bb485d172140f7123de1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Good detection filter condition.  <a href="#a510f9a80be42bb485d172140f7123de1">More...</a><br /></td></tr>
 <tr class="separator:a510f9a80be42bb485d172140f7123de1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a55d64c5106f4860649786f6aa6e9caa1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1">SetPose</a> (geometry_msgs::Pose *pose, const Eigen::Quaterniond &amp;wxyz=Eigen::Quaterniond(1, 0, 0, 0), const Eigen::Vector3d &amp;xyz=Eigen::Vector3d(0, 0, 0))</td></tr>
+<tr class="memdesc:a55d64c5106f4860649786f6aa6e9caa1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Pose from Eigen data structure.  <a href="#a55d64c5106f4860649786f6aa6e9caa1">More...</a><br /></td></tr>
 <tr class="separator:a55d64c5106f4860649786f6aa6e9caa1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a98521345401d6bbfa89e90ef1147e9f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a98521345401d6bbfa89e90ef1147e9f5">SetPosition</a> (geometry_msgs::Point *pos, const Eigen::Vector3d &amp;xyz)</td></tr>
+<tr class="memdesc:a98521345401d6bbfa89e90ef1147e9f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Position from Eigen data structure.  <a href="#a98521345401d6bbfa89e90ef1147e9f5">More...</a><br /></td></tr>
 <tr class="separator:a98521345401d6bbfa89e90ef1147e9f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6ba43251d5c48912ffadfe88d2f1c1fd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a6ba43251d5c48912ffadfe88d2f1c1fd">SetPosition</a> (geometry_msgs::Point *pos, double <a class="el" href="calibrate__bundle_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">x</a>=0, double <a class="el" href="calibrate__bundle_8m.html#a2fb1c5cf58867b5bbc9a1b145a86f3a0">y</a>=0, double <a class="el" href="calibrate__bundle_8m.html#a25ed1bcb423b0b7200f485fc5ff71c8e">z</a>=0)</td></tr>
+<tr class="memdesc:a6ba43251d5c48912ffadfe88d2f1c1fd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Position from double.  <a href="#a6ba43251d5c48912ffadfe88d2f1c1fd">More...</a><br /></td></tr>
 <tr class="separator:a6ba43251d5c48912ffadfe88d2f1c1fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a841bab97034214c1876936262d7a14ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a841bab97034214c1876936262d7a14ef">SetOrientation</a> (geometry_msgs::Quaternion *quat, const Eigen::Quaterniond &amp;wxyz)</td></tr>
+<tr class="memdesc:a841bab97034214c1876936262d7a14ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Orientation from Eigen data structure.  <a href="#a841bab97034214c1876936262d7a14ef">More...</a><br /></td></tr>
 <tr class="separator:a841bab97034214c1876936262d7a14ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:adb09ee666553e76c6eb7ee3417189585"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#adb09ee666553e76c6eb7ee3417189585">SetOrientation</a> (geometry_msgs::Quaternion *quat, double w=1, double <a class="el" href="calibrate__bundle_8m.html#a9336ebf25087d91c818ee6e9ec29f8c1">x</a>=0, double <a class="el" href="calibrate__bundle_8m.html#a2fb1c5cf58867b5bbc9a1b145a86f3a0">y</a>=0, double <a class="el" href="calibrate__bundle_8m.html#a25ed1bcb423b0b7200f485fc5ff71c8e">z</a>=0)</td></tr>
+<tr class="memdesc:adb09ee666553e76c6eb7ee3417189585"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the Orientation from double.  <a href="#adb09ee666553e76c6eb7ee3417189585">More...</a><br /></td></tr>
 <tr class="separator:adb09ee666553e76c6eb7ee3417189585"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a13c6ed89e188b47ad0be5795db45a4ac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a13c6ed89e188b47ad0be5795db45a4ac">SetCorners</a> (std::vector&lt; geometry_msgs::Point &gt; *corners, const geometry_msgs::Pose &amp;pose, double tag_size)</td></tr>
+<tr class="memdesc:a13c6ed89e188b47ad0be5795db45a4ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert corners from 2d to 3d.  <a href="#a13c6ed89e188b47ad0be5795db45a4ac">More...</a><br /></td></tr>
 <tr class="separator:a13c6ed89e188b47ad0be5795db45a4ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1f8c381e615f4534e075b3997b46c60e"><td class="memItemLeft" align="right" valign="top">Eigen::Quaterniond&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a1f8c381e615f4534e075b3997b46c60e">RodriguesToQuat</a> (const cv::Mat &amp;r)</td></tr>
+<tr class="memdesc:a1f8c381e615f4534e075b3997b46c60e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert cv::mat rotation vector to Eigen Quarterniond.  <a href="#a1f8c381e615f4534e075b3997b46c60e">More...</a><br /></td></tr>
 <tr class="separator:a1f8c381e615f4534e075b3997b46c60e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2e4664df27d19c493204edebecc1ef54"><td class="memItemLeft" align="right" valign="top">Eigen::Isometry3d&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#a2e4664df27d19c493204edebecc1ef54">PoseMsgToIsometry3d</a> (const geometry_msgs::Pose &amp;pose)</td></tr>
+<tr class="memdesc:a2e4664df27d19c493204edebecc1ef54"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert geometry::Pose to Eigen Isometry 3d.  <a href="#a2e4664df27d19c493204edebecc1ef54">More...</a><br /></td></tr>
 <tr class="separator:a2e4664df27d19c493204edebecc1ef54"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae88b1bac20fdd1c112fd9dadc2dc0115"><td class="memItemLeft" align="right" valign="top">geometry_msgs::Pose&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#ae88b1bac20fdd1c112fd9dadc2dc0115">Isometry3dToPoseMsg</a> (const Eigen::Isometry3d &amp;pose3d)</td></tr>
+<tr class="memdesc:ae88b1bac20fdd1c112fd9dadc2dc0115"><td class="mdescLeft">&#160;</td><td class="mdescRight">Convert Eigen Isometry 3d to geometry::Pose.  <a href="#ae88b1bac20fdd1c112fd9dadc2dc0115">More...</a><br /></td></tr>
 <tr class="separator:ae88b1bac20fdd1c112fd9dadc2dc0115"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af32c87bb0c152411de36d6ff651fd4fa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; Apriltag &gt;::const_iterator&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="namespaceaprilslam.html#af32c87bb0c152411de36d6ff651fd4fa">FindById</a> (int <a class="el" href="calibrate__bundle_8m.html#a30d55b5c7268a48bd2b695923c97b4d1">id</a>, const std::vector&lt; Apriltag &gt; &amp;tags)</td></tr>
 <tr class="separator:af32c87bb0c152411de36d6ff651fd4fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -203,8 +214,8 @@ Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph.png" border="0" usemap="#namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph" id="namespaceaprilslam_aa3aac0d52735834e72dea7e2bb0220f1_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="188,37,325,78"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="373,99,511,141"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="Add or update optimization result of tag_w. " alt="" coords="188,37,325,78"/>
+<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="Estimate camera initial pose use PnP and calculate const value motion model reprojection value..." alt="" coords="373,99,511,141"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="375,34,509,75"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="559,5,709,32"/>
 <area shape="rect" id="node5" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="757,49,913,90"/>
@@ -267,7 +278,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tag__map_8cpp_source.html#l00251">251</a> of file <a class="el" href="tag__map_8cpp_source.html">tag_map.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tag__map_8cpp_source.html#l00254">254</a> of file <a class="el" href="tag__map_8cpp_source.html">tag_map.cpp</a>.</p>
 
 </div>
 </div>
@@ -297,7 +308,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="tag__map_8cpp_source.html#l00258">258</a> of file <a class="el" href="tag__map_8cpp_source.html">tag_map.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="tag__map_8cpp_source.html#l00261">261</a> of file <a class="el" href="tag__map_8cpp_source.html">tag_map.cpp</a>.</p>
 
 </div>
 </div>
@@ -317,7 +328,7 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
-<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00304">304</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
+<p class="definition">Definition at line <a class="el" href="mapper_8cpp_source.html#l00326">326</a> of file <a class="el" href="mapper_8cpp_source.html">mapper.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
@@ -380,6 +391,18 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Good detection filter condition. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">x</td><td>tag detection left upper point </td></tr>
+    <tr><td class="paramname">y</td><td>tag detection left upper point </td></tr>
+    <tr><td class="paramname">w</td><td>tag detection pixel width </td></tr>
+    <tr><td class="paramname">h</td><td>tag detection pixel height </td></tr>
+    <tr><td class="paramname">k</td><td>center ratio </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00006">6</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -409,13 +432,22 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Convert Eigen Isometry 3d to geometry::Pose. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pose3d</td><td>Eigen Isometry 3d </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>geometry_msgs::Pose </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00089">89</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_ae88b1bac20fdd1c112fd9dadc2dc0115_icgraph.png" border="0" usemap="#namespaceaprilslam_ae88b1bac20fdd1c112fd9dadc2dc0115_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_ae88b1bac20fdd1c112fd9dadc2dc0115_icgraph" id="namespaceaprilslam_ae88b1bac20fdd1c112fd9dadc2dc0115_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="271,5,408,47"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="Estimate camera initial pose use PnP and calculate const value motion model reprojection value..." alt="" coords="271,5,408,47"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="456,5,612,47"/>
 </map>
 </div>
@@ -438,13 +470,22 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Convert geometry::Pose to Eigen Isometry 3d. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">pose</td><td>geometry::Pose </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Eigen::Isometry3d </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00074">74</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_a2e4664df27d19c493204edebecc1ef54_icgraph.png" border="0" usemap="#namespaceaprilslam_a2e4664df27d19c493204edebecc1ef54_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a2e4664df27d19c493204edebecc1ef54_icgraph" id="namespaceaprilslam_a2e4664df27d19c493204edebecc1ef54_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a43fcef916cae20b16393538c7add7c3e" title="aprilslam::TagMap::\lUpdateCurrentCamPose" alt="" coords="271,5,436,47"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a43fcef916cae20b16393538c7add7c3e" title="Update current optimized pose. " alt="" coords="271,5,436,47"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="484,5,640,47"/>
 </map>
 </div>
@@ -467,13 +508,22 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Convert cv::mat rotation vector to Eigen Quarterniond. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">r</td><td>cv::mat rotation vector </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>Eigen::Quaterniond </dd></dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00064">64</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_a1f8c381e615f4534e075b3997b46c60e_icgraph.png" border="0" usemap="#namespaceaprilslam_a1f8c381e615f4534e075b3997b46c60e_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a1f8c381e615f4534e075b3997b46c60e_icgraph" id="namespaceaprilslam_a1f8c381e615f4534e075b3997b46c60e_icgraph">
-<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="237,5,375,47"/>
+<area shape="rect" id="node2" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="Estimate camera initial pose use PnP and calculate const value motion model reprojection value..." alt="" coords="237,5,375,47"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="423,5,579,47"/>
 </map>
 </div>
@@ -512,6 +562,16 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Convert corners from 2d to 3d. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">corners</td><td>Input as 2d and output as 3d. </td></tr>
+    <tr><td class="paramname">pose</td><td>Pose for inverse-projection </td></tr>
+    <tr><td class="paramname">tag_size</td><td>Tag size for scale </td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00044">44</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
@@ -527,10 +587,10 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph.png" border="0" usemap="#namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph" id="namespaceaprilslam_a13c6ed89e188b47ad0be5795db45a4ac_icgraph">
 <area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="759,17,893,58"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#afd1fa0d8fb5d772465ef8f157974d119" title="aprilslam::TagMap::\lUpdateTag" alt="" coords="201,45,339,86"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#afd1fa0d8fb5d772465ef8f157974d119" title="update optimization result of tag_w " alt="" coords="201,45,339,86"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="943,5,1093,32"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="1141,74,1297,115"/>
-<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="aprilslam::TagMap::\lAddOrUpdate" alt="" coords="572,45,709,86"/>
+<area shape="rect" id="node6" href="classaprilslam_1_1TagMap.html#a41b011d96e513916651b9802d3c46eac" title="Add or update optimization result of tag_w. " alt="" coords="572,45,709,86"/>
 <area shape="rect" id="node7" href="classaprilslam_1_1TagMap.html#a969b7154ff6bed3b4d99f48c9f6a7a24" title="aprilslam::TagMap::\lAddTag" alt="" coords="387,103,524,145"/>
 <area shape="rect" id="node8" href="classaprilslam_1_1TagMap.html#a7cd3d36c74c64c4fd28544e943923c21" title="aprilslam::TagMap::\lgetVelocity" alt="" coords="757,99,895,141"/>
 <area shape="rect" id="node9" href="classaprilslam_1_1TagMap.html#a554df2b051876cedb14c9600fad1c8db" title="aprilslam::TagMap::\lAddFirstTag" alt="" coords="949,158,1087,199"/>
@@ -565,6 +625,15 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Set the Orientation from Eigen data structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">quat</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">wxyz</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00029">29</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -572,8 +641,8 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph.png" border="0" usemap="#namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph" id="namespaceaprilslam_a841bab97034214c1876936262d7a14ef_icgraph">
 <area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="219,49,352,90"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="407,107,544,149"/>
-<area shape="rect" id="node6" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="aprilslam::SetPose" alt="" coords="219,165,351,192"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="Estimate camera initial pose use PnP and calculate const value motion model reprojection value..." alt="" coords="407,107,544,149"/>
+<area shape="rect" id="node6" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="Set the Pose from Eigen data structure. " alt="" coords="219,165,351,192"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="400,5,551,32"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="599,49,755,90"/>
 </map>
@@ -625,6 +694,18 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Set the Orientation from double. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">quat</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">w</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00035">35</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 
 </div>
@@ -661,14 +742,24 @@ Here is the caller graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Set the Pose from Eigen data structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">pose</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">wxyz</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xyz</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00011">11</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the call graph for this function:</div>
 <div class="dyncontent">
 <div class="center"><img src="namespaceaprilslam_a55d64c5106f4860649786f6aa6e9caa1_cgraph.png" border="0" usemap="#namespaceaprilslam_a55d64c5106f4860649786f6aa6e9caa1_cgraph" alt=""/></div>
 <map name="namespaceaprilslam_a55d64c5106f4860649786f6aa6e9caa1_cgraph" id="namespaceaprilslam_a55d64c5106f4860649786f6aa6e9caa1_cgraph">
-<area shape="rect" id="node2" href="namespaceaprilslam.html#a98521345401d6bbfa89e90ef1147e9f5" title="aprilslam::SetPosition" alt="" coords="193,5,343,32"/>
-<area shape="rect" id="node3" href="namespaceaprilslam.html#a841bab97034214c1876936262d7a14ef" title="aprilslam::SetOrientation" alt="" coords="185,56,351,83"/>
+<area shape="rect" id="node2" href="namespaceaprilslam.html#a98521345401d6bbfa89e90ef1147e9f5" title="Set the Position from Eigen data structure. " alt="" coords="193,5,343,32"/>
+<area shape="rect" id="node3" href="namespaceaprilslam.html#a841bab97034214c1876936262d7a14ef" title="Set the Orientation from Eigen data structure. " alt="" coords="185,56,351,83"/>
 </map>
 </div>
 
@@ -700,6 +791,15 @@ Here is the call graph for this function:</div>
       </table>
 </div><div class="memdoc">
 
+<p>Set the Position from Eigen data structure. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">xyz</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00017">17</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 <div class="dynheader">
 Here is the caller graph for this function:</div>
@@ -707,8 +807,8 @@ Here is the caller graph for this function:</div>
 <div class="center"><img src="namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph.png" border="0" usemap="#namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph" alt=""/></div>
 <map name="namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph" id="namespaceaprilslam_a98521345401d6bbfa89e90ef1147e9f5_icgraph">
 <area shape="rect" id="node2" href="classaprilslam_1_1Mapper.html#a4e09054e42c104b08f8346378f67d511" title="Update newest optimization results to tag_map and current pose. " alt="" coords="203,49,336,90"/>
-<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="aprilslam::TagMap::\lEstimatePose" alt="" coords="391,107,528,149"/>
-<area shape="rect" id="node6" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="aprilslam::SetPose" alt="" coords="203,165,335,192"/>
+<area shape="rect" id="node5" href="classaprilslam_1_1TagMap.html#a66fdc90bfef7b4b8fae1ccdf3f60a490" title="Estimate camera initial pose use PnP and calculate const value motion model reprojection value..." alt="" coords="391,107,528,149"/>
+<area shape="rect" id="node6" href="namespaceaprilslam.html#a55d64c5106f4860649786f6aa6e9caa1" title="Set the Pose from Eigen data structure. " alt="" coords="203,165,335,192"/>
 <area shape="rect" id="node3" href="classaprilslam_1_1Mapper.html#a7de31456d053bc4819349c6ebeb8d577" title="Return whether init yet. " alt="" coords="384,5,535,32"/>
 <area shape="rect" id="node4" href="classaprilslam_1_1MapperNode.html#afd0f199dcf121ce5a548a3c5defa0b4c" title="Detection callback and optimization .It&#39;s the core function in Apriltag SLAM. " alt="" coords="583,49,739,90"/>
 </map>
@@ -753,6 +853,17 @@ Here is the caller graph for this function:</div>
         </tr>
       </table>
 </div><div class="memdoc">
+
+<p>Set the Position from double. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramdir">[out]</td><td class="paramname">pos</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">x</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">y</td><td></td></tr>
+    <tr><td class="paramdir">[in]</td><td class="paramname">z</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
 
 <p class="definition">Definition at line <a class="el" href="utils_8cpp_source.html#l00022">22</a> of file <a class="el" href="utils_8cpp_source.html">utils.cpp</a>.</p>
 

@@ -6,11 +6,11 @@ Some basic code in this repository is forked from https://github.com/ProjectArte
 
 Your can open this [doxygen documentation](./html/index.html#http://) created by [*@ShaotengWu*](https://github.com/ShaotengWu) in your browser for detailed documentation.
 
-AprilSLAM is a package designed for fast camera pose estimation from a single or multiple AprilTags(link) in an unstructured environment. AprilSLAM needs prior information of Apriltags for better localization performance. The system can map multiple tags in the camera's view as long as there is atleast another tag in view to estimate relative tag pose the first time. The system has been run with a forward looking ZED2 stereo camera on an AGV with a X86-based computing solutions for precise estimation of the vehicle pose. The localization FPS is nearly 30Hz. The system is implemented under ROS (Robot Operating System) for ease of integration, but should be easy to run without it as well.
+AprilSLAM is a package designed for fast camera pose estimation from a single or multiple AprilTags in an unstructured environment. AprilSLAM needs prior information of Apriltags for better localization performance. The system can map multiple tags in the camera's view as long as there is atleast another tag in view to estimate relative tag pose the first time. The system has been run with a forward looking ZED2 stereo camera on an AGV with a X86-based computing solutions for precise estimation of the vehicle pose. The localization FPS is nearly 30Hz. The system is implemented under ROS (Robot Operating System) for ease of integration, but should be easy to run without it as well.
 
 
 ![aprilslam](./aprilslam/pics/aprilslam.jpg)
-We use the awesome AprilTag implementation of M. Kaess for tag extraction [1,2]. GTSAM [3] is used for the mapping system.
+We use the awesome [apriltag_ros repository](https://github.com/AprilRobotics/apriltag_ros)[1-3] to extract Apriltags and GTSAM [4] for the mapping system.
 
 The default AprilTag family used is 36h11 with a black border of 1. A PDF of the tag family is available here : http://www.dotproduct3d.com/assets/pdf/apriltags.pdf
 
@@ -96,6 +96,7 @@ $ roslaunch aprilslam slam.launch
 
 Please cite the appropriate papers when using this package or parts of it in an academic publication.
 
-    1. Edwin Olson (2011). AprilTag: A robust and flexible visual fiducial system. Proceedings of the IEEE International Conference on Robotics and Automation (ICRA), pp. 3400–3407
-    2. Michael Kaess. http://people.csail.mit.edu/kaess/apriltags/, Nov. 2013
-    3. GTSAM. https://collab.cc.gatech.edu/borg/gtsam/
+1. D. Malyuta, C. Brommer, D. Hentzen, T. Stastny, R. Siegwart, and R. Brockers, “Long-duration fully autonomous operation of rotorcraft unmanned aerial systems for remote-sensing data acquisition,” Journal of Field Robotics, p. arXiv:1908.06381, Aug. 2019.
+2. C. Brommer, D. Malyuta, D. Hentzen, and R. Brockers, “Long-duration autonomy for small rotorcraft UAS including recharging,” in IEEE/RSJ International Conference on Intelligent Robots and Systems, IEEE, p. arXiv:1810.05683, oct 2018.
+3. J. Wang and E. Olson, "AprilTag 2: Efficient and robust fiducial detection," in ''Proceedings of the IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)'', October 2016.
+4. GTSAM. https://collab.cc.gatech.edu/borg/gtsam/
