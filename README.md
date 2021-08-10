@@ -4,19 +4,19 @@
 
 Some basic code in this repository is forked from https://github.com/ProjectArtemis/aprilslam . Thanks [*@mhkabir*](https://github.com/mhkabir) for opening the awesome code.
 
-**Your can open this [doxygen documentation](./html/index.html#http://) created by [*@ShaotengWu*](https://github.com/ShaotengWu) in your browser for detailed documentation.**
+**Your can open this [doxygen documentation](./docs/index.html#http://) created by [*@ShaotengWu*](https://github.com/ShaotengWu) in your browser for detailed documentation.**
 
 AprilSLAM is a package designed for fast camera pose estimation from a single or multiple AprilTags in an unstructured environment. AprilSLAM needs prior information of Apriltags for better localization performance. The system can map multiple tags in the camera's view as long as there is atleast another tag in view to estimate relative tag pose the first time. The system has been run with a forward looking ZED2 stereo camera on an AGV with a X86-based computing solutions for precise estimation of the vehicle pose. The localization FPS is nearly 30Hz. The system is implemented under ROS (Robot Operating System) for ease of integration, but should be easy to run without it as well.
 
 
 ![aprilslam](./aprilslam/pics/aprilslam.jpg)
-We use the awesome [apriltag_ros repository](https://github.com/AprilRobotics/apriltag_ros)[1-3] to extract Apriltags and GTSAM [4] for the mapping system.
+We use the awesome [apriltag_ros repository](https://github.com/AprilRobotics/apriltag_ros)[1-3] to extract Apriltags and modify some interfaces. The mapping system is implemented based on GTSAM [4].
 
 The default AprilTag family used is 36h11 with a black border of 1. A PDF of the tag family is available here : http://www.dotproduct3d.com/assets/pdf/apriltags.pdf
 
-Package originally developed by Chao Qu and Gareth Cross from Kumar Robotics (www.kumarrobotics.org) and M.H.Kabirm. The repository is forked from the original Apriltag SLAM and is developed and maintained by Shaoteng Wu from SJTU. (Contact me: wushaoteng@sjtu.edu.cn)
+The package is originally developed by Chao Qu and Gareth Cross from Kumar Robotics (www.kumarrobotics.org) and M.H.Kabirm. The repository is forked from the original Apriltag SLAM and is developed and maintained by Shaoteng Wu from SJTU. (Contact me: wushaoteng@sjtu.edu.cn)
 
-![ex1](./aprilslam/pics/ex1.png)
+![ex1](./aprilslam/pics/aprilslam.gif)
 
 ## 2. Dependencies
 
@@ -90,9 +90,13 @@ $ source devel/setup.bash
 # $ source devel/setup.zsh
 $ roslaunch aprilslam slam.launch
 ```
+## 4.Acknowledgement
+
+This repository is developed on a SJTU Master course under instructions of A/Prof. Liang Gong. Besides, Thanks Yingxin Wu for help on experiments.  
 
 
-## 4.References
+
+## 5.References
 
 Please cite the appropriate papers when using this package or parts of it in an academic publication.
 
